@@ -58,7 +58,7 @@ if ( ! defined( 'RTWPIDEAS_BASE_NAME' ) ) {
  */
 function rt_wp_ideas_autoloader( $class_name ) {
 	$rt_wp_ideas_lib_path = array(
-		'app/services/' . $class_name . '.php',
+		'app/main/' . $class_name . '.php',
 	);
 	foreach ( $rt_wp_ideas_lib_path as $path ) {
 		$path = RTWPIDEAS_PATH . $path;
