@@ -1,0 +1,125 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 17 Feb, 2014, 3:36:20 PM
+    Author     : kaklo
+*/
+.rtwpIdeaVoteCount{
+    background-color: #FCFDFF;
+    border: 1px solid #CFD7E6;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -moz-box-shadow: rgba(0,0,0,.1) 0 1px 1px;
+    -webkit-box-shadow: rgba(0,0,0,.1) 0 1px 1px;
+    box-shadow: rgba(0,0,0,.1) 0 1px 1px;
+    color: #8F9BB3;
+    font-size: 12px;
+    line-height: 14px;
+    margin-bottom: 3px;
+    padding: 12px 0 9px 0;
+    text-align: center;
+}
+.rtwpIdeaVoteCount strong {
+    color: #292C33;
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.rtwpIdeaVoteBadge {
+    width:80px;
+    position : absolute;
+}
+.rtwpIdeaVoteButton button{
+    width:80px;
+}
+.rtwpIdeaHeader {
+    padding-left:100px;
+    word-wrap: break-word;
+}
+.rtwpIdeaTitle {
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1em;
+    margin-bottom: 10px;
+}
+.rtwpIdeaDescription {
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+.typeset {
+    line-height: 1.4em;
+    text-rendering: optimizeLegibility;
+}
+.rtwpAttachments {
+    clear: both;
+    float: left;
+    width: 100%;
+}
+.rtwpAttachment {
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 30px;
+    width: 190px;
+}
+.rtwpAttachmentLink {
+    float: left;
+    width: 100%;
+}
+figure {
+    position: relative;
+}
+.rtwpAttachmentThumbnail {
+    background-color: #FCFDFF;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    border: 2px solid #fefefe;
+    border-right-color: #f1f1f1;
+    border-left-color: #f1f1f1;
+    border-bottom-color: #e2e2e2;
+    -moz-border-radius: 1px;
+    -webkit-border-radius: 1px;
+    border-radius: 1px;
+    -moz-box-shadow: rgba(0,0,0,.75) 0 0 1px;
+    -webkit-box-shadow: rgba(0,0,0,.75) 0 0 1px;
+    box-shadow: rgba(0,0,0,.75) 0 0 1px;
+    float: left;
+    height: 28px;
+    width: 28px;
+    margin-right: 5px;
+}
+.rtwpAttachmentMeta {
+    float: left;
+    width: 153px;
+    max-width: 100%;
+}
+.rtwpAttachmentCaption {
+    display: block;
+    font-size: 12px;
+    line-height: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.rtwpAttachmentSize {
+    color: #8F9BB3;
+    display: block;
+    font-size: 11px;
+    line-height: 16px;
+    text-decoration: none;
+}
+.rtwpIdeaMeta {
+    color: #666F80;
+    font-size: 11px;
+    margin-bottom: 30px;
+}
+.rtwpIdeaMeta a {
+    color: inherit;
+}
+.rtwpStyle-separator {
+    color: #B8BECC;
+}
