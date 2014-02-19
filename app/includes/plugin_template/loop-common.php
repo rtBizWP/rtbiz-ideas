@@ -4,6 +4,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+//include RTWPIDEAS_PATH . 'app/includes/template-insert-idea.php';
 ?>
 <div id="primary" class="content-area <?php apply_filters( 'rtwpideas_content_class', 'large-8 small-12 columns' ); ?>">
 	<div id="content" class="site-content" role="main">
@@ -23,20 +24,20 @@
 						</div>
 						<div class="rtwpIdeaVoteButton">
 							<button id="btnVote-<?php the_ID(); ?>" class="btnVote" data-id="<?php the_ID(); ?>" >
-							<?php
-							if( is_user_logged_in() ){
-								$is_voted = check_user_voted( get_the_ID() );
-								if( isset( $is_voted ) && $is_voted ){
-									echo 'Vote Down';
-								}else if( isset( $is_voted ) && ! $is_voted ){
-									echo 'Vote Up';
-								}else {
-									echo 'Vote';
-								}
-							} else {
-								echo 'Vote';
-							}
-							?>
+	<?php
+		if ( is_user_logged_in() ){
+			$is_voted = check_user_voted( get_the_ID() );
+			if ( isset( $is_voted ) && $is_voted ){
+				echo 'Vote Down';
+			} else if ( isset( $is_voted ) && ! $is_voted ){
+				echo 'Vote Up';
+			} else {
+				echo 'Vote';
+			}
+		} else {
+			echo 'Vote';
+		}
+	?>
 							</button>
 						</div>
 					</div>
@@ -48,42 +49,39 @@
 		endif; ?>
 							</div>
 						</div>
+						<?php
+		if ( ! is_single() ) {
+			$args = array(
+				'post_parent' => get_the_ID(),
+				'post_type' => 'attachment',
+				'posts_per_page' => -1,
+				'orderby' => 'menu_order',
+				'order' => 'ASC',
+			);
+			$attachments = get_children( $args );
+			if ( ! empty( $attachments ) ){
+				?><ul class="rtwpIdeaAttachments rtwpAttachments"> <?php $i = 0;
+				foreach ( $attachments as $attachment ) {
+					if( $i >= 3 ) break;
+					$image_attributes = wp_get_attachment_image_src( $attachment->ID, 'full' );
+					?>
+					<li class="rtwpAttachment">
+						<a class="rtwpAttachmentLink rtwpAttachmentLink-preview" href="<?php echo esc_url( $attachment->guid ); ?>" title="View <?php echo sanitize_title( $attachment->post_title ); ?>">
+							<figure class="rtwpAttachmentInfo">
+								<span class="rtwpAttachmentThumbnail" style="background-image: url('<?php echo esc_url( wp_get_attachment_thumb_url( $attachment->ID ) ); ?>')">&nbsp;</span>
+								<figcaption class="rtwpAttachmentMeta">
+									<span class="rtwpAttachmentCaption"><?php echo sanitize_title( $attachment->post_title ); ?></span>
+								</figcaption>
+							</figure>
+						</a>
+					</li>
+					<?php $i++;
+				}
+				?></ul><?php
+			}
+		}
+					?>
 						
-						<ul class="rtwpIdeaAttachments rtwpAttachments">
-							<li class="rtwpAttachment">
-								<a class="rtwpAttachmentLink rtwpAttachmentLink-preview" href="/assets/72059504/Screen_Shot_2014-01-25_at_20.20.57.png" rel="Suggestion_5433454" title="View Screen_Shot_2014-01-25_at_20.20.57.png">
-									<figure class="rtwpAttachmentInfo">
-										<span class="rtwpAttachmentThumbnail" style="background-image: url(https://s3.amazonaws.com/uploads.uservoice.com/assets/072/059/504/thumb/Screen_Shot_2014-01-25_at_20.20.57.png?AWSAccessKeyId=14D6VH0N6B73PJ6VE382&amp;Expires=1392623826&amp;Signature=0xkQRYP0OmJQpKH0rWU8Y4e88Q0%3D)">&nbsp;</span>
-										<figcaption class="rtwpAttachmentMeta">
-											<span class="rtwpAttachmentCaption">Screen_Shot_2014-01-25_at_20.20.57.png</span>
-											<span class="rtwpAttachmentSize">98 KB</span>
-										</figcaption>
-									</figure>
-								</a>
-							</li>
-							<li class="rtwpAttachment">
-								<a class="rtwpAttachmentLink rtwpAttachmentLink-preview" href="/assets/72059504/Screen_Shot_2014-01-25_at_20.20.57.png" rel="Suggestion_5433454" title="View Screen_Shot_2014-01-25_at_20.20.57.png">
-									<figure class="rtwpAttachmentInfo">
-										<span class="rtwpAttachmentThumbnail" style="background-image: url(https://s3.amazonaws.com/uploads.uservoice.com/assets/072/059/504/thumb/Screen_Shot_2014-01-25_at_20.20.57.png?AWSAccessKeyId=14D6VH0N6B73PJ6VE382&amp;Expires=1392623826&amp;Signature=0xkQRYP0OmJQpKH0rWU8Y4e88Q0%3D)">&nbsp;</span>
-										<figcaption class="rtwpAttachmentMeta">
-											<span class="rtwpAttachmentCaption">Screen_Shot_2014-01-25_at_20.20.57.png</span>
-											<span class="rtwpAttachmentSize">98 KB</span>
-										</figcaption>
-									</figure>
-								</a>
-							</li>
-							<li class="rtwpAttachment">
-								<a class="rtwpAttachmentLink rtwpAttachmentLink-preview" href="/assets/72059504/Screen_Shot_2014-01-25_at_20.20.57.png" rel="Suggestion_5433454" title="View Screen_Shot_2014-01-25_at_20.20.57.png">
-									<figure class="rtwpAttachmentInfo">
-										<span class="rtwpAttachmentThumbnail" style="background-image: url(https://s3.amazonaws.com/uploads.uservoice.com/assets/072/059/504/thumb/Screen_Shot_2014-01-25_at_20.20.57.png?AWSAccessKeyId=14D6VH0N6B73PJ6VE382&amp;Expires=1392623826&amp;Signature=0xkQRYP0OmJQpKH0rWU8Y4e88Q0%3D)">&nbsp;</span>
-										<figcaption class="rtwpAttachmentMeta">
-											<span class="rtwpAttachmentCaption">Screen_Shot_2014-01-25_at_20.20.57.png</span>
-											<span class="rtwpAttachmentSize">98 KB</span>
-										</figcaption>
-									</figure>
-								</a>
-							</li>
-						</ul>
 						<div class="rtwpIdeaMeta">
 							<a href="<?php the_permalink(); ?>#comments" title="Comments for <?php the_title(); ?>"><?php comments_number( 'No Comments', '1 Comment', '% Comments' ); ?></a> 
 							<span class="uvStyle-separator">&nbsp;·&nbsp;</span> 
