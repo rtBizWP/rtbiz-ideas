@@ -4,7 +4,7 @@
   Plugin Name: WordPress Ideas
   Plugin URI: http://git.rtcamp.com/crm/wordpress-ideas
   Description: User submitted ideas/feature-request tracking like http://www.uservoice.com/
-  Version: 1.1
+  Version: 1.0
   Author: rtCamp
   Text Domain: wp-ideas
   Author URI: http://rtcamp.com/?utm_source=dashboard&utm_medium=plugin&utm_campaign=wp-ideas
@@ -65,12 +65,12 @@ if ( ! defined( 'RT_WPIDEAS_SLUG' ) ) {
 }
 
 function rtwpideas_enqueue_styles_and_scripts() {
-	wp_register_script( 'rtwpideas-custom-script', plugins_url( '/app/includes/js/rtwpideas-custom-script.js', __FILE__ ), array( 'jquery' ) );
+	wp_register_script( 'rtwpideas-custom-script', plugins_url( '/app/includes/js/rtwpideas-custom-script.js', __FILE__ ), array('jquery') );
 	wp_enqueue_script( 'rtwpideas-custom-script' );
 	wp_register_style( 'rtwpideas-client-styles', plugins_url( '/app/includes/css/rtwpideas-client-styles.css', __FILE__ ) );
 	wp_enqueue_style( 'rtwpideas-client-styles' );
-	$ajax_url = admin_url('admin-ajax.php');
-	wp_localize_script('rtwpideas-custom-script', 'rt_wpideas_ajax_url', $ajax_url);
+	$ajax_url = admin_url( 'admin-ajax.php' );
+	wp_localize_script( 'rtwpideas-custom-script', 'rt_wpideas_ajax_url', $ajax_url );
 }
 add_action( 'wp_enqueue_scripts', 'rtwpideas_enqueue_styles_and_scripts' );
 

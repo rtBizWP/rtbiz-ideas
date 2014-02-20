@@ -33,7 +33,7 @@ function add_vote( $post, $vote_count = 1 ) {
  * @param type $vote_count
  * @return type
  */
-function update_vote( $post , $vote_count) {
+function update_vote( $post, $vote_count ) {
 	global $rtWpideasVotes;
 	$user = get_current_user_id();
 	$where = array(
@@ -84,10 +84,10 @@ function get_votes_by_idea( $idea ) {
 function get_votes_by_post( $post ) {
 	global $rtWpideasVotes;
 	$vote_count = $rtWpideasVotes -> get_votes_by_post( $post );
-	 if ( $vote_count == null ){
-		 return 0;
-	 }
-	 return $vote_count;
+	if ( $vote_count == null ){
+		return 0;
+	}
+	return $vote_count;
 }
 
 /**
@@ -104,9 +104,9 @@ function check_user_voted( $idea ){
 	global $rtWpideasVotes;
 	$user = get_current_user_id();
 	$row = $rtWpideasVotes -> check_user_voted( $idea, $user );
-	if( ! empty( $row[0] ) && $row[0]->vote_count == 1 ){
+	if ( ! empty( $row[0] ) && $row[0]->vote_count == 1 ){
 		return true;
-	}else if( ! empty( $row[0] ) && $row[0]->vote_count == 0 ){
+	}else if ( ! empty( $row[0] ) && $row[0]->vote_count == 0 ){
 		return false;
 	} else if ( empty ( $row[0] ) ){
 		return null;
@@ -126,10 +126,13 @@ function vote_callback() {
 		$is_voted = check_user_voted( $postid );
 		if ( isset( $is_voted ) && $is_voted ){
 			update_vote( $postid, 0 );
-		} else if( isset( $is_voted ) && ! $is_voted ){
+			$response['btnLabel'] = 'Vote Up';
+		} else if ( isset( $is_voted ) && ! $is_voted ){
 			update_vote( $postid, 1 );
-		} else if( ! isset ( $is_voted ) ){
+			$response['btnLabel'] = 'Vote Down';
+		} else if ( ! isset ( $is_voted ) ){
 			add_vote( $postid );
+			$response['btnLabel'] = 'Vote Down';
 		}
 		$response['vote'] = get_votes_by_post( $postid );
 	}
@@ -138,6 +141,20 @@ function vote_callback() {
 	die(); // this is required to return a proper result
 }
 
+add_action( 'wp_ajax_search', 'search_callback' );
+add_action( 'wp_ajax_nopriv_search', 'search_callback' );
+
+function search_callback() {
+	$txtSearch = $_POST['searchtext'];
+	global $rtWpideasVotes;
+	$response = $rtWpideasVotes->search( $txtSearch );
+	//foreach( $response as $row){
+	//	$res .=  "'".$row->post_title."',";
+	//}
+	//$res = substr($res, 0, strlen( $res )-1 );
+	echo $response;
+	die(); // this is required to return a proper result
+}
 
 /**
  * Shortcode for list of idea

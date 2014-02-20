@@ -42,18 +42,27 @@ if ( ! class_exists( 'RTWPIdeasVotesModel' ) ) {
 		function check_user_voted( $idea, $user ) {
 			$columns = array();
 			$return = array();
-			if( ! empty( $idea ) ) {
-				$columns['post_id'] = array (
+			if ( ! empty( $idea ) ) {
+				$columns['post_id'] = array(
 					'compare' => '=',
-					'value' => array($idea),
+					'value' => array( $idea ),
 				);
-				$columns['user_id'] = array (
+				$columns['user_id'] = array(
 					'compare' => '=',
-					'value' => array($user),
+					'value' => array( $user ),
 				);
 				$return = parent::get( $columns );
 			}
 			return $return;
+		}
+		
+		function search( $txtSearch ){
+			global $wpdb;
+			//$row = new WP_Query('post_type=idea');
+			//$meta_key = '%'.$txtSearch.'%';
+			$row = new WP_Query( 's='.$txtSearch.'&post_type=idea' );
+			return $row;
+			//return $wpdb -> get_results( $wpdb->prepare( 'SELECT post_title FROM '.$wpdb->prefix.'posts WHERE post_title LIKE %s', $meta_key ) );
 		}
 		
 		function add_vote( $data ) {

@@ -5,17 +5,21 @@
  * and open the template in the editor.
  */
 //include RTWPIDEAS_PATH . 'app/includes/template-insert-idea.php';
-?>
-<div id="primary" class="content-area <?php apply_filters( 'rtwpideas_content_class', 'large-8 small-12 columns' ); ?>">
+?>	
+<div id="primary" class="content-area yui-skin-sam <?php apply_filters( 'rtwpideas_content_class', 'large-8 small-12 columns' ); ?>">
 	<div id="content" class="site-content" role="main">
 
 		<header class="page-header">
 			<h1 class="page-title"><?php _e( 'Ideas', 'rtCamp' ); ?></h1>
-			<input type="text" placeholder="Enter Idea Here" id="txtNewIdea" name="txtNewIdea" />
+				<input type="text" placeholder="Enter Idea Here" id="txtNewIdea" name="txtNewIdea" />
+				<input type="button" id="btnSearchSubmit" style="display: none;" />
+			<div id="SuggestionContainer"></div> <!--suggestion window -->
+			<?php include RTWPIDEAS_PATH . 'app/includes/template-insert-idea.php'; ?>
 		</header>
-		
+		<div id ="res"></div>
 		<?php  if ( have_posts() ) : ?>
 			<?php while ( have_posts() ) : the_post(); ?>
+		<?php $str .=  '"'.get_the_title().'",'; ?>
 		                <article id="post-<?php the_ID(); ?>" <?php post_class( 'clearfix' ); ?> >
 					<div class="rtwpIdeaVoteBadge">
 						<div class="rtwpIdeaVoteCount">
@@ -39,6 +43,7 @@
 		}
 	?>
 							</button>
+							<button id="btnLogin" style="display: none;">Login</button>
 						</div>
 					</div>
 					<header class="rtwpIdeaHeader">
@@ -106,10 +111,6 @@
 		<?php else : ?>
 	<?php get_template_part( 'content', 'none' ); ?>
 <?php endif; ?>
-
-
-
-
-
+<?php include RTWPIDEAS_PATH . 'app/includes/search-suggestion.php'; ?>
 	</div><!-- #content -->
 </div><!-- #primary -->

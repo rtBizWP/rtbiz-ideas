@@ -5,30 +5,50 @@
  */
 jQuery(document).ready(function($) {
 
-	$('.btnVote').click(function(){
-		$(this).attr('disabled','disabled');
+	$('.btnVote').click(function() {
+		$(this).attr('disabled', 'disabled');
 		var data = {
 			action: 'vote',
 			postid: $(this).data('id'),
 		};
 
-		// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
 		$.post(rt_wpideas_ajax_url, data, function(response) {
-			
+
 			var json = JSON.parse(response);
-			if(json.vote){
-				$('#rtwpIdeaVoteCount-'+data['postid']).html(json.vote);
-				$('#btnVote-'+data['postid']).removeAttr('disabled');
-				if( $('#btnVote-'+data['postid']).html() == 'Vote Down' ){
-					$('#btnVote-'+data['postid']).html('Vote Up');
-				}else{
-					$('#btnVote-'+data['postid']).html('Vote Down');
-				}
-			}else{
+			if (json.vote) {
+				$('#rtwpIdeaVoteCount-' + data['postid']).html(json.vote);
+				$('#btnVote-' + data['postid']).removeAttr('disabled');
+				$('#btnVote-' + data['postid']).html(json.btnLabel);
+			} else {
 				alert(json.err);
+				//$('#btnVote-' + data['postid']).hide();
+				//$('#btnLogin').show();
 			}
 		});
 	});
-	
-});
 
+	jQuery('#btnLogin').click(function() {
+		window.location.href = '/wp-login.php';
+	});
+
+	jQuery('#txtNewIdea').focus(function() {
+		jQuery('#primaryPostForm').show();
+	});
+	jQuery('#cancelAdd').click(function() {
+		jQuery('#primaryPostForm').hide();
+	});
+
+	jQuery('#txtNewIdea').keyup(function() {
+		jQuery('#postTitle').val($(this).val());
+		
+		var data = {
+			action: 'search',
+			searchtext: $(this).val(),
+		};
+		jQuery.post(rt_wpideas_ajax_url, data, function(response) {
+		});
+	});
+
+	jQuery("#primaryPostForm").validate();
+
+});

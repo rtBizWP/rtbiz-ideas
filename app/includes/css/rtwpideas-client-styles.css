@@ -7,6 +7,28 @@ and open the template in the editor.
     Created on : 17 Feb, 2014, 3:36:20 PM
     Author     : kaklo
 */
+#txtNewIdea{
+	width: 100%;
+	position: initial;
+}
+#SuggestionContainer{
+	width:100%;
+	position: initial;
+}
+#primaryPostForm{
+	margin-top: 30px;
+}
+#primaryPostForm label{
+	display: inline-block;
+	float: left;
+	clear: left;
+	width: 100%;
+}
+#primaryPostForm input, #primaryPostForm textarea{
+	display: inline-block;
+	float:left;
+	color: #000000;
+}
 .rtwpIdeaVoteCount{
     background-color: #FCFDFF;
     border: 1px solid #CFD7E6;
