@@ -18,6 +18,6 @@ include RTWPIDEAS_PATH . 'app/includes/plugin_template/loop-common.php';
 ?>
 
 	</div><!-- #content -->
-</div><
+</div><?php
 get_sidebar();
 get_footer();
