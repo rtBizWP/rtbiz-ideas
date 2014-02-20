@@ -27,18 +27,18 @@ if (isset($_POST['submitted']) && isset($_POST['post_nonce_field']) && wp_verify
 ?>
 <form action="" id="primaryPostForm" method="POST" style="display:none;">
 	<h2>Or add new idea here..</h2>
-	<fieldset>
-		<label for="postTitle"><?php _e('Post Title:', 'framework') ?></label>
+	<div>
+		<label for="postTitle"><?php _e('Title:', 'framework') ?></label>
 
 		<input type="text" name="postTitle" id="postTitle" class="required" value="<?php if (isset($_POST['postTitle'])) echo $_POST['postTitle']; ?>" />
 		<?php if ($postTitleError != '') { ?>
 			<span class="error"><?php echo $postTitleError; ?></span>
 			<div class="clearfix"></div>
 		<?php } ?>
-	</fieldset>
+	</div>
 
-	<fieldset>
-		<label for="postContent"><?php _e('Post Content:', 'framework') ?></label>
+	<div>
+		<label for="postContent"><?php _e('Detail:', 'framework') ?></label>
 
 		<textarea name="postContent" id="postContent" rows="8" cols="30" class="required"><?php
 			if (isset($_POST['postContent'])) {
@@ -49,14 +49,14 @@ if (isset($_POST['submitted']) && isset($_POST['post_nonce_field']) && wp_verify
 				}
 			}
 			?></textarea>
-	</fieldset>
+	</div>
 
-	<fieldset>
+	<div>
 		<input type="hidden" name="submitted" id="submitted" value="true" />
 		<?php wp_nonce_field('post_nonce', 'post_nonce_field'); ?>
 		<button type="submit"><?php _e('Add Post', 'framework') ?></button>
 		<button type="button" id="cancelAdd"><?php _e('Cancel','wpideas'); ?></button>
-	</fieldset>
+	</div>
 
 </form>
 
