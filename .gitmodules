@@ -1,6 +1,0 @@
-[submodule "app/lib/rtdbmodel"]
-	path = app/lib/rtdbmodel
-	url = git@git.rtcamp.com:rtlib/rtdbmodel.git
-[submodule "app/lib/rtattributes"]
-	path = app/lib/rtattributes
-	url = git@git.rtcamp.com:rtlib/rtattributes.git
