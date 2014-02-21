@@ -20,7 +20,7 @@ $ideaTitleError = '';
 	<div>
 		<label for="txtIdeaContent"><?php _e( 'Detail:', 'wp-ideas' ) ?></label>
 
-		<textarea name="txtIdeaContent" id="postContent" rows="30" cols="30" class="required"><?php
+		<textarea name="txtIdeaContent" id="txtIdeaContent" style="height:250px;" class="required"><?php
 			if ( isset( $_POST[ 'txtIdeaContent' ] ) ) {
 				if ( function_exists( 'stripslashes' ) ) {
 					echo stripslashes( $_POST[ 'txtIdeaContent' ] );

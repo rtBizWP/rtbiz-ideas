@@ -124,3 +124,6 @@ figure {
 .rtwpStyle-separator {
     color: #B8BECC;
 }
+#insertIdeaForm #txtIdeaContent{
+	height : 250px !important;
+}
