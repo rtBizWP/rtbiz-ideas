@@ -108,7 +108,7 @@ function rt_wordpress_idea_autoloader($class_name) {
 		'app/lib/rtdbmodel/' . $class_name . '.php',
 	);
 	foreach ($rtlibpath as $i => $path) {
-		$path = RT_HISTORY_TRACER_PATH . $path;
+		$path = RTWPIDEAS_PATH . $path;
 		if (file_exists($path)) {
 			include $path;
 			break;
