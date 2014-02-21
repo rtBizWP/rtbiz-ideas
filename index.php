@@ -121,11 +121,7 @@ function rt_wordpress_idea_autoloader($class_name) {
  */
 spl_autoload_register('rt_wordpress_idea_autoloader');
 
-/**
- * Register the autoloader function into spl_autoload
- */
-spl_autoload_register( 'rtwpideas_include' );
-
+include_once 'app/helper/wpideas-votes.php';
 /**
  * Instantiate the RTWPIdeas class.
  */
