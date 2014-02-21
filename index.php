@@ -100,44 +100,26 @@ function rtwpideas_enqueue_styles_and_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'rtwpideas_enqueue_styles_and_scripts' );
 
-/**
- * Auto Loader Function
- *
- * Autoloads classes on instantiation. Used by spl_autoload_register.
- *
- * @param string $class_name The name of the class to autoload
- */
-function rtwpideas_include_class_file( $dir ) {
-	if ( $dh = opendir( $dir ) ) {
-		while ( $file = readdir( $dh ) ) {
-			//Loop
-			if ( $file !== '.' && $file !== '..' && $file[0] !== '.' ) {
-				if ( is_dir( $dir . $file ) ) {
-					rtwpideas_include_class_file( $dir . $file . '/' );
-				} else {
-					include_once $dir . $file;
-				}
-			}
+function rt_wordpress_idea_autoloader($class_name) {
+	$rtlibpath = array(
+		'app/admin/' . $class_name . '.php',
+		'app/helper/' . $class_name . '.php',
+		'app/main/' . $class_name . '.php',
+		'app/lib/rtdbmodel/' . $class_name . '.php',
+	);
+	foreach ($rtlibpath as $i => $path) {
+		$path = RT_HISTORY_TRACER_PATH . $path;
+		if (file_exists($path)) {
+			include $path;
+			break;
 		}
-		closedir( $dh );
-		return 0;
 	}
 }
 
 /**
- * Include function for classes
+ * Register the autoloader function into spl_autoload
  */
-function rtwpideas_include() {
-	$rtWooCLIncludePaths = array(
-		RT_WPIDEAS_PATH_LIB,
-		RT_WPIDEAS_PATH_HELPER,
-		RT_WPIDEAS_PATH_MAIN,
-		RT_WPIDEAS_PATH_ADMIN,
-	);
-	foreach ( $rtWooCLIncludePaths as $path ) {
-		rtwpideas_include_class_file( $path );
-	}
-}
+spl_autoload_register('rt_wordpress_idea_autoloader');
 
 /**
  * Register the autoloader function into spl_autoload
