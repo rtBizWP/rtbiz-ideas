@@ -5,7 +5,7 @@
  */
 jQuery(document).ready(function($) {
 
-	$('.btnVote').click(function() {
+	jQuery('.btnVote').click(function() {
 		$(this).attr('disabled', 'disabled');
 		var data = {
 			action: 'vote',
@@ -26,29 +26,29 @@ jQuery(document).ready(function($) {
 			}
 		});
 	});
+	
+	jQuery('#insertIdeaForm').submit(function(){
+		alert("");
+		var data =  jQuery(this).serialize();
 
-	jQuery('#btnLogin').click(function() {
-		window.location.href = '/wp-login.php';
-	});
+		$.post(rt_wpideas_ajax_url, data, function(response) {
 
-	jQuery('#txtNewIdea').focus(function() {
-		jQuery('#primaryPostForm').show();
-	});
-	jQuery('#cancelAdd').click(function() {
-		jQuery('#primaryPostForm').hide();
-	});
-
-	jQuery('#txtNewIdea').keyup(function() {
-		jQuery('#postTitle').val($(this).val());
+			alert(response);
+		});
 		
+	});
+
+	jQuery('#txtSearchIdea').keyup(function() {
 		var data = {
 			action: 'search',
 			searchtext: $(this).val(),
 		};
+		
 		jQuery.post(rt_wpideas_ajax_url, data, function(response) {
+			$('#res').html(response);
 		});
 	});
 
-	jQuery("#primaryPostForm").validate();
+	//jQuery("#primaryPostForm").validate();
 
 });
