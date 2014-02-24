@@ -21,6 +21,7 @@ jQuery(document).ready(function($) {
 				$('#btnVote-' + data['postid']).attr('value', json.btnLabel);
 			} else {
 				alert(json.err);
+				$('#btnVote-' + data['postid']).removeAttr('disabled');
 				//$('#btnVote-' + data['postid']).hide();
 				//$('#btnLogin').show();
 			}
