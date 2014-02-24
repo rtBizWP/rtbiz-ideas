@@ -9,7 +9,7 @@
 	<div id="content" class="site-content" role="main">
 
 		<header class="page-header">
-			<h1 class="page-title"><?php _e( 'Ideas', 'rtCamp' ); ?></h1>
+			<h1 class="page-title"><?php _e( 'Ideas', 'wp-ideas' ); ?></h1>
 			<input type="text" placeholder="Search Ideas Here" id="txtSearchIdea" name="txtSearchIdea"/>
 		</header>
 		<div id="res">
@@ -23,30 +23,27 @@
 								<span> votes</span>
 							</div>
 							<div class="rtwpIdeaVoteButton">
-								<button id="btnVote-<?php the_ID(); ?>" class="btnVote" data-id="<?php the_ID(); ?>">
-									<?php
-									if ( is_user_logged_in() ) {
-										$is_voted = check_user_voted( get_the_ID() );
-										if ( isset( $is_voted ) && $is_voted ) {
-											echo 'Vote Down';
-										} else {
-											if ( isset( $is_voted ) && ! $is_voted ) {
-												echo 'Vote Up';
-											} else {
-												echo 'Vote';
-											}
-										}
+								<input type="button" id="btnVote-<?php the_ID(); ?>" class="btnVote" data-id="<?php the_ID(); ?>" value="<?php
+								if ( is_user_logged_in() ) {
+									$is_voted = check_user_voted( get_the_ID() );
+									if ( isset( $is_voted ) && $is_voted ) {
+										echo 'Vote Down';
 									} else {
-										echo 'Vote';
+										if ( isset( $is_voted ) && ! $is_voted ) {
+											echo 'Vote Up';
+										} else {
+											echo 'Vote';
+										}
 									}
-									?>
-								</button>
-								<button id="btnLogin" style="display: none;">Login</button>
+								} else {
+									echo 'Vote';
+								}
+								?>" />
 							</div>
 						</div>
 						<header class="rtwpIdeaHeader">
 							<h1 class="rtwpIdeaTitle"><a href="<?php the_permalink(); ?>" rel="bookmark"
-										     title="<?php printf( esc_attr__( 'Permanent Link to %s', 'rtCamp' ), the_title_attribute( 'echo=0' ) ); ?>"><?php the_title(); ?></a>
+														 title="<?php printf( esc_attr__( 'Permanent Link to %s', 'rtCamp' ), the_title_attribute( 'echo=0' ) ); ?>"><?php the_title(); ?></a>
 							</h1>
 
 							<div class="rtwpIdeaDescription">
@@ -59,49 +56,60 @@
 								</div>
 							</div>
 							<?php
-							if ( ! is_single() ) {
-								$args = array( 'post_parent' => get_the_ID(), 'post_type' => 'attachment', 'posts_per_page' => - 1, 'orderby' => 'menu_order', 'order' => 'ASC', );
-								$attachments = get_children( $args );
-								if ( ! empty( $attachments ) ) {
-									?>
-									<ul class="rtwpIdeaAttachments rtwpAttachments"> <?php
-										$i = 0;
-										foreach ( $attachments as $attachment ) {
-											if ( $i >= 3 ) {
-												break;
-											}
-											$image_attributes = wp_get_attachment_image_src( $attachment -> ID, 'full' );
-											?>
-											<li class="rtwpAttachment">
-												<a class="rtwpAttachmentLink rtwpAttachmentLink-preview"
-												   href="<?php echo esc_url( $attachment -> guid ); ?>"
-												   title="View <?php echo sanitize_title( $attachment -> post_title ); ?>">
-													<figure class="rtwpAttachmentInfo">
-														<span class="rtwpAttachmentThumbnail"
-														      style="background-image: url('<?php echo esc_url( wp_get_attachment_thumb_url( $attachment -> ID ) ); ?>')">&nbsp;</span>
-														<figcaption class="rtwpAttachmentMeta">
-															<span
-																class="rtwpAttachmentCaption"><?php echo sanitize_title( $attachment -> post_title ); ?></span>
-														</figcaption>
-													</figure>
-												</a>
-											</li>
-											<?php
-											$i ++;
+							$args = array( 'post_parent' => get_the_ID(), 'post_type' => 'attachment', 'posts_per_page' => - 1, 'orderby' => 'menu_order', 'order' => 'ASC', );
+							$attachments = get_children( $args );
+							if ( ! empty( $attachments ) ) {
+								?>
+								<ul class="rtwpIdeaAttachments rtwpAttachments"> <?php
+									$i = 0;
+									foreach ( $attachments as $attachment ) {
+										if ( $i >= 3 ) {
+											break;
 										}
-										?></ul><?php
-								}
+										$image_attributes = wp_get_attachment_image_src( $attachment -> ID, 'full' );
+										?>
+										<li class="rtwpAttachment">
+											<a class="rtwpAttachmentLink rtwpAttachmentLink-preview"
+											   href="<?php echo esc_url( $attachment -> guid ); ?>"
+											   title="View <?php echo sanitize_title( $attachment -> post_title ); ?>">
+												<figure class="rtwpAttachmentInfo">
+													<span class="rtwpAttachmentThumbnail"
+														  style="background-image: url('<?php echo esc_url( wp_get_attachment_thumb_url( $attachment -> ID ) ); ?>')">&nbsp;</span>
+													<figcaption class="rtwpAttachmentMeta">
+														<span
+															class="rtwpAttachmentCaption"><?php echo sanitize_title( $attachment -> post_title ); ?></span>
+													</figcaption>
+												</figure>
+											</a>
+										</li>
+										<?php
+										$i ++;
+									}
+									?></ul><?php
 							}
 							?>
 
 							<div class="rtwpIdeaMeta">
 								<a href="<?php the_permalink(); ?>#comments"
 								   title="Comments for <?php the_title(); ?>"><?php comments_number( 'No Comments', '1 Comment', '% Comments' ); ?></a>
-								<span class="uvStyle-separator">&nbsp;·&nbsp;</span>
-								<a href="#" title="Ideas similar to <?php the_title(); ?>">Category</a>
+								   <?php
+								   $categories = get_the_category();
+								   $separator = ' ';
+								   $output = '';
+								   if ( $categories ) {
+									   ?><span class="uvStyle-separator">&nbsp;·&nbsp;</span>
+									<a href="#" title="Ideas similar to <?php the_title(); ?>"><?php
+										foreach ( $categories as $category ) {
+											$output .= '<a href="' . get_category_link( $category -> term_id ) . '" title="' . esc_attr( sprintf( __( "View all posts in %s" ), $category -> name ) ) . '">' . $category -> cat_name . '</a>' . $separator;
+										}
+										echo trim( $output, $separator );
+										?>
+									</a>
+									<?php
+								}
+								?>
 								<span class="rtwpStyle-separator">&nbsp;·&nbsp;</span>
-								<a href="<?php echo get_the_author_link(); ?>" data-iframe-target="_blank"
-								   title="Author of <?php the_title(); ?>"><?php echo get_the_author(); ?> →</a>
+								<a href="#" title="Author of <?php the_title(); ?>"><?php the_author(); ?> →</a>
 							</div>
 						</header>
 					</article>
@@ -111,11 +119,11 @@
 					endif;
 				endwhile;
 				?>
-			
-			<div class="navigation">
-				<div class="alignleft"><?php previous_posts_link( '&laquo; Previous Page' ) ?></div>
-				<div class="alignright"><?php next_posts_link( 'Next Page &raquo;', '' ) ?></div>
-			</div>
+
+				<div class="navigation">
+					<div class="alignleft"><?php previous_posts_link( '&laquo; Previous Page' ) ?></div>
+					<div class="alignright"><?php next_posts_link( 'Next Page &raquo;', '' ) ?></div>
+				</div>
 			</div>
 		<?php else : ?>
 			<?php get_template_part( 'content', 'none' ); ?>

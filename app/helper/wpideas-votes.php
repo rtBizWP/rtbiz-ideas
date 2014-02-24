@@ -17,9 +17,9 @@ function add_vote( $post, $vote_count = 1 ) {
 	global $rtWpideasVotes;
 	$user = get_current_user_id();
 	$data = array(
-	    'post_id' => $post,
-	    'user_id' => $user,
-	    'vote_count' => $vote_count,
+		'post_id' => $post,
+		'user_id' => $user,
+		'vote_count' => $vote_count,
 	);
 	return $rtWpideasVotes -> add_vote( $data );
 }
@@ -36,11 +36,11 @@ function update_vote( $post, $vote_count ) {
 	global $rtWpideasVotes;
 	$user = get_current_user_id();
 	$where = array(
-	    'post_id' => $post,
-	    'user_id' => $user,
+		'post_id' => $post,
+		'user_id' => $user,
 	);
 	$data = array(
-	    'vote_count' => $vote_count,
+		'vote_count' => $vote_count,
 	);
 	return $rtWpideasVotes -> update_vote( $data, $where );
 }
@@ -56,8 +56,8 @@ function delete_vote() {
 	global $post, $rtWpideasVotes;
 	$user = get_current_user_id();
 	$where = array(
-	    'post_id' => $post -> ID,
-	    'user_id' => $user,
+		'post_id' => $post -> ID,
+		'user_id' => $user,
 	);
 	return $rtWpideasVotes -> delete_vote( $where );
 }
@@ -142,6 +142,21 @@ function vote_callback() {
 add_action( 'wp_ajax_search', 'search_callback' );
 add_action( 'wp_ajax_nopriv_search', 'search_callback' );
 
+function get_excerpt_by_id( $post_id ) {
+	$the_post = get_post( $post_id ); //Gets post ID
+	$the_excerpt = $the_post -> post_content; //Gets post_content to be used as a basis for the excerpt
+	$excerpt_length = 50; //Sets excerpt length by word count
+	$the_excerpt = strip_tags( strip_shortcodes( $the_excerpt ) ); //Strips tags and images
+	$words = explode( ' ', $the_excerpt, $excerpt_length + 1 );
+	if ( count( $words ) > $excerpt_length ) :
+		array_pop( $words );
+		array_push( $words, '…' );
+		$the_excerpt = implode( ' ', $words );
+	endif;
+	$the_excerpt = '<p>' . $the_excerpt . '</p>';
+	return $the_excerpt;
+}
+
 function search_callback() {
 	$txtSearch = $_POST[ 'searchtext' ];
 	global $rtWpideasVotes;
@@ -187,24 +202,23 @@ function search_callback() {
 						<span> votes</span>
 					</div>
 					<div class="rtwpIdeaVoteButton">
-						<button id="btnVote-<?php echo $r -> ID; ?>" class="btnVote" data-id="<?php echo $r -> ID; ?>">
-							<?php
-							if ( is_user_logged_in() ) {
-								$is_voted = check_user_voted( $r -> ID );
-								if ( isset( $is_voted ) && $is_voted ) {
-									echo 'Vote Down';
-								} else {
-									if ( isset( $is_voted ) && ! $is_voted ) {
-										echo 'Vote Up';
-									} else {
-										echo 'Vote';
-									}
-								}
+						<input type="button" id="btnVote-<?php echo $r -> ID; ?>" class="btnVote" data-id="<?php echo $r -> ID; ?>" value="<?php
+						if ( is_user_logged_in() ) {
+							$is_voted = check_user_voted( $r -> ID );
+							if ( isset( $is_voted ) && $is_voted ) {
+								echo 'Vote Down';
 							} else {
-								echo 'Vote';
+								if ( isset( $is_voted ) && ! $is_voted ) {
+									echo 'Vote Up';
+								} else {
+									echo 'Vote';
+								}
 							}
-							?>
-						</button>
+						} else {
+							echo 'Vote';
+						}
+						?>" />
+
 					</div>
 				</div>
 				<header class="rtwpIdeaHeader">
@@ -214,7 +228,7 @@ function search_callback() {
 					<div class="rtwpIdeaDescription">
 						<div class="typeset">
 							<?php
-							echo $r -> post_content;
+							echo get_excerpt_by_id( $r -> ID );
 							?>
 						</div>
 					</div>
@@ -237,7 +251,7 @@ function search_callback() {
 									   title="View <?php echo sanitize_title( $attachment -> post_title ); ?>">
 										<figure class="rtwpAttachmentInfo">
 											<span class="rtwpAttachmentThumbnail"
-											      style="background-image: url('<?php echo esc_url( wp_get_attachment_thumb_url( $attachment -> ID ) ); ?>')">&nbsp;</span>
+												  style="background-image: url('<?php echo esc_url( wp_get_attachment_thumb_url( $attachment -> ID ) ); ?>')">&nbsp;</span>
 											<figcaption class="rtwpAttachmentMeta">
 												<span
 													class="rtwpAttachmentCaption"><?php echo sanitize_title( $attachment -> post_title ); ?></span>
@@ -272,8 +286,9 @@ function search_callback() {
 			include RTWPIDEAS_PATH . 'templates/template-insert-idea.php';
 			?>
 		</div>
+		<script>jQuery("#TB_overlay").unbind("click", tb_remove);</script>
 		<?php
-		echo 'There are no ideas matching your search.Please <a href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> click here </a> to suggest one. ';
+		echo 'There are no ideas matching your search.<br /><br /> <a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Click Here </a> &nbsp; to suggest one. ';
 	}
 	//echo json_encode($response);
 	die(); // this is required to return a proper result
@@ -289,10 +304,10 @@ function search_callback() {
 function list_all_idea_shortcode( $atts ) {
 	global $post;
 	$default = array(
-	    'type' => 'post',
-	    'post_type' => 'idea',
-	    //'limit' => 10,
-	    'status' => 'publish',
+		'type' => 'post',
+		'post_type' => 'idea',
+		//'limit' => 10,
+		'status' => 'publish',
 	);
 	$r = shortcode_atts( $default, $atts );
 	extract( $r );
@@ -307,9 +322,8 @@ function list_all_idea_shortcode( $atts ) {
 	$return = '<h3>' . $post_type_ob -> name . '</h3>';
 
 	$args = array(
-	    'post_type' => $post_type,
-	    'numberposts' => $limit,
-	    'post_status' => $status,
+		'post_type' => $post_type,
+		'post_status' => $status,
 	);
 
 	$posts = get_posts( $args );
