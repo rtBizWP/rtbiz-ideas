@@ -42,12 +42,14 @@ if ( ! class_exists( 'RTWPIdeas' ) ) {
 		function rtwpideas_template( $template ) {
 			global $wp;
 			//A Specific Custom Post Type
-			if ( $wp -> query_vars[ 'post_type' ] == 'idea' ) {
-				$templatefilename = 'archive-idea.php';
-				if ( file_exists( RTWPIDEAS_PATH . 'templates/' . $templatefilename ) ) {
-					$return_template = RTWPIDEAS_PATH . 'templates/' . $templatefilename;
+			if ( isset( $wp -> query_vars[ 'post_type' ] ) ) {
+				if ( $wp -> query_vars[ 'post_type' ] == 'idea' ) {
+					$templatefilename = 'archive-idea.php';
+					if ( file_exists( RTWPIDEAS_PATH . 'templates/' . $templatefilename ) ) {
+						$return_template = RTWPIDEAS_PATH . 'templates/' . $templatefilename;
+					}
+					$this -> do_theme_redirect( $return_template );
 				}
-				$this -> do_theme_redirect( $return_template );
 			}
 		}
 
