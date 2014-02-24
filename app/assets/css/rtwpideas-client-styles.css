@@ -44,11 +44,11 @@ and open the template in the editor.
 }
 
 #btnOpenThickbox{
-	font-size: 22px;
+	font-size: 18px;
 	text-decoration: none;
 	background-color: #4b74bb;
 	color: #FFFFFF;
-	padding: 2px 6px;
+	padding: 10px 10px;
 	border-radius: 5px;
 }
 
