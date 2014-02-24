@@ -121,18 +121,22 @@ function vote_callback() {
 		$response[ 'err' ] = 'Please login to vote.';
 	} else {
 		$postid = intval( $_POST[ 'postid' ] );
-		$is_voted = check_user_voted( $postid );
-		if ( isset( $is_voted ) && $is_voted ) {
-			update_vote( $postid, 0 );
-			$response[ 'btnLabel' ] = 'Vote Up';
-		} else if ( isset( $is_voted ) && ! $is_voted ) {
-			update_vote( $postid, 1 );
-			$response[ 'btnLabel' ] = 'Vote Down';
-		} else if ( ! isset( $is_voted ) ) {
-			add_vote( $postid );
-			$response[ 'btnLabel' ] = 'Vote Down';
+		if ( get_post_status( $postid ) == 'new' ) {
+			$is_voted = check_user_voted( $postid );
+			if ( isset( $is_voted ) && $is_voted ) {
+				update_vote( $postid, 0 );
+				$response[ 'btnLabel' ] = 'Vote Up';
+			} else if ( isset( $is_voted ) && ! $is_voted ) {
+				update_vote( $postid, 1 );
+				$response[ 'btnLabel' ] = 'Vote Down';
+			} else if ( ! isset( $is_voted ) ) {
+				add_vote( $postid );
+				$response[ 'btnLabel' ] = 'Vote Down';
+			}
+			$response[ 'vote' ] = get_votes_by_post( $postid );
+		}else{
+			$response[ 'err' ] = 'You can not vote on '. get_post_status( $postid ).' idea.';
 		}
-		$response[ 'vote' ] = get_votes_by_post( $postid );
 	}
 
 	echo json_encode( $response );
@@ -173,7 +177,7 @@ function search_callback() {
 						action: 'vote',
 						postid: $(this).data('id'),
 					};
-					$.post('<?php echo $ajax_url; ?>', data, function(response) {
+					$.post('<?php echo esc_url( $ajax_url ); ?>', data, function(response) {
 						var json = JSON.parse(response);
 						if (json.vote) {
 							$('#rtwpIdeaVoteCount-' + data['postid']).html(json.vote);
@@ -194,15 +198,15 @@ function search_callback() {
 			//echo 'post-title' . $r -> post_title;
 			//echo 'post-content' . $r -> post_content;
 			?>
-			<article id="post-<?php echo $r -> ID; ?>" class="clearfix" >
+			<article id="post-<?php echo sanitize_title( $r -> ID ); ?>" class="clearfix" >
 				<div class="rtwpIdeaVoteBadge">
 					<div class="rtwpIdeaVoteCount">
 						<strong
-							id="rtwpIdeaVoteCount-<?php echo $r -> ID; ?>"><?php echo sanitize_text_field( get_votes_by_post( $r -> ID ) ); ?></strong>
+							id="rtwpIdeaVoteCount-<?php echo sanitize_title( $r -> ID ); ?>"><?php echo sanitize_title( get_votes_by_post( $r -> ID ) ); ?></strong>
 						<span> votes</span>
 					</div>
 					<div class="rtwpIdeaVoteButton">
-						<input type="button" id="btnVote-<?php echo $r -> ID; ?>" class="btnVote" data-id="<?php echo $r -> ID; ?>" value="<?php
+						<input type="button" id="btnVote-<?php echo sanitize_title( $r -> ID ); ?>" class="btnVote" data-id="<?php echo sanitize_title( $r -> ID ); ?>" value="<?php
 						if ( is_user_logged_in() ) {
 							$is_voted = check_user_voted( $r -> ID );
 							if ( isset( $is_voted ) && $is_voted ) {
@@ -267,13 +271,26 @@ function search_callback() {
 					?>
 
 					<div class="rtwpIdeaMeta">
-						<a href="<?php echo $r -> guid; ?>#comments"
-						   title="Comments for <?php echo $r -> post_title ?>"><?php echo $r -> comment_count . ' comments'; ?></a>
-						<span class="uvStyle-separator">&nbsp;·&nbsp;</span>
-						<a href="#" title="Ideas similar to <?php echo $r -> post_title; ?>">Category</a>
+						<a href="<?php echo esc_url( $r -> guid ); ?>#comments"
+						   title="Comments for <?php echo sanitize_title( $r -> post_title ); ?>"><?php comments_number( 'No Comments', '1 Comment', '% Comments' ); ?></a>
+						   <?php
+						   $categories = get_the_category( $r -> ID );
+						   $separator = ' ';
+						   $output = '';
+						   if ( $categories ) {
+							   ?><span class="uvStyle-separator">&nbsp;·&nbsp;</span>
+							<a href="#" title="Ideas similar to <?php echo sanitize_text_field( $r -> post_title ); ?>"><?php
+								foreach ( $categories as $category ) {
+									$output .= '<a href="' . get_category_link( $category -> term_id ) . '" title="' . esc_attr( sprintf( __( "View all posts in %s" ), $category -> name ) ) . '">' . $category -> cat_name . '</a>' . $separator;
+								}
+								echo trim( $output, $separator );
+								?>
+							</a>
+							<?php
+						}
+						?>
 						<span class="rtwpStyle-separator">&nbsp;·&nbsp;</span>
-						<a href="<?php echo $r -> post_author; ?>" data-iframe-target="_blank"
-						   title="Author of <?php echo $r -> post_title ?>"><?php echo $r -> post_author; ?> →</a>
+						<a href="#" title="Author of <?php echo $r -> post_title; ?>"><?php echo get_author_name( $r -> post_author ); ?> →</a>
 					</div>
 				</header>
 			</article>
@@ -305,9 +322,7 @@ function list_all_idea_shortcode( $atts ) {
 	global $post;
 	$default = array(
 		'type' => 'post',
-		'post_type' => 'idea',
-		//'limit' => 10,
-		'status' => 'publish',
+		'post_type' => RT_WPIDEAS_SLUG,
 	);
 	$r = shortcode_atts( $default, $atts );
 	extract( $r );
@@ -323,7 +338,6 @@ function list_all_idea_shortcode( $atts ) {
 
 	$args = array(
 		'post_type' => $post_type,
-		'post_status' => $status,
 	);
 
 	$posts = get_posts( $args );

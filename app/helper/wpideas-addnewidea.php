@@ -28,6 +28,9 @@ function insert_attachment( $file_handler, $idea_id, $setthumb = 'false' ) {
 add_action( 'wp_ajax_insert_new_idea', 'insert_new_idea' );
 add_action( 'wp_ajax_nopriv_insert_new_idea', 'insert_new_idea' );
 
+/**
+ * Insert new Idea
+ */
 function insert_new_idea() {
 	if ( isset( $_POST[ 'submitted' ] ) && isset( $_POST[ 'idea_nonce_field' ] ) && wp_verify_nonce( $_POST[ 'idea_nonce_field' ], 'idea_nonce' ) ) {
 
@@ -39,19 +42,19 @@ function insert_new_idea() {
 			'post_title' => wp_strip_all_tags( $_POST[ 'txtIdeaTitle' ] ),
 			'post_content' => $_POST[ 'txtIdeaContent' ],
 			'post_type' => 'idea',
-			'post_status' => 'pending',
+			'post_status' => 'new',
 		);
 
 		$idea_id = wp_insert_post( $idea_information );
 
 		if ( $_FILES ) {
-			foreach ( $_FILES as $file => $array ) {
+			foreach ( $_FILES as $file ) {
 				$newupload = insert_attachment( $file, $idea_id );
 			}
 		}
 
 		if ( isset( $idea_id ) ) {
-			header("location:".  home_url().'/idea');
+			header( 'location:' . home_url() . '/' . RT_WPIDEAS_SLUG );
 		}
 	}
 }

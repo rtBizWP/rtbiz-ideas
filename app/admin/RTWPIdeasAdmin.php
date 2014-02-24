@@ -19,6 +19,8 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 		 */
 		public function __construct() {
 			add_action( 'init', array( $this, 'register_wpidea_post_type' ) );
+			add_action( 'init', array( $this, 'my_custom_post_status' ) );
+			add_action( 'shutdown', array( $this, 'wpideas_append_post_status_list' ), 11 );
 			$this -> init_attributes();
 			//add_action( 'admin_menu', array( $this, 'register_pages' ) );
 			//$this -> register_taxonomies();
@@ -112,6 +114,76 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 			);
 
 			register_post_type( RT_WPIDEAS_SLUG, $args );
+		}
+
+		function my_custom_post_status() {
+			register_post_status( 'new', array(
+				'label' => _x( 'New', 'post' ),
+				'public' => true,
+				'exclude_from_search' => false,
+				'show_in_admin_all_list' => true,
+				'show_in_admin_status_list' => true,
+				'label_count' => _n_noop( 'New <span class="count">(%s)</span>', 'New <span class="count">(%s)</span>' ),
+			) );
+			register_post_status( 'accepted', array(
+				'label' => _x( 'Accepted', 'post' ),
+				'public' => true,
+				'exclude_from_search' => false,
+				'show_in_admin_all_list' => true,
+				'show_in_admin_status_list' => true,
+				'label_count' => _n_noop( 'Accepted <span class="count">(%s)</span>', 'Accepted <span class="count">(%s)</span>' ),
+			) );
+			register_post_status( 'declined', array(
+				'label' => _x( 'Declined', 'post' ),
+				'public' => true,
+				'exclude_from_search' => false,
+				'show_in_admin_all_list' => true,
+				'show_in_admin_status_list' => true,
+				'label_count' => _n_noop( 'Declined <span class="count">(%s)</span>', 'Declined <span class="count">(%s)</span>' ),
+			) );
+			register_post_status( 'completed', array(
+				'label' => _x( 'Completed', 'post' ),
+				'public' => true,
+				'exclude_from_search' => false,
+				'show_in_admin_all_list' => true,
+				'show_in_admin_status_list' => true,
+				'label_count' => _n_noop( 'Completed <span class="count">(%s)</span>', 'Completed <span class="count">(%s)</span>' ),
+			) );
+		}
+
+		function wpideas_append_post_status_list() {
+			global $post;
+			$complete = '';
+			$label = '';
+			if ( $post -> post_type == 'idea' ) {
+				if ( $post -> post_status == 'new' ) {
+					$complete = ' selected=\"selected\"';
+					$label = '<span id=\"New\"> New</span>';
+				}
+				if ( $post -> post_status == 'accepted' ) {
+					$complete = ' selected=\"selected\"';
+					$label = '<span id=\"Accepted\"> Accepted</span>';
+				}
+				if ( $post -> post_status == 'declined' ) {
+					$complete = ' selected=\"selected\"';
+					$label = '<span id=\"Declined\"> Declined</span>';
+				}
+				if ( $post -> post_status == 'completed' ) {
+					$complete = ' selected=\"selected\"';
+					$label = '<span id=\"Completed\"> Completed</span>';
+				}
+				echo '
+				<script>
+				jQuery(document).ready(function($){
+					$("select#post_status").append("<option value=\"new\" ' . $complete . '>New</option>");
+					$("select#post_status").append("<option value=\"accepted\" ' . $complete . '>Accepted</option>");
+					$("select#post_status").append("<option value=\"declined\" ' . $complete . '>Declined</option>");
+					$("select#post_status").append("<option value=\"completed\" ' . $complete . '>Completed</option>");
+					$(".misc-pub-section label").append("' . $label . '");
+				});
+				</script>
+				';
+			}
 		}
 
 		function custom_tab_wpideas_tab() {
