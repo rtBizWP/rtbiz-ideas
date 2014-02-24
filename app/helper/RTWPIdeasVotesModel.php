@@ -58,11 +58,8 @@ if ( ! class_exists( 'RTWPIdeasVotesModel' ) ) {
 		
 		function search( $txtSearch ){
 			global $wpdb;
-			//$row = new WP_Query('post_type=idea');
-			//$meta_key = '%'.$txtSearch.'%';
-			$row = new WP_Query( 's='.$txtSearch.'&post_type=idea' );
+			$row = new WP_Query( 's='.$txtSearch.'&post_type=idea&post_status=publish' );
 			return $row;
-			//return $wpdb -> get_results( $wpdb->prepare( 'SELECT * FROM '.$wpdb->prefix.'posts WHERE post_type = "idea" post_title LIKE %s', $meta_key ) );
 		}
 		
 		function add_vote( $data ) {

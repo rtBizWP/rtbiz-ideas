@@ -1,11 +1,12 @@
 <?php
-wp_register_script( 'validation', 'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js', array( 'jquery' ) );
-wp_enqueue_script( 'validation' );
 
 $ideaTitleError = '';
-
+$ajax_url = admin_url( 'admin-ajax.php' );
 ?>
-<form action="" id="insertIdeaForm" method="POST" enctype="multipart/form-data">
+<script>
+	jQuery("#insertIdeaForm").validate();
+</script>
+<form action="<?php echo $ajax_url; ?>" id="insertIdeaForm" method="POST" enctype="multipart/form-data">
 	<h2>Suggest New Idea</h2>
 	<div>
 		<label for="txtIdeaTitle"><?php _e( 'Title:', 'wp-ideas' ) ?></label>
@@ -32,14 +33,15 @@ $ideaTitleError = '';
 	</div>
 
 	<div>
-		<input type="file" name="file1" id="file1" >
+		<input type="file" name="file1" id="file1" multiple >
 	</div>
 
 	<div>
 		<input type="hidden" name="submitted" id="submitted" value="true" />
 		<input type="hidden" name="action" value="insert_new_idea" />
 		<?php wp_nonce_field( 'idea_nonce', 'idea_nonce_field' ); ?>
-		<button type="submit"><?php _e( 'Submit My Idea', 'wp-ideas' ) ?></button>
+		<input type="submit" id="btninsertIdeaFormSubmit" value="<?php _e( 'Submit My Idea', 'wp-ideas' ) ?>" />
+		<a href="javascript:tb_remove();" id="insertIdeaFormCancel">Cancel</a>
 	</div>
 
 </form>
