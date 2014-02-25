@@ -154,23 +154,23 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 		function wpideas_append_post_status_list() {
 			global $post;
 			$complete = '';
-			$label = '';
+			$label = $post -> post_status;
 			if ( $post -> post_type == 'idea' ) {
 				if ( $post -> post_status == 'new' ) {
 					$complete = ' selected=\"selected\"';
-					$label = '<span id=\"New\"> New</span>';
-				}
+					$label = 'New';
+				} 
 				if ( $post -> post_status == 'accepted' ) {
 					$complete = ' selected=\"selected\"';
-					$label = '<span id=\"Accepted\"> Accepted</span>';
-				}
+					$label = 'Accepted';
+				}  
 				if ( $post -> post_status == 'declined' ) {
 					$complete = ' selected=\"selected\"';
-					$label = '<span id=\"Declined\"> Declined</span>';
-				}
+					$label = 'Declined';
+				} 
 				if ( $post -> post_status == 'completed' ) {
 					$complete = ' selected=\"selected\"';
-					$label = '<span id=\"Completed\"> Completed</span>';
+					$label = 'Completed';
 				}
 				echo '
 				<script>
@@ -179,7 +179,11 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 					$("select#post_status").append("<option value=\"accepted\" ' . $complete . '>Accepted</option>");
 					$("select#post_status").append("<option value=\"declined\" ' . $complete . '>Declined</option>");
 					$("select#post_status").append("<option value=\"completed\" ' . $complete . '>Completed</option>");
-					$(".misc-pub-section label").append("' . $label . '");
+					$(".inline-edit-status select").append("<option value=\"new\" ' . $complete . '>New</option>");
+					$(".inline-edit-status select").append("<option value=\"accepted\" ' . $complete . '>Accepted</option>");
+					$(".inline-edit-status select").append("<option value=\"declined\" ' . $complete . '>Declined</option>");
+					$(".inline-edit-status select").append("<option value=\"completed\" ' . $complete . '>Completed</option>");
+					$("#post-status-display").html("' . $label . '");
 				});
 				</script>
 				';

@@ -58,7 +58,7 @@ if ( ! class_exists( 'RTWPIdeasVotesModel' ) ) {
 		
 		function search( $txtSearch ){
 			global $wpdb;
-			$row = new WP_Query( 's='.$txtSearch.'&post_type=idea&post_status=publish' );
+			$row = new WP_Query( 's='.$txtSearch.'&post_type=idea' );
 			return $row;
 		}
 		

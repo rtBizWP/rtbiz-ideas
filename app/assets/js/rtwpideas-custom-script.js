@@ -13,7 +13,6 @@ jQuery(document).ready(function($) {
 		};
 
 		$.post(rt_wpideas_ajax_url, data, function(response) {
-
 			var json = JSON.parse(response);
 			if (json.vote) {
 				$('#rtwpIdeaVoteCount-' + data['postid']).html(json.vote);
@@ -22,8 +21,6 @@ jQuery(document).ready(function($) {
 			} else {
 				alert(json.err);
 				$('#btnVote-' + data['postid']).removeAttr('disabled');
-				//$('#btnVote-' + data['postid']).hide();
-				//$('#btnLogin').show();
 			}
 		});
 	});
