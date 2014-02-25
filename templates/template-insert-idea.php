@@ -59,12 +59,12 @@ $ajax_url = admin_url( 'admin-ajax.php' );
 
 	<div>
 		<?php
-		if ( function_exists( is_product() ) ) :
+		if ( is_single() ) {
 			?> <input type="hidden" name="product_id" value="<?php
 			global $post;
 			echo $post -> ID;
 			?>" /> <?php
-			   endif;
+			   }
 			   ?>
 		<input type="hidden" name="submitted" id="submitted" value="true" />
 		<input type="hidden" name="action" value="insert_new_idea" />
