@@ -39,9 +39,8 @@
 		<div class="rtwpIdeaDescription">
 			<div class="typeset">
 				<?php
-				if ( is_single() ) : the_content();
-				else : the_excerpt();
-				endif;
+				if ( is_single() && ! is_product() ) { the_content(); }
+				else { the_excerpt(); }
 				?>
 			</div>
 		</div>
