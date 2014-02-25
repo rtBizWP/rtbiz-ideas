@@ -31,8 +31,8 @@ $ajax_url = admin_url( 'admin-ajax.php' );
 			?></textarea>
 	</div>
 	<?php
-	if ( is_post_type_archive( RT_WPIDEAS_SLUG ) ) {
-		?>
+	if ( get_post_type()  != 'product' ) {
+		?> 
 		<div>
 			<select class="required" id="product_id" name="product_id">
 				<option value=""> Select Product </option>
@@ -49,6 +49,7 @@ $ajax_url = admin_url( 'admin-ajax.php' );
 				?>
 			</select> 
 		</div>
+
 		<?php
 	}
 	?>
@@ -58,14 +59,13 @@ $ajax_url = admin_url( 'admin-ajax.php' );
 	</div>
 
 	<div>
-		<?php
-		if ( is_single() ) {
-			?> <input type="hidden" name="product_id" value="<?php
-			global $post;
-			echo $post -> ID;
-			?>" /> <?php
-			   }
-			   ?>
+		<?php 
+		if( get_post_type()  == 'product' && is_single() ) { ?>
+		<input type="hidden" name="product_id" value="<?php
+		global $post;
+		echo $post -> ID;
+		?>" />
+		<?php } ?>
 		<input type="hidden" name="submitted" id="submitted" value="true" />
 		<input type="hidden" name="action" value="insert_new_idea" />
 		<?php wp_nonce_field( 'idea_nonce', 'idea_nonce_field' ); ?>
