@@ -65,8 +65,6 @@ function wpideas_insert_new_idea() {
 				}
 			}
 		}
-	} else {
-		echo "<script>alert('please login to suggest idea');</script>";
 	}
 }
 
