@@ -19,6 +19,7 @@ if ( ! class_exists( 'RTWPIdeas' ) ) {
 			$updateDB -> do_upgrade();
 			$this -> init_attributes();
 			add_action( "template_redirect", array( $this, 'rtwpideas_template' ) );
+			add_filter( 'woocommerce_product_tabs', array( $this, 'woo_ideas_tab' ) );
 		}
 
 		/**
@@ -62,6 +63,24 @@ if ( ! class_exists( 'RTWPIdeas' ) ) {
 			} else {
 				$wp_query -> is_404 = true;
 			}
+		}
+
+		function woo_ideas_tab( $tabs ) {
+
+			// Adds the new tab
+
+			$tabs[ 'ideas_tab' ] = array(
+				'title' => __( 'Ideas', 'wp-ideas' ),
+				'priority' => 50,
+				'callback' => array( $this, 'woo_ideas_tab_content' ),
+			);
+
+			return $tabs;
+		}
+
+		function woo_ideas_tab_content() {
+			global $post;
+			echo do_shortcode( '[wpideas product_id = '.$post->ID.' ]' );
 		}
 
 	}

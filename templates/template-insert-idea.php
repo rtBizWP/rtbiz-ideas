@@ -1,5 +1,4 @@
 <?php
-
 $ideaTitleError = '';
 $ajax_url = admin_url( 'admin-ajax.php' );
 ?>
@@ -32,11 +31,36 @@ $ajax_url = admin_url( 'admin-ajax.php' );
 			?></textarea>
 	</div>
 
+	<!--<div>
+		<select class="required">
+			<option value=""> Select Product </option>
+	<?php
+	/* $args = array(
+	  'post_type' => 'product',
+	  'posts_per_page' => -1,
+	  );
+
+	  query_posts( $args );
+	  while ( have_posts() ) : the_post();
+	  echo '<option value="'. get_the_ID().'">'.get_the_title().'</option>';
+	  endwhile; */
+	?>
+		</select> 
+	</div>-->
+
 	<div>
-		<input type="file" name="file1" id="file1" multiple >
+		<input type="file" name="files" id="file" multiple />
 	</div>
 
 	<div>
+		<?php
+		if ( is_woocommerce() ) :
+			if ( is_product() ) :
+				?> <input type="hidden" name="product_id" value="<?php global $post;
+		echo $post -> ID; ?>" /> <?php
+			endif;
+		endif;
+		?>
 		<input type="hidden" name="submitted" id="submitted" value="true" />
 		<input type="hidden" name="action" value="insert_new_idea" />
 		<?php wp_nonce_field( 'idea_nonce', 'idea_nonce_field' ); ?>

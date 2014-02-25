@@ -32,29 +32,35 @@ add_action( 'wp_ajax_nopriv_insert_new_idea', 'insert_new_idea' );
  * Insert new Idea
  */
 function insert_new_idea() {
-	if ( isset( $_POST[ 'submitted' ] ) && isset( $_POST[ 'idea_nonce_field' ] ) && wp_verify_nonce( $_POST[ 'idea_nonce_field' ], 'idea_nonce' ) ) {
+	if ( is_user_logged_in() ) {
+		if ( isset( $_POST[ 'submitted' ] ) && isset( $_POST[ 'idea_nonce_field' ] ) && wp_verify_nonce( $_POST[ 'idea_nonce_field' ], 'idea_nonce' ) ) {
 
-		if ( trim( $_POST[ 'txtIdeaTitle' ] ) === '' ) {
-			$ideaTitleError = 'Please enter a title.';
-			$hasError = true;
-		}
-		$idea_information = array(
-			'post_title' => wp_strip_all_tags( $_POST[ 'txtIdeaTitle' ] ),
-			'post_content' => $_POST[ 'txtIdeaContent' ],
-			'post_type' => 'idea',
-			'post_status' => 'new',
-		);
-
-		$idea_id = wp_insert_post( $idea_information );
-
-		if ( $_FILES ) {
-			foreach ( $_FILES as $file ) {
-				$newupload = insert_attachment( $file, $idea_id );
+			if ( trim( $_POST[ 'txtIdeaTitle' ] ) === '' ) {
+				$ideaTitleError = 'Please enter a title.';
+				$hasError = true;
 			}
-		}
+			$idea_information = array(
+				'post_title' => wp_strip_all_tags( $_POST[ 'txtIdeaTitle' ] ),
+				'post_content' => $_POST[ 'txtIdeaContent' ],
+				'post_type' => RT_WPIDEAS_SLUG,
+				'post_status' => 'new',
+			);
 
-		if ( isset( $idea_id ) ) {
-			header( 'location:' . home_url() . '/' . RT_WPIDEAS_SLUG );
+			$idea_id = wp_insert_post( $idea_information );
+			
+			if( isset( $_POST[ 'product_id' ] ) ){
+				update_post_meta( $idea_id, '_rt_wpideas_product_id', $_POST[ 'product_id' ] );
+			}
+
+			if ( $_FILES ) {
+				foreach ( $_FILES as $file => $array ) {
+					$newupload = insert_attachment( $file, $idea_id );
+				}
+			}
+
+			if ( isset( $idea_id ) ) {
+				header( 'location:' . home_url() . '/' . RT_WPIDEAS_SLUG );
+			}
 		}
 	}
 }

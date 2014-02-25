@@ -19,15 +19,15 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 		 */
 		public function __construct() {
 			add_action( 'init', array( $this, 'register_wpidea_post_type' ) );
-			add_action( 'init', array( $this, 'my_custom_post_status' ) );
+			add_action( 'init', array( $this, 'wpideas_custom_post_status' ) );
 			add_action( 'shutdown', array( $this, 'wpideas_append_post_status_list' ), 11 );
 			$this -> init_attributes();
 			//add_action( 'admin_menu', array( $this, 'register_pages' ) );
 			//$this -> register_taxonomies();
-			add_action( 'woocommerce_product_write_panel_tabs', array( $this, 'custom_tab_wpideas_tab' ), 11 );
-			add_action( 'woocommerce_product_write_panels', array( $this, 'custom_tab_wpideas_content' ) );
-			add_action( 'woocommerce_process_product_meta', array( $this, 'process_product_meta_custom_tab_wpideas' ) );
-			add_filter( 'woocommerce_product_tabs', array( $this, 'woocommerce_product_custom_tab_wpideas' ), 98 );
+			//add_action( 'woocommerce_product_write_panel_tabs', array( $this, 'custom_tab_wpideas_tab' ), 11 );
+			//add_action( 'woocommerce_product_write_panels', array( $this, 'custom_tab_wpideas_content' ) );
+			//add_action( 'woocommerce_process_product_meta', array( $this, 'process_product_meta_custom_tab_wpideas' ) );
+			//add_filter( 'woocommerce_product_tabs', array( $this, 'woocommerce_product_custom_tab_wpideas' ), 98 );
 		}
 
 		/**
@@ -116,7 +116,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 			register_post_type( RT_WPIDEAS_SLUG, $args );
 		}
 
-		function my_custom_post_status() {
+		function wpideas_custom_post_status() {
 			register_post_status( 'new', array(
 				'label' => _x( 'New', 'post' ),
 				'public' => true,
@@ -218,7 +218,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 									'quicktags' => true,
 									'tinymce' => true,
 									'media_butons' => false,
-									'textarea_rows' => 30,
+									'textarea_rows' => 50,
 									'editor_class' => 'contra',
 									'editor_css' => '<style>#wp-_tour_itinerary_tab_content-editor-container .wp-editor-area{height:250px; width:100%;} #wp-_tour_itinerary_tab_content-editor-container .quicktags-toolbar input {width:auto;}</style>'
 								);
