@@ -59,13 +59,11 @@ $ajax_url = admin_url( 'admin-ajax.php' );
 
 	<div>
 		<?php
-		if ( function_exists( is_woocommerce() ) ):
-			if ( function_exists( is_product() ) ) :
-				?> <input type="hidden" name="product_id" value="<?php
-				global $post;
-				echo $post -> ID;
-				?>" /> <?php
-				   endif;
+		if ( function_exists( is_product() ) ) :
+			?> <input type="hidden" name="product_id" value="<?php
+			global $post;
+			echo $post -> ID;
+			?>" /> <?php
 			   endif;
 			   ?>
 		<input type="hidden" name="submitted" id="submitted" value="true" />
