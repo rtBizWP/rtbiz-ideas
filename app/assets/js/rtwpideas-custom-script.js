@@ -32,15 +32,15 @@ jQuery(document).ready(function($) {
 		};
 
 		$.post(rt_wpideas_ajax_url, data, function(response) {
-			$('#res').html(response);
+			$('#loop-common').html(response);
 			// pull in the new value
 			var searchTerm = data['searchtext'];
 			// remove any old highlighted terms
-			$('#res').removeHighlight();
+			$('#loop-common').removeHighlight();
 			// disable highlighting if empty
 			if (searchTerm) {
 				// highlight the new term
-				$('#res').highlight(searchTerm);
+				$('#loop-common').highlight(searchTerm);
 			}
 		});
 

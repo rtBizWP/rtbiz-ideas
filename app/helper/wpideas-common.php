@@ -100,7 +100,6 @@ add_action( 'wp_ajax_nopriv_wpideas_search', 'wpideas_search_callback' );
  */
 function wpideas_search_callback() {
 	$txtSearch = $_POST[ 'searchtext' ];
-	global $rtWpideasVotes;
 	$args = array(
 		's' => $txtSearch,
 		'post_type' => RT_WPIDEAS_SLUG,
@@ -134,7 +133,7 @@ function wpideas_search_callback() {
 		</script>
 		<?php
 		while ( $ideas -> have_posts() ) : $ideas -> the_post();
-			common_loop();
+			include RTWPIDEAS_PATH . 'templates/loop-common.php';
 		endwhile;
 		wp_reset_postdata();
 	else :
@@ -148,151 +147,6 @@ function wpideas_search_callback() {
 		<?php
 		echo 'There are no ideas matching your search.<br /><br /> <a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Click Here </a> &nbsp; to suggest one. ';
 	endif;
-	//$response = $rtWpideasVotes -> search( $txtSearch );
-	//$response = $response -> posts;
-	/*if ( $response != null ) {
-		$ajax_url = admin_url( 'admin-ajax.php' );
-		?>
-		<script>
-			jQuery(document).ready(function($) {
-				$('.btnVote').click(function() {
-					$(this).attr('disabled', 'disabled');
-					var data = {
-						action: 'vote',
-						postid: $(this).data('id'),
-					};
-					$.post('<?php echo esc_url( $ajax_url ); ?>', data, function(response) {
-						var json = JSON.parse(response);
-						if (json.vote) {
-							$('#rtwpIdeaVoteCount-' + data['postid']).html(json.vote);
-							$('#btnVote-' + data['postid']).removeAttr('disabled');
-							$('#btnVote-' + data['postid']).html(json.btnLabel);
-						} else {
-							alert(json.err);
-							$('#btnVote-' + data['postid']).removeAttr('disabled');
-						}
-					});
-				});
-			});
-		</script>
-		<?php
-		foreach ( $response as $r ) {
-			//echo 'post-id' . $r -> ID;
-			//echo 'post-author' . $r -> post_author;
-			//echo 'post-date' . $r -> post_date;
-			//echo 'post-title' . $r -> post_title;
-			//echo 'post-content' . $r -> post_content;
-			?>
-			<article id="post-<?php echo sanitize_title( $r -> ID ); ?>" class="clearfix" >
-				<div class="rtwpIdeaVoteBadge">
-					<div class="rtwpIdeaVoteCount">
-						<strong
-							id="rtwpIdeaVoteCount-<?php echo sanitize_title( $r -> ID ); ?>"><?php echo sanitize_title( get_votes_by_post( $r -> ID ) ); ?></strong>
-						<span> votes</span>
-					</div>
-					<div class="rtwpIdeaVoteButton">
-						<input type="button" id="btnVote-<?php echo sanitize_title( $r -> ID ); ?>" class="btnVote" data-id="<?php echo sanitize_title( $r -> ID ); ?>" value="<?php
-						if ( is_user_logged_in() ) {
-							$is_voted = check_user_voted( $r -> ID );
-							if ( isset( $is_voted ) && $is_voted ) {
-								echo 'Vote Down';
-							} else {
-								if ( isset( $is_voted ) && ! $is_voted ) {
-									echo 'Vote Up';
-								} else {
-									echo 'Vote';
-								}
-							}
-						} else {
-							echo 'Vote';
-						}
-						?>" />
-
-					</div>
-				</div>
-				<header class="rtwpIdeaHeader">
-					<h1 class="rtwpIdeaTitle"><a href="<?php echo get_permalink( $r -> ID ); ?>" rel="bookmark"><?php echo $r -> post_title; ?></a>
-					</h1>
-
-					<div class="rtwpIdeaDescription">
-						<div class="typeset">
-							<?php
-							echo get_excerpt_by_id( $r -> ID );
-							?>
-						</div>
-					</div>
-					<?php
-					$args = array( 'post_parent' => $r -> ID, 'post_type' => 'attachment', 'posts_per_page' => - 1, 'orderby' => 'menu_order', 'order' => 'ASC', );
-					$attachments = get_children( $args );
-					if ( ! empty( $attachments ) ) {
-						?>
-						<ul class="rtwpIdeaAttachments rtwpAttachments"> <?php
-							$i = 0;
-							foreach ( $attachments as $attachment ) {
-								if ( $i >= 3 ) {
-									break;
-								}
-								$image_attributes = wp_get_attachment_image_src( $attachment -> ID, 'full' );
-								?>
-								<li class="rtwpAttachment">
-									<a class="rtwpAttachmentLink rtwpAttachmentLink-preview"
-									   href="<?php echo esc_url( $attachment -> guid ); ?>"
-									   title="View <?php echo sanitize_title( $attachment -> post_title ); ?>">
-										<figure class="rtwpAttachmentInfo">
-											<span class="rtwpAttachmentThumbnail"
-												  style="background-image: url('<?php echo esc_url( wp_get_attachment_thumb_url( $attachment -> ID ) ); ?>')">&nbsp;</span>
-											<figcaption class="rtwpAttachmentMeta">
-												<span
-													class="rtwpAttachmentCaption"><?php echo sanitize_title( $attachment -> post_title ); ?></span>
-											</figcaption>
-										</figure>
-									</a>
-								</li>
-								<?php
-								$i ++;
-							}
-							?></ul><?php
-					}
-					?>
-
-					<div class="rtwpIdeaMeta">
-						<a href="<?php echo esc_url( $r -> guid ); ?>#comments"
-						   title="Comments for <?php echo sanitize_title( $r -> post_title ); ?>"><?php comments_number( 'No Comments', '1 Comment', '% Comments' ); ?></a>
-						   <?php
-						   $categories = get_the_category( $r -> ID );
-						   $separator = ' ';
-						   $output = '';
-						   if ( $categories ) {
-							   ?><span class="uvStyle-separator">&nbsp;·&nbsp;</span>
-							<a href="#" title="Ideas similar to <?php echo sanitize_text_field( $r -> post_title ); ?>"><?php
-								foreach ( $categories as $category ) {
-									$output .= '<a href="' . get_category_link( $category -> term_id ) . '" title="' . esc_attr( sprintf( __( "View all posts in %s" ), $category -> name ) ) . '">' . $category -> cat_name . '</a>' . $separator;
-								}
-								echo trim( $output, $separator );
-								?>
-							</a>
-							<?php
-						}
-						?>
-						<span class="rtwpStyle-separator">&nbsp;·&nbsp;</span>
-						<a href="#" title="Author of <?php echo $r -> post_title; ?>"><?php echo get_author_name( $r -> post_author ); ?> →</a>
-					</div>
-				</header>
-			</article>
-			<?php
-		}
-	} else {
-		?>
-		<div id="my-content-id" style="display:none;">
-			<?php
-			include RTWPIDEAS_PATH . 'templates/template-insert-idea.php';
-			?>
-		</div>
-		<script>jQuery("#TB_overlay").unbind("click", tb_remove);</script>
-		<?php
-		echo 'There are no ideas matching your search.<br /><br /> <a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Click Here </a> &nbsp; to suggest one. ';
-	} */
-	//echo json_encode($response);
 	die(); // this is required to return a proper result
 }
 
@@ -328,7 +182,7 @@ function list_all_idea_shortcode( $atts ) {
 	$posts = new WP_Query( $args );
 	if ( $posts -> have_posts() ):
 		while ( $posts -> have_posts() ) : $posts -> the_post();
-			common_loop();
+			include RTWPIDEAS_PATH . 'templates/loop-common.php';
 		endwhile;
 		wp_reset_postdata();
 	else :
@@ -372,7 +226,7 @@ function list_woo_product_ideas( $atts ) {
 	$posts = new WP_Query( $args );
 	if ( $posts -> have_posts() ):
 		while ( $posts -> have_posts() ) : $posts -> the_post();
-			common_loop();
+			include RTWPIDEAS_PATH . 'templates/loop-common.php';
 		endwhile;
 		wp_reset_postdata();
 	else :
@@ -395,107 +249,3 @@ function list_woo_product_ideas( $atts ) {
 }
 
 add_shortcode( 'wpideas', 'list_woo_product_ideas' );
-
-
-/**
- * Common loop
- */
-function common_loop(){
-	?>
-			<article id="post-<?php the_ID(); ?>" <?php post_class( 'clearfix' ); ?> >
-				<div class="rtwpIdeaVoteBadge">
-					<div class="rtwpIdeaVoteCount">
-						<strong
-							id="rtwpIdeaVoteCount-<?php the_ID(); ?>"><?php echo sanitize_text_field( get_votes_by_post( get_the_ID() ) ); ?></strong>
-						<span> votes</span>
-					</div>
-					<div class="rtwpIdeaVoteButton">
-						<input type="button" id="btnVote-<?php the_ID(); ?>" class="btnVote" data-id="<?php the_ID(); ?>" value="<?php
-						if ( is_user_logged_in() ) {
-							$is_voted = check_user_voted( get_the_ID() );
-							if ( isset( $is_voted ) && $is_voted ) {
-								echo 'Vote Down';
-							} else {
-								if ( isset( $is_voted ) && ! $is_voted ) {
-									echo 'Vote Up';
-								} else {
-									echo 'Vote';
-								}
-							}
-						} else {
-							echo 'Vote';
-						}
-						?>" />
-					</div>
-				</div>
-				<header class="rtwpIdeaHeader">
-					<h1 class="rtwpIdeaTitle"><a href="<?php the_permalink(); ?>" rel="bookmark"
-												 title="<?php printf( esc_attr__( 'Permanent Link to %s', 'rtCamp' ), the_title_attribute( 'echo=0' ) ); ?>"><?php the_title(); ?></a>
-					</h1>
-
-					<div class="rtwpIdeaDescription">
-						<div class="typeset">
-							<?php the_excerpt();
-							?>
-						</div>
-					</div>
-					<?php
-					$args = array( 'post_parent' => get_the_ID(), 'post_type' => 'attachment', 'posts_per_page' => - 1, 'orderby' => 'menu_order', 'order' => 'ASC', );
-					$attachments = get_children( $args );
-					if ( ! empty( $attachments ) ) {
-						?>
-						<ul class="rtwpIdeaAttachments rtwpAttachments"> <?php
-							$i = 0;
-							foreach ( $attachments as $attachment ) {
-								if ( $i >= 3 ) {
-									break;
-								}
-								$image_attributes = wp_get_attachment_image_src( $attachment -> ID, 'full' );
-								?>
-								<li class="rtwpAttachment">
-									<a class="rtwpAttachmentLink rtwpAttachmentLink-preview"
-									   href="<?php echo esc_url( $attachment -> guid ); ?>"
-									   title="View <?php echo sanitize_title( $attachment -> post_title ); ?>">
-										<figure class="rtwpAttachmentInfo">
-											<span class="rtwpAttachmentThumbnail"
-												  style="background-image: url('<?php echo esc_url( wp_get_attachment_thumb_url( $attachment -> ID ) ); ?>')">&nbsp;</span>
-											<figcaption class="rtwpAttachmentMeta">
-												<span
-													class="rtwpAttachmentCaption"><?php echo sanitize_title( $attachment -> post_title ); ?></span>
-											</figcaption>
-										</figure>
-									</a>
-								</li>
-								<?php
-								$i ++;
-							}
-							?></ul><?php
-					}
-					?>
-
-					<div class="rtwpIdeaMeta">
-						<a href="<?php the_permalink(); ?>#comments"
-						   title="Comments for <?php the_title(); ?>"><?php comments_number( 'No Comments', '1 Comment', '% Comments' ); ?></a>
-						   <?php
-						   $categories = get_the_category();
-						   $separator = ' ';
-						   $output = '';
-						   if ( $categories ) {
-							   ?><span class="uvStyle-separator">&nbsp;·&nbsp;</span>
-							<a href="#" title="Ideas similar to <?php the_title(); ?>"><?php
-								foreach ( $categories as $category ) {
-									$output .= '<a href="' . get_category_link( $category -> term_id ) . '" title="' . esc_attr( sprintf( __( "View all posts in %s" ), $category -> name ) ) . '">' . $category -> cat_name . '</a>' . $separator;
-								}
-								echo trim( $output, $separator );
-								?>
-							</a>
-							<?php
-						}
-						?>
-						<span class="rtwpStyle-separator">&nbsp;·&nbsp;</span>
-						<a href="#" title="Author of <?php the_title(); ?>"><?php the_author(); ?> →</a>
-					</div>
-				</header>
-			</article>
-			<?php
-}
