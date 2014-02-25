@@ -153,9 +153,11 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 
 		function wpideas_append_post_status_list() {
 			global $post;
+			if( !isset($post) ){ return ;}
+	
 			$complete = '';
-			$label = $post -> post_status;
-			if ( $post -> post_type == 'idea' ) {
+			$label = get_post_status( $post->ID );
+			if ( get_post_type() == 'idea' ) {
 				if ( $post -> post_status == 'new' ) {
 					$complete = ' selected=\"selected\"';
 					$label = 'New';

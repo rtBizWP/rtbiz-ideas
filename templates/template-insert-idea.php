@@ -31,28 +31,26 @@ $ajax_url = admin_url( 'admin-ajax.php' );
 			?></textarea>
 	</div>
 	<?php
-	if( ! function_exists( is_woocommerce() ) ) :
-		if ( ! function_exists( is_product() ) ) :
-			?>
-			<div>
-				<select class="required" id="product_id" name="product_id">
-					<option value=""> Select Product </option>
-					<?php
-					$args = array(
-						'post_type' => 'product',
-						'posts_per_page' => -1,
-					);
+	if ( is_post_type_archive( RT_WPIDEAS_SLUG ) ) {
+		?>
+		<div>
+			<select class="required" id="product_id" name="product_id">
+				<option value=""> Select Product </option>
+				<?php
+				$args = array(
+					'post_type' => 'product',
+					'posts_per_page' => -1,
+				);
 
-					query_posts( $args );
-					while ( have_posts() ) : the_post();
-						echo '<option value="' . get_the_ID() . '">' . get_the_title() . '</option>';
-					endwhile;
-					?>
-				</select> 
-			</div>
-			<?php
-		endif;
-	endif;
+				query_posts( $args );
+				while ( have_posts() ) : the_post();
+					echo '<option value="' . get_the_ID() . '">' . get_the_title() . '</option>';
+				endwhile;
+				?>
+			</select> 
+		</div>
+		<?php
+	}
 	?>
 
 	<div>
