@@ -24,7 +24,7 @@ and open the template in the editor.
 }
 
 
-#res article{
+#loop-common article{
 	border-bottom: 1px dotted #ddd;
 	padding-bottom: 0px;
 	padding-top:20px;
