@@ -36,11 +36,13 @@ jQuery(document).ready(function($) {
 			// pull in the new value
 			var searchTerm = data['searchtext'];
 			// remove any old highlighted terms
-			$('#loop-common').removeHighlight();
+			$('.rtwpIdeaTitle').removeHighlight();
+			$('.rtwpIdeaDescription').removeHighlight();
 			// disable highlighting if empty
 			if (searchTerm) {
 				// highlight the new term
-				$('#loop-common').highlight(searchTerm);
+				$('.rtwpIdeaTitle').highlight(searchTerm);
+				$('.rtwpIdeaDescription').highlight(searchTerm);
 			}
 		});
 

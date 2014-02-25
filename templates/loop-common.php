@@ -10,7 +10,7 @@
 		<div class="rtwpIdeaVoteCount">
 			<strong
 				id="rtwpIdeaVoteCount-<?php the_ID(); ?>"><?php echo sanitize_text_field( get_votes_by_post( get_the_ID() ) ); ?></strong>
-			<span> votes</span>
+			<span>votes</span>
 		</div>
 		<div class="rtwpIdeaVoteButton">
 			<input type="button" id="btnVote-<?php the_ID(); ?>" class="btnVote" data-id="<?php the_ID(); ?>" value="<?php
