@@ -41,16 +41,18 @@ function insert_new_idea() {
 				$ideaTitleError = 'Please enter a title.';
 				$hasError = true;
 			}
-			var_dump($hasError);
+			
 			$idea_information = array(
 				'post_title' => wp_strip_all_tags( $_POST[ 'txtIdeaTitle' ] ),
 				'post_content' => $_POST[ 'txtIdeaContent' ],
 				'post_type' => RT_WPIDEAS_SLUG,
 				'post_status' => 'new',
 			);
-
+			var_dump("before");
+			exit();
 			$idea_id = wp_insert_post( $idea_information );
-
+			var_dump($idea_id);
+			exit();
 			if ( isset( $_POST[ 'product_id' ] ) ) {
 				update_post_meta( $idea_id, '_rt_wpideas_product_id', $_POST[ 'product_id' ] );
 			}
