@@ -90,15 +90,15 @@ function get_excerpt_by_id( $post_id ) {
 	return $the_excerpt;
 }
 
-add_action( 'wp_ajax_search', 'search_callback' );
-add_action( 'wp_ajax_nopriv_search', 'search_callback' );
+add_action( 'wp_ajax_wpideas_search', 'wpideas_search_callback' );
+add_action( 'wp_ajax_nopriv_wpideas_search', 'wpideas_search_callback' );
 
 /**
  * Search ideas
  * 
  * @global type $rtWpideasVotes
  */
-function search_callback() {
+function wpideas_search_callback() {
 	$txtSearch = $_POST[ 'searchtext' ];
 	global $rtWpideasVotes;
 	$response = $rtWpideasVotes -> search( $txtSearch );

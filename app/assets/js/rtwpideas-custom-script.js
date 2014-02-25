@@ -27,7 +27,7 @@ jQuery(document).ready(function($) {
 
 	jQuery('#txtSearchIdea').keyup(function() {
 		var data = {
-			action: 'search',
+			action: 'wpideas_search',
 			searchtext: $(this).val(),
 		};
 
