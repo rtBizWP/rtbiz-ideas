@@ -27,9 +27,6 @@ function insert_attachment( $file_handler, $idea_id, $setthumb = 'false' ) {
 	$attach_id = media_handle_upload( $file_handler, $idea_id );
 }
 
-add_action( 'wp_ajax_insert_new_idea', 'insert_new_idea' );
-add_action( 'wp_ajax_nopriv_insert_new_idea', 'insert_new_idea' );
-
 /**
  * Insert new Idea
  */
@@ -48,8 +45,7 @@ function insert_new_idea() {
 				'post_type' => RT_WPIDEAS_SLUG,
 				'post_status' => 'new',
 			);
-			var_dump("before");
-			exit();
+			
 			$idea_id = wp_insert_post( $idea_information );
 			var_dump($idea_id);
 			exit();
