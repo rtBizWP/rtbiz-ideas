@@ -102,6 +102,7 @@ function wpideas_search_callback() {
 	$txtSearch = $_POST[ 'searchtext' ];
 	global $rtWpideasVotes;
 	$response = $rtWpideasVotes -> search( $txtSearch );
+	var_dump($response);
 	$response = $response -> posts;
 	if ( $response != null ) {
 		$ajax_url = admin_url( 'admin-ajax.php' );
