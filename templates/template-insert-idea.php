@@ -67,7 +67,6 @@ $ajax_url = admin_url( 'admin-ajax.php' );
 		?>" />
 		<?php } ?>
 		<input type="hidden" name="submitted" id="submitted" value="true" />
-		<input type="hidden" name="action" value="insert_new_idea" />
 		<?php wp_nonce_field( 'idea_nonce', 'idea_nonce_field' ); ?>
 		<input type="submit" id="btninsertIdeaFormSubmit" value="<?php _e( 'Submit My Idea', 'wp-ideas' ) ?>" />
 		<a href="javascript:tb_remove();" id="insertIdeaFormCancel">Cancel</a>

@@ -41,6 +41,7 @@ function insert_new_idea() {
 				$ideaTitleError = 'Please enter a title.';
 				$hasError = true;
 			}
+			var_dump($hasError);
 			$idea_information = array(
 				'post_title' => wp_strip_all_tags( $_POST[ 'txtIdeaTitle' ] ),
 				'post_content' => $_POST[ 'txtIdeaContent' ],
