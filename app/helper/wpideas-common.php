@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-add_action('wp','wpideas_insert_new_idea');
+add_action('init','wpideas_insert_new_idea');
 
 /**
  * Attachment handle for the idea
