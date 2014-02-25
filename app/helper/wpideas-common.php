@@ -33,7 +33,9 @@ function insert_attachment( $file_handler, $idea_id, $setthumb = 'false' ) {
 function insert_new_idea() {
 	if ( is_user_logged_in() ) {
 		if ( isset( $_POST[ 'submitted' ] ) && isset( $_POST[ 'idea_nonce_field' ] ) && wp_verify_nonce( $_POST[ 'idea_nonce_field' ], 'idea_nonce' ) ) {
-
+			
+			var_dump("called");
+			
 			if ( trim( $_POST[ 'txtIdeaTitle' ] ) === '' ) {
 				$ideaTitleError = 'Please enter a title.';
 				$hasError = true;
@@ -47,8 +49,7 @@ function insert_new_idea() {
 			);
 			
 			$idea_id = wp_insert_post( $idea_information );
-			var_dump($idea_id);
-			exit();
+			
 			if ( isset( $_POST[ 'product_id' ] ) ) {
 				update_post_meta( $idea_id, '_rt_wpideas_product_id', $_POST[ 'product_id' ] );
 			}
@@ -58,14 +59,14 @@ function insert_new_idea() {
 					$newupload = insert_attachment( $file, $idea_id );
 				}
 			}
-
-			if ( isset( $idea_id ) ) {
+			var_dump($idea_id);
+			/*if ( isset( $idea_id ) ) {
 				if ( isset( $_POST[ 'product_id' ] ) ) {
 					header( 'location:' . get_permalink( $_POST[ 'product_id' ] ) );
 				} else {
 					header( 'location:' . home_url() . '/' . RT_WPIDEAS_SLUG );
 				}
-			}
+			}*/
 		}
 	}
 }
