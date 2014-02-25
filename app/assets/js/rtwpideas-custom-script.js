@@ -26,7 +26,6 @@ jQuery(document).ready(function($) {
 	});
 
 	jQuery('#txtSearchIdea').keyup(function() {
-		alert("hello "+rt_wpideas_ajax_url);
 		var data = {
 			action: 'search',
 			searchtext: $(this).val(),
