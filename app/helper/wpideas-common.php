@@ -101,10 +101,56 @@ add_action( 'wp_ajax_nopriv_wpideas_search', 'wpideas_search_callback' );
 function wpideas_search_callback() {
 	$txtSearch = $_POST[ 'searchtext' ];
 	global $rtWpideasVotes;
-	$response = $rtWpideasVotes -> search( $txtSearch );
-	var_dump($response);
-	$response = $response -> posts;
-	if ( $response != null ) {
+	$args = array(
+		's' => $txtSearch,
+		'post_type' => RT_WPIDEAS_SLUG,
+	);
+
+	$ideas = new WP_Query( $args );
+	if ( $ideas -> have_posts() ):
+		$ajax_url = admin_url( 'admin-ajax.php' );
+		?>
+		<script>
+			jQuery(document).ready(function($) {
+				$('.btnVote').click(function() {
+					$(this).attr('disabled', 'disabled');
+					var data = {
+						action: 'vote',
+						postid: $(this).data('id'),
+					};
+					$.post('<?php echo esc_url( $ajax_url ); ?>', data, function(response) {
+						var json = JSON.parse(response);
+						if (json.vote) {
+							$('#rtwpIdeaVoteCount-' + data['postid']).html(json.vote);
+							$('#btnVote-' + data['postid']).removeAttr('disabled');
+							$('#btnVote-' + data['postid']).html(json.btnLabel);
+						} else {
+							alert(json.err);
+							$('#btnVote-' + data['postid']).removeAttr('disabled');
+						}
+					});
+				});
+			});
+		</script>
+		<?php
+		while ( $ideas -> have_posts() ) : $ideas -> the_post();
+			common_loop();
+		endwhile;
+		wp_reset_postdata();
+	else :
+		?>
+		<div id="my-content-id" style="display:none;">
+			<?php
+			include RTWPIDEAS_PATH . 'templates/template-insert-idea.php';
+			?>
+		</div>
+		<script>jQuery("#TB_overlay").unbind("click", tb_remove);</script>
+		<?php
+		echo 'There are no ideas matching your search.<br /><br /> <a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Click Here </a> &nbsp; to suggest one. ';
+	endif;
+	//$response = $rtWpideasVotes -> search( $txtSearch );
+	//$response = $response -> posts;
+	/*if ( $response != null ) {
 		$ajax_url = admin_url( 'admin-ajax.php' );
 		?>
 		<script>
@@ -245,7 +291,7 @@ function wpideas_search_callback() {
 		<script>jQuery("#TB_overlay").unbind("click", tb_remove);</script>
 		<?php
 		echo 'There are no ideas matching your search.<br /><br /> <a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Click Here </a> &nbsp; to suggest one. ';
-	}
+	} */
 	//echo json_encode($response);
 	die(); // this is required to return a proper result
 }
