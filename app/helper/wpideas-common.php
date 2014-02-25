@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-add_action('wp','insert_new_idea');
+add_action('wp','wpideas_insert_new_idea');
 
 /**
  * Attachment handle for the idea
@@ -15,14 +15,14 @@ add_action('wp','insert_new_idea');
  * @param type $idea_id
  * @param type $setthumb
  */
-function insert_attachment( $file_handler, $idea_id, $setthumb = 'false' ) {
+function wpideas_insert_attachment( $file_handler, $idea_id, $setthumb = 'false' ) {
 	// check to make sure its a successful upload
 	if ( $_FILES[ $file_handler ][ 'error' ] !== UPLOAD_ERR_OK )
 		__return_false();
 
-	require_once(ABSPATH . 'wp-admin' . '/includes/image.php');
-	require_once(ABSPATH . 'wp-admin' . '/includes/file.php');
-	require_once(ABSPATH . 'wp-admin' . '/includes/media.php');
+	require_once( ABSPATH . 'wp-admin' . '/includes/image.php' );
+	require_once( ABSPATH . 'wp-admin' . '/includes/file.php' );
+	require_once( ABSPATH . 'wp-admin' . '/includes/media.php' );
 
 	$attach_id = media_handle_upload( $file_handler, $idea_id );
 }
@@ -30,7 +30,7 @@ function insert_attachment( $file_handler, $idea_id, $setthumb = 'false' ) {
 /**
  * Insert new Idea
  */
-function insert_new_idea() {
+function wpideas_insert_new_idea() {
 	if ( is_user_logged_in() ) {
 		if ( isset( $_POST[ 'submitted' ] ) && isset( $_POST[ 'idea_nonce_field' ] ) && wp_verify_nonce( $_POST[ 'idea_nonce_field' ], 'idea_nonce' ) ) {
 			
@@ -56,7 +56,7 @@ function insert_new_idea() {
 
 			if ( $_FILES ) {
 				foreach ( $_FILES as $file => $array ) {
-					$newupload = insert_attachment( $file, $idea_id );
+					$newupload = wpideas_insert_attachment( $file, $idea_id );
 				}
 			}
 			var_dump($idea_id);
