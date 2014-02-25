@@ -31,9 +31,8 @@ $ajax_url = admin_url( 'admin-ajax.php' );
 			?></textarea>
 	</div>
 	<?php
-	if ( ! is_woocommerce() ) :
-
-		if ( ! is_product() ) :
+	if( ! function_exists( is_woocommerce() ) ) :
+		if ( ! function_exists( is_product() ) ) :
 			?>
 			<div>
 				<select class="required" id="product_id" name="product_id">
@@ -62,8 +61,8 @@ $ajax_url = admin_url( 'admin-ajax.php' );
 
 	<div>
 		<?php
-		if ( is_woocommerce() ) :
-			if ( is_product() ) :
+		if ( function_exists( is_woocommerce() ) ):
+			if ( function_exists( is_product() ) ) :
 				?> <input type="hidden" name="product_id" value="<?php
 				global $post;
 				echo $post -> ID;
