@@ -1,12 +1,11 @@
 <?php
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
-add_action('init','wpideas_insert_new_idea');
+add_action( 'wp', 'wpideas_insert_new_idea' );
 
 /**
  * Attachment handle for the idea
@@ -33,23 +32,22 @@ function wpideas_insert_attachment( $file_handler, $idea_id, $setthumb = 'false'
 function wpideas_insert_new_idea() {
 	if ( is_user_logged_in() ) {
 		if ( isset( $_POST[ 'submitted' ] ) && isset( $_POST[ 'idea_nonce_field' ] ) && wp_verify_nonce( $_POST[ 'idea_nonce_field' ], 'idea_nonce' ) ) {
-			
-			var_dump("called");
-			
+
+
 			if ( trim( $_POST[ 'txtIdeaTitle' ] ) === '' ) {
 				$ideaTitleError = 'Please enter a title.';
 				$hasError = true;
 			}
-			
+
 			$idea_information = array(
 				'post_title' => wp_strip_all_tags( $_POST[ 'txtIdeaTitle' ] ),
 				'post_content' => $_POST[ 'txtIdeaContent' ],
 				'post_type' => RT_WPIDEAS_SLUG,
 				'post_status' => 'new',
 			);
-			
+
 			$idea_id = wp_insert_post( $idea_information );
-			
+
 			if ( isset( $_POST[ 'product_id' ] ) ) {
 				update_post_meta( $idea_id, '_rt_wpideas_product_id', $_POST[ 'product_id' ] );
 			}
@@ -59,15 +57,16 @@ function wpideas_insert_new_idea() {
 					$newupload = wpideas_insert_attachment( $file, $idea_id );
 				}
 			}
-			var_dump($idea_id);
-			/*if ( isset( $idea_id ) ) {
+			if ( isset( $idea_id ) ) {
 				if ( isset( $_POST[ 'product_id' ] ) ) {
 					header( 'location:' . get_permalink( $_POST[ 'product_id' ] ) );
 				} else {
 					header( 'location:' . home_url() . '/' . RT_WPIDEAS_SLUG );
 				}
-			}*/
+			}
 		}
+	} else {
+		echo "<script>alert('please login to suggest idea');</script>";
 	}
 }
 
@@ -139,15 +138,19 @@ function wpideas_search_callback() {
 		endwhile;
 		wp_reset_postdata();
 	else :
-		?>
-		<div id="my-content-id" style="display:none;">
-			<?php
-			include RTWPIDEAS_PATH . 'templates/template-insert-idea.php';
+		if ( is_user_logged_in() ) {
 			?>
-		</div>
-		<script>jQuery("#TB_overlay").unbind("click", tb_remove);</script>
-		<?php
-		echo 'There are no ideas matching your search.<br /><br /> <a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Click Here </a> &nbsp; to suggest one. ';
+			<div id="my-content-id" style="display:none;">
+				<?php
+				include RTWPIDEAS_PATH . 'templates/template-insert-idea.php';
+				?>
+			</div>
+			<script>jQuery("#TB_overlay").unbind("click", tb_remove);</script>
+			<?php
+			echo 'There are no ideas matching your search.<br /><br /> <a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Click Here </a> &nbsp; to suggest one. ';
+		} else {
+			echo '<br/><a id="btnOpenThickbox" href="/wp-login.php">Login to Suggest Idea</a>';
+		}
 	endif;
 	die(); // this is required to return a proper result
 }
@@ -222,9 +225,9 @@ function list_woo_product_ideas( $atts ) {
 			)
 		)
 	);
-	
+
 	echo "<br/>";
-	
+
 	$posts = new WP_Query( $args );
 	if ( $posts -> have_posts() ):
 		while ( $posts -> have_posts() ) : $posts -> the_post();
@@ -245,7 +248,7 @@ function list_woo_product_ideas( $atts ) {
 		</div>
 		<?php
 		echo '<a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Suggest Idea </a> &nbsp; for this product. <br/><br/>';
-	}else{
+	} else {
 		echo '<br/><a id="btnOpenThickbox" href="/wp-login.php">Login to Suggest Idea</a>';
 	}
 }
