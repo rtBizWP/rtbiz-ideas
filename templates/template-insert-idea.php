@@ -5,7 +5,7 @@ $ajax_url = admin_url( 'admin-ajax.php' );
 <script>
 	jQuery("#insertIdeaForm").validate();
 </script>
-<form action="<?php echo $ajax_url; ?>" id="insertIdeaForm" method="POST" enctype="multipart/form-data">
+<form action="<?php echo esc_url( $ajax_url ); ?>" id="insertIdeaForm" method="POST" enctype="multipart/form-data">
 	<h2>Suggest New Idea</h2>
 	<div>
 		<label for="txtIdeaTitle"><?php _e( 'Title:', 'wp-ideas' ) ?></label>

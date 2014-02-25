@@ -26,13 +26,13 @@ jQuery(document).ready(function($) {
 	});
 
 	jQuery('#txtSearchIdea').keyup(function() {
-
+		alert("hello "+rt_wpideas_ajax_url);
 		var data = {
 			action: 'search',
 			searchtext: $(this).val(),
 		};
 
-		jQuery.post(rt_wpideas_ajax_url, data, function(response) {
+		$.post(rt_wpideas_ajax_url, data, function(response) {
 			$('#res').html(response);
 			// pull in the new value
 			var searchTerm = data['searchtext'];
