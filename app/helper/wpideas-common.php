@@ -52,17 +52,15 @@ function wpideas_insert_new_idea() {
 				update_post_meta( $idea_id, '_rt_wpideas_product_id', $_POST[ 'product_id' ] );
 			}
 
+
+
 			if ( $_FILES ) {
 				foreach ( $_FILES as $file => $array ) {
 					$newupload = wpideas_insert_attachment( $file, $idea_id );
 				}
 			}
 			if ( isset( $idea_id ) ) {
-				if ( isset( $_POST[ 'product_id' ] ) ) {
-					header( 'location:' . get_permalink( $_POST[ 'product_id' ] ) );
-				} else {
-					header( 'location:' . home_url() . '/' . RT_WPIDEAS_SLUG );
-				}
+				echo '<script>window.location.reload();</script>';
 			}
 		}
 	}
