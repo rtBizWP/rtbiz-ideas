@@ -19,8 +19,8 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 		 */
 		public function __construct() {
 			add_action( 'init', array( $this, 'register_wpidea_post_type' ) );
-			add_action( 'init', array( $this, 'wpideas_custom_post_status' ) );
-			add_action( 'shutdown', array( $this, 'wpideas_append_post_status_list' ), 11 );
+			add_action( 'admin_init', array( $this, 'wpideas_custom_post_status' ) );
+			add_action( 'wp_before_admin_bar_render', array( $this, 'wpideas_append_post_status_list' ), 11 );
 			$this -> init_attributes();
 			//add_action( 'admin_menu', array( $this, 'register_pages' ) );
 			//$this -> register_taxonomies();
@@ -152,24 +152,25 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 		}
 
 		function wpideas_append_post_status_list() {
-			global $post;
-			if( !isset($post) ){ return ;}
-	
-			$complete = '';
-			$label = get_post_status( $post->ID );
-			if ( get_post_type() == 'idea' ) {
+			if ( get_post_type() == RT_WPIDEAS_SLUG && $_GET[ 'action' ] == 'edit' ) {
+				global $post;
+				if ( ! isset( $post ) ) {
+					return;
+				}
+				$complete = '';
+				$label = get_post_status();
 				if ( $post -> post_status == 'new' ) {
 					$complete = ' selected=\"selected\"';
 					$label = 'New';
-				} 
+				}
 				if ( $post -> post_status == 'accepted' ) {
 					$complete = ' selected=\"selected\"';
 					$label = 'Accepted';
-				}  
+				}
 				if ( $post -> post_status == 'declined' ) {
 					$complete = ' selected=\"selected\"';
 					$label = 'Declined';
-				} 
+				}
 				if ( $post -> post_status == 'completed' ) {
 					$complete = ' selected=\"selected\"';
 					$label = 'Completed';
@@ -186,6 +187,15 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 					$(".inline-edit-status select").append("<option value=\"declined\" ' . $complete . '>Declined</option>");
 					$(".inline-edit-status select").append("<option value=\"completed\" ' . $complete . '>Completed</option>");
 					$("#post-status-display").html("' . $label . '");
+					$("#publishing-action input").val("Update");
+					$(".save-post-status").click(function(){
+						$("#publish").hide();
+						//$("#publish").val("Update");
+						$("#publishing-action").html("<span class=\"spinner\"><\/span><input name=\"original_publish\" type=\"hidden\" id=\"original_publish\" value=\"Update\"><input type=\"submit\" id=\"save-publish\" class=\"button button-primary button-large\" value=\"Update\" ><\/input>");
+					});
+					$("#save-publish").click(function(){
+						$("#publish").click();
+					});
 				});
 				</script>
 				';
