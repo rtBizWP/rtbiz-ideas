@@ -135,12 +135,21 @@ function vote_callback() {
 			$is_voted = check_user_voted( $postid );
 			if ( isset( $is_voted ) && $is_voted ) {
 				update_vote( $postid, 0 );
+				$votes = get_post_meta( $postid, '_rt_wpideas_meta_votes', true );
+				$votes = $votes - 1;
+				update_post_meta( $postid, '_rt_wpideas_meta_votes', $votes );
 				$response[ 'btnLabel' ] = 'Vote Up';
 			} else if ( isset( $is_voted ) && ! $is_voted ) {
 				update_vote( $postid, 1 );
+				$votes = get_post_meta( $postid, '_rt_wpideas_meta_votes', true );
+				$votes = $votes + 1;
+				update_post_meta( $postid, '_rt_wpideas_meta_votes', $votes );
 				$response[ 'btnLabel' ] = 'Vote Down';
 			} else if ( ! isset( $is_voted ) ) {
 				add_vote( $postid );
+				$votes = get_post_meta( $postid, '_rt_wpideas_meta_votes', true );
+				$votes = $votes + 1;
+				update_post_meta( $postid, '_rt_wpideas_meta_votes', $votes );
 				$response[ 'btnLabel' ] = 'Vote Down';
 			}
 			$response[ 'vote' ] = get_votes_by_post( $postid );

@@ -1,19 +1,74 @@
 <?php
-$ideaTitleError = '';
+wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 ?>
 <script>
-	jQuery("#insertIdeaForm").validate();
+	jQuery(document).ready(function($) {
+
+		jQuery('#btninsertIdeaFormSubmit').click(function() {
+
+			data = new FormData();
+			data.append("action", 'wpideas_insert_new_idea');
+			data.append("txtIdeaTitle", $('#txtIdeaTitle').val());
+			data.append("txtIdeaContent", $('#txtIdeaContent').val());
+			data.append("product_id", $('#product_id').val());
+			data.append("upload", $('#file').get(0).files[0]);
+
+			$.ajax({
+				url: rt_wpideas_ajax_url,
+				type: 'POST',
+				data: data,
+				processData: false,
+				contentType: false,
+				success: function(res) {
+					try {
+						var json = JSON.parse(res);
+
+						if (json.title) {
+							$('#txtIdeaTitleError').html(json.title);
+							$('#txtIdeaTitleError').show();
+						} else {
+							$('#txtIdeaTitleError').hide();
+						}
+						if (json.content) {
+							$('#txtIdeaContentError').html(json.content);
+							$('#txtIdeaContentError').show();
+						} else {
+							$('#txtIdeaContentError').hide();
+						}
+						if (json.product) {
+							$('#txtIdeaProductError').html(json.product);
+							$('#txtIdeaProductError').show();
+						} else {
+							$('#txtIdeaProductError').hide();
+						}
+					}
+					catch (e)
+					{
+						tb_remove();
+						$('#txtSearchIdea').val('');
+						$('#txtSearchIdea').keyup();
+						$('#lblIdeaSuccess').show();
+					}
+					jQuery('article:nth-child(1)').addClass('sticky');
+					setTimeout(function() {
+						jQuery('article:nth-child(1)').removeClass('sticky');
+						$('#lblIdeaSuccess').hide();
+					}, 2000);
+				},
+			});
+		});
+	});
+
 </script>
-<form action="" id="insertIdeaForm" method="POST" enctype="multipart/form-data">
+<form id="insertIdeaForm" method="post" enctype="multipart/form-data" action="">
 	<h2>Suggest New Idea</h2>
 	<div>
 		<label for="txtIdeaTitle"><?php _e( 'Title:', 'wp-ideas' ) ?></label>
 
 		<input type="text" name="txtIdeaTitle" id="txtIdeaTitle" class="required" value="<?php if ( isset( $_POST[ 'txtIdeaTitle' ] ) ) echo $_POST[ 'txtIdeaTitle' ]; ?>" />
-		<?php if ( $ideaTitleError != '' ) { ?>
-			<span class="error"><?php echo $ideaTitleError; ?></span>
-			<div class="clearfix"></div>
-		<?php } ?>
+
+		<label class="error" id="txtIdeaTitleError" style="display:none;"></label>
+
 	</div>
 
 	<div>
@@ -28,9 +83,10 @@ $ideaTitleError = '';
 				}
 			}
 			?></textarea>
+		<label class="error" id="txtIdeaContentError" style="display:none;"></label>
 	</div>
 	<?php
-	if ( get_post_type()  != 'product' ) {
+	if ( get_post_type() != 'product' ) {
 		?> 
 		<div>
 			<select class="required" id="product_id" name="product_id">
@@ -47,6 +103,7 @@ $ideaTitleError = '';
 				endwhile;
 				?>
 			</select> 
+			<label class="error" id="txtIdeaProductError" style="display:none;"></label>
 		</div>
 
 		<?php
@@ -54,23 +111,20 @@ $ideaTitleError = '';
 	?>
 
 	<div>
-		<input type="file" name="files" id="file" multiple />
+		<input type="file" name="files[]" id="file" multiple />
 	</div>
 
 	<div>
-		<?php 
-		if( get_post_type()  == 'product' && is_single() ) { ?>
-		<input type="hidden" name="product_id" value="<?php
-		global $post;
-		echo $post -> ID;
-		?>" />
-		<?php } ?>
+		<?php if ( get_post_type() == 'product' && is_single() ) { ?>
+			<input type="hidden" name="product_id" value="<?php
+			global $post;
+			echo $post -> ID;
+			?>" />
+			   <?php } ?>
 		<input type="hidden" name="submitted" id="submitted" value="true" />
 		<?php wp_nonce_field( 'idea_nonce', 'idea_nonce_field' ); ?>
-		<input type="submit" id="btninsertIdeaFormSubmit" value="<?php _e( 'Submit My Idea', 'wp-ideas' ) ?>" />
+		<input type="button" id="btninsertIdeaFormSubmit" value="<?php _e( 'Submit My Idea', 'wp-ideas' ) ?>" />
 		<a href="javascript:tb_remove();" id="insertIdeaFormCancel">Cancel</a>
 	</div>
-
+	<div id="output1"></div>
 </form>
-
-
