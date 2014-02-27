@@ -222,7 +222,7 @@ function list_woo_product_ideas( $atts ) {
 		?><p>No idea for this product.</p><?php
 	endif;
 	echo '</div>';
-	if($i < $posts_per_page){
+	if($i > $posts_per_page){
 	?><a href="javascript:;" data-nonce="<?php echo wp_create_nonce( 'load_ideas' ) ?>" id="ideaLoadMore">Load More</a><input type="hidden" value="<?php echo $product_id; ?>" id="idea_product_id"/><br/><br/><?php }
 	if ( is_user_logged_in() ) {
 		?>

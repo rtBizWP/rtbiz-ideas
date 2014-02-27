@@ -1,4 +1,5 @@
 <?php
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -21,10 +22,8 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 			add_action( 'init', array( $this, 'register_wpidea_post_type' ) );
 			add_action( 'init', array( $this, 'wpideas_custom_post_status' ) );
 			add_action( 'wp_before_admin_bar_render', array( $this, 'wpideas_append_post_status_list' ), 11 );
-			if ( get_post_type() == RT_WPIDEAS_SLUG ) {
-				add_filter( 'manage_edit_idea_columns', 'wpideas_ideas_table_head' );
-				add_action( 'manage_idea_posts_custom_column', 'wpideas_ideas_table_columns', 10, 2 );
-			}
+			add_filter( 'manage_idea_posts_columns', array( $this, 'wpideas_ideas_table_head' ) );
+			add_action( 'manage_idea_posts_custom_column', array( $this, 'wpideas_ideas_table_columns' ), 10, 2 );
 			$this -> init_attributes();
 			//add_action( 'admin_menu', array( $this, 'register_pages' ) );
 			//$this -> register_taxonomies();
@@ -153,7 +152,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 
 		function wpideas_append_post_status_list() {
 			global $pagenow;
-			if ( get_post_type() == RT_WPIDEAS_SLUG && ( $pagenow == 'edit.php' || ( isset( $_GET[ 'action' ] ) && $_GET[ 'action' ] ) == 'edit' ) ) {
+			if ( get_post_type() == RT_WPIDEAS_SLUG && ( $pagenow == 'edit.php' || $pagenow == 'post-new.php' || ( isset( $_GET[ 'action' ] ) && $_GET[ 'action' ] ) == 'edit' ) ) {
 				global $post;
 				if ( ! isset( $post ) ) {
 					return;
@@ -204,11 +203,11 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 		}
 
 		function wpideas_ideas_table_head( $defaults ) {
-			$defaults[ 'wpideas_votes' ] = _x( 'Votes', 'wp-ideas');
+			$defaults[ 'wpideas_votes' ] = _x( 'Votes', 'wp-ideas' );
 			return $defaults;
 		}
 
-		function wpideas_ideas_table_content( $column_name, $idea_id ) {
+		function wpideas_ideas_table_columns( $column_name, $idea_id ) {
 			if ( $column_name == 'wpideas_votes' ) {
 				$votes = get_post_meta( $idea_id, '_rt_wpideas_meta_votes', true );
 				echo $votes;
