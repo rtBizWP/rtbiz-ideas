@@ -5,7 +5,7 @@
  */
 jQuery(document).ready(function($) {
 
-	jQuery('.btnVote').click(function() {
+	jQuery('.btnVote').live( 'click', function() {
 		$(this).attr('disabled', 'disabled');
 		var data = {
 			action: 'vote',
@@ -46,6 +46,38 @@ jQuery(document).ready(function($) {
 			}
 		});
 
+	});
+
+	jQuery('#ideaLoadMore').live( 'click', function(e) {
+		var post_type = 'idea'; // this is optional and can be set from anywhere, stored in mockup etc...
+		var offset = $('#wpidea-content article').length;
+		var product_id = $('#idea_product_id').val();
+		var nonce = jQuery('#ideaLoadMore').attr('data-nonce');
+		var data = {
+			action: "list_woo_product_ideas_load_more",
+			offset: offset,
+			nonce:nonce,
+			post_type: post_type,
+			product_id: product_id,
+			processData: false,
+			contentType: false,
+		}
+		jQuery.ajax({
+			type: "post",
+			context: this,
+			dataType: "html",
+			url: rt_wpideas_ajax_url,
+			data: data,
+			success: function(response) {
+				response = JSON.parse(response);
+				if (response.have_posts) {//if have posts:
+					var $newElems = $(response['html'].replace(/(\r\n|\n|\r)/gm, ''));
+					$('#wpidea-content').append($newElems);
+				} else {
+					$('#ideaLoadMore').hide();
+				}
+			}
+		});
 	});
 
 });

@@ -237,3 +237,15 @@ figure {
 .rtwpStyle-separator {
 	color: #B8BECC;
 }
+#ideaLoadMore{
+	width: 100%;
+	font-size: 18px;
+	text-decoration: none;
+	background-color: #4b74bb;
+	color: #FFFFFF;
+	padding: 10px 10px;
+	border-radius: 5px;
+	margin: 0 auto;
+	float: right;
+	text-align: center;
+}

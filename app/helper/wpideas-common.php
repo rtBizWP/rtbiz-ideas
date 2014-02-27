@@ -1,12 +1,4 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-add_action( 'wp', 'wpideas_insert_new_idea' );
-
 /**
  * Attachment handle for the idea
  * 
@@ -14,6 +6,9 @@ add_action( 'wp', 'wpideas_insert_new_idea' );
  * @param type $idea_id
  * @param type $setthumb
  */
+add_action( 'wp_ajax_wpideas_insert_new_idea', 'wpideas_insert_new_idea' );
+add_action( 'wp_ajax_nopriv_wpideas_insert_new_idea', 'wpideas_insert_new_idea' );
+
 function wpideas_insert_attachment( $file_handler, $idea_id, $setthumb = 'false' ) {
 	// check to make sure its a successful upload
 	if ( $_FILES[ $file_handler ][ 'error' ] !== UPLOAD_ERR_OK )
@@ -31,14 +26,23 @@ function wpideas_insert_attachment( $file_handler, $idea_id, $setthumb = 'false'
  */
 function wpideas_insert_new_idea() {
 	if ( is_user_logged_in() ) {
-		if ( isset( $_POST[ 'submitted' ] ) && isset( $_POST[ 'idea_nonce_field' ] ) && wp_verify_nonce( $_POST[ 'idea_nonce_field' ], 'idea_nonce' ) ) {
+		$ideaResponse = array();
+		$hasError = false;
 
+		if ( trim( $_POST[ 'txtIdeaTitle' ] ) === '' ) {
+			$ideaResponse[ 'title' ] = 'Please enter a title.';
+			$hasError = true;
+		}
+		if ( trim( $_POST[ 'txtIdeaContent' ] ) === '' ) {
+			$ideaResponse[ 'content' ] = 'Please enter details.';
+			$hasError = true;
+		}
+		if ( $_POST[ 'product_id' ] === '' ) {
+			$ideaResponse[ 'product' ] = 'Please select product.';
+			$hasError = true;
+		}
 
-			if ( trim( $_POST[ 'txtIdeaTitle' ] ) === '' ) {
-				$ideaTitleError = 'Please enter a title.';
-				$hasError = true;
-			}
-
+		if ( ! $hasError ) {
 			$idea_information = array(
 				'post_title' => wp_strip_all_tags( $_POST[ 'txtIdeaTitle' ] ),
 				'post_content' => $_POST[ 'txtIdeaContent' ],
@@ -48,21 +52,22 @@ function wpideas_insert_new_idea() {
 
 			$idea_id = wp_insert_post( $idea_information );
 
+			update_post_meta( $idea_id, '_rt_wpideas_meta_votes', 0 );
+
 			if ( isset( $_POST[ 'product_id' ] ) ) {
 				update_post_meta( $idea_id, '_rt_wpideas_product_id', $_POST[ 'product_id' ] );
 			}
-
-
 
 			if ( $_FILES ) {
 				foreach ( $_FILES as $file => $array ) {
 					$newupload = wpideas_insert_attachment( $file, $idea_id );
 				}
 			}
-			if ( isset( $idea_id ) ) {
-				echo '<script>window.location.reload();</script>';
-			}
+		} else {
+			echo json_encode( $ideaResponse );
 		}
+
+		die();
 	}
 }
 
@@ -104,31 +109,6 @@ function wpideas_search_callback() {
 
 	$ideas = new WP_Query( $args );
 	if ( $ideas -> have_posts() ):
-		$ajax_url = admin_url( 'admin-ajax.php' );
-		?>
-		<script>
-			jQuery(document).ready(function($) {
-				$('.btnVote').click(function() {
-					$(this).attr('disabled', 'disabled');
-					var data = {
-						action: 'vote',
-						postid: $(this).data('id'),
-					};
-					$.post('<?php echo esc_url( $ajax_url ); ?>', data, function(response) {
-						var json = JSON.parse(response);
-						if (json.vote) {
-							$('#rtwpIdeaVoteCount-' + data['postid']).html(json.vote);
-							$('#btnVote-' + data['postid']).removeAttr('disabled');
-							$('#btnVote-' + data['postid']).html(json.btnLabel);
-						} else {
-							alert(json.err);
-							$('#btnVote-' + data['postid']).removeAttr('disabled');
-						}
-					});
-				});
-			});
-		</script>
-		<?php
 		while ( $ideas -> have_posts() ) : $ideas -> the_post();
 			include RTWPIDEAS_PATH . 'templates/loop-common.php';
 		endwhile;
@@ -193,12 +173,16 @@ function list_all_idea_shortcode( $atts ) {
 
 add_shortcode( 'ideas', 'list_all_idea_shortcode' );
 
+
+add_action( "wp_ajax_list_woo_product_ideas_load_more", "list_woo_product_ideas_load_more" ); // when logged in
+add_action( "wp_ajax_nopriv_list_woo_product_ideas_load_more", "list_woo_product_ideas_load_more" ); //when logged out 
 /**
  * woocommerce product idea tab shortcode
  * 
  * @global type $post
  * @param type $atts
  */
+
 function list_woo_product_ideas( $atts ) {
 
 	global $post;
@@ -209,11 +193,14 @@ function list_woo_product_ideas( $atts ) {
 	);
 	$r = shortcode_atts( $default, $atts );
 	extract( $r );
-
+	
+	$posts_per_page = 3;
+	
 	add_thickbox();
 
 	$args = array(
 		'post_type' => $post_type,
+		'posts_per_page' => $posts_per_page,
 		'meta_query' => array(
 			array(
 				'key' => '_rt_wpideas_product_id',
@@ -223,17 +210,20 @@ function list_woo_product_ideas( $atts ) {
 	);
 
 	echo "<br/>";
-
-	$posts = new WP_Query( $args );
+	echo "<div id='wpidea-content'>";
+	$posts = new WP_Query( $args );$i = 0;
 	if ( $posts -> have_posts() ):
 		while ( $posts -> have_posts() ) : $posts -> the_post();
 			include RTWPIDEAS_PATH . 'templates/loop-common.php';
+			$i++;
 		endwhile;
 		wp_reset_postdata();
 	else :
 		?><p>No idea for this product.</p><?php
 	endif;
-
+	echo '</div>';
+	if($i < $posts_per_page){
+	?><a href="javascript:;" data-nonce="<?php echo wp_create_nonce( 'load_ideas' ) ?>" id="ideaLoadMore">Load More</a><input type="hidden" value="<?php echo $product_id; ?>" id="idea_product_id"/><br/><br/><?php }
 	if ( is_user_logged_in() ) {
 		?>
 		<br/>
@@ -250,3 +240,45 @@ function list_woo_product_ideas( $atts ) {
 }
 
 add_shortcode( 'wpideas', 'list_woo_product_ideas' );
+
+function list_woo_product_ideas_load_more() {
+
+	if ( ! wp_verify_nonce( $_REQUEST[ 'nonce' ], "load_ideas" ) ) {
+		exit( "No naughty business please" );
+	}
+
+	$offset = isset( $_REQUEST[ 'offset' ] ) ? intval( $_REQUEST[ 'offset' ] ) : 3;
+	$post_type = isset( $_REQUEST[ 'post_type' ] ) ? $_REQUEST[ 'post_type' ] : 'idea';
+	$product_id = isset( $_REQUEST[ 'product_id' ] ) ? $_REQUEST[ 'product_id' ] : 0;
+
+	$args = array(
+		'post_type' => $post_type,
+		'offset' => $offset,
+		'posts_per_page' => 3,
+		'meta_query' => array(
+			array(
+				'key' => '_rt_wpideas_product_id',
+				'value' => $product_id,
+			)
+		)
+	);
+
+	$posts_query = new WP_Query( $args );
+
+	if ( $posts_query -> have_posts() ) {
+		//if we have posts:
+		$result[ 'have_posts' ] = true; //set result array item "have_posts" to true
+		
+		while ( $posts_query -> have_posts() ) : $posts_query -> the_post();
+			include RTWPIDEAS_PATH . 'templates/loop-common.php';
+		endwhile;
+		$result[ 'html' ] = ob_get_clean(); // put alloutput data into "html" item
+	} else {
+		//no posts found
+		$result[ 'have_posts' ] = false; // return that there is no posts found
+	}
+
+	$result = json_encode( $result );
+	echo $result;
+	die();
+}
