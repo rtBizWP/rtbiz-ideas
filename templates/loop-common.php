@@ -53,7 +53,7 @@
 				$i = 0;
 				foreach ( $attachments as $attachment ) {
 					if ( $i >= 3 ) {
-						break;
+						if( ! is_single() ) break;
 					}
 					$image_attributes = wp_get_attachment_image_src( $attachment -> ID, 'full' );
 					?>

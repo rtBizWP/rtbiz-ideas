@@ -4,15 +4,24 @@ wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 <script>
 	jQuery(document).ready(function($) {
 
-		jQuery('#btninsertIdeaFormSubmit').click(function() {
-
+		jQuery('#btninsertIdeaFormSubmit').click(function(e) {
+			e.preventDefault();
 			data = new FormData();
 			data.append("action", 'wpideas_insert_new_idea');
 			data.append("txtIdeaTitle", $('#txtIdeaTitle').val());
 			data.append("txtIdeaContent", $('#txtIdeaContent').val());
 			data.append("product_id", $('#product_id').val());
-			data.append("upload", $('#file').get(0).files[0]);
+			data.append("product", $('#product').val());
+			// Get the selected files from the input.
+			var files = document.getElementById('file').files;
+			// Loop through each of the selected files.
+			for (var i = 0; i < files.length; i++) {
+				var file = files[i];
 
+				// Add the file to the request.
+				data.append('upload[]', file, file.name);
+			}
+			//data.append("upload", $('#file').get(0).files[0]);
 			$.ajax({
 				url: rt_wpideas_ajax_url,
 				type: 'POST',
@@ -44,7 +53,13 @@ wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 					}
 					catch (e)
 					{
+						alert(res);
 						tb_remove();
+						if (res === 'product') {
+							$("body, html").animate({
+								scrollTop: $('#tab-ideas_tab').offset().top
+							}, 600);
+						}
 						$('#txtSearchIdea').val('');
 						$('#txtSearchIdea').keyup();
 						$('#lblIdeaSuccess').show();
@@ -111,15 +126,15 @@ wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 	?>
 
 	<div>
-		<input type="file" name="files[]" id="file" multiple />
+		<input type="file" name="upload[]" id="file" multiple />
 	</div>
 
 	<div>
 		<?php if ( get_post_type() == 'product' && is_single() ) { ?>
-			<input type="hidden" name="product_id" value="<?php
+			<input type="hidden" id="product_id" name="product_id" value="<?php
 			global $post;
 			echo $post -> ID;
-			?>" />
+			?>" /><input type="hidden" id="product" name="product" value="product" />
 			   <?php } ?>
 		<input type="hidden" name="submitted" id="submitted" value="true" />
 		<?php wp_nonce_field( 'idea_nonce', 'idea_nonce_field' ); ?>

@@ -19,6 +19,9 @@ function wpideas_insert_attachment( $file_handler, $idea_id, $setthumb = 'false'
 	require_once( ABSPATH . 'wp-admin' . '/includes/media.php' );
 
 	$attach_id = media_handle_upload( $file_handler, $idea_id );
+	if ( $setthumb )
+		update_post_meta( $idea_id, '_thumbnail_id', $attach_id );
+	return $attach_id;
 }
 
 /**
@@ -52,16 +55,30 @@ function wpideas_insert_new_idea() {
 
 			$idea_id = wp_insert_post( $idea_information );
 
-			update_post_meta( $idea_id, '_rt_wpideas_meta_votes', 0 );
-
 			if ( isset( $_POST[ 'product_id' ] ) ) {
 				update_post_meta( $idea_id, '_rt_wpideas_product_id', $_POST[ 'product_id' ] );
 			}
 
 			if ( $_FILES ) {
-				foreach ( $_FILES as $file => $array ) {
-					$newupload = wpideas_insert_attachment( $file, $idea_id );
+				$files = $_FILES[ 'upload' ];
+				foreach ( $files[ 'name' ] as $key => $value ) {
+					if ( $files[ 'name' ][ $key ] ) {
+						$file = array(
+							'name' => $files[ 'name' ][ $key ],
+							'type' => $files[ 'type' ][ $key ],
+							'tmp_name' => $files[ 'tmp_name' ][ $key ],
+							'error' => $files[ 'error' ][ $key ],
+							'size' => $files[ 'size' ][ $key ]
+						);
+						$_FILES = array( "upload" => $file );
+						foreach ( $_FILES as $file => $array ) {
+							$newupload = wpideas_insert_attachment( $file, $idea_id );
+						}
+					}
 				}
+			}
+			if ( $_POST[ 'product' ] != '' ) {
+				echo 'product';
 			}
 		} else {
 			echo json_encode( $ideaResponse );
@@ -193,9 +210,9 @@ function list_woo_product_ideas( $atts ) {
 	);
 	$r = shortcode_atts( $default, $atts );
 	extract( $r );
-	
+
 	$posts_per_page = 3;
-	
+
 	add_thickbox();
 
 	$args = array(
@@ -211,19 +228,17 @@ function list_woo_product_ideas( $atts ) {
 
 	echo "<br/>";
 	echo "<div id='wpidea-content'>";
-	$posts = new WP_Query( $args );$i = 0;
+	$posts = new WP_Query( $args );
 	if ( $posts -> have_posts() ):
 		while ( $posts -> have_posts() ) : $posts -> the_post();
 			include RTWPIDEAS_PATH . 'templates/loop-common.php';
-			$i++;
 		endwhile;
 		wp_reset_postdata();
 	else :
 		?><p>No idea for this product.</p><?php
 	endif;
 	echo '</div>';
-	if($i > $posts_per_page){
-	?><a href="javascript:;" data-nonce="<?php echo wp_create_nonce( 'load_ideas' ) ?>" id="ideaLoadMore">Load More</a><input type="hidden" value="<?php echo $product_id; ?>" id="idea_product_id"/><br/><br/><?php }
+	?><a href="javascript:;" data-nonce="<?php echo wp_create_nonce( 'load_ideas' ) ?>" id="ideaLoadMore">Load More</a><input type="hidden" value="<?php echo $product_id; ?>" id="idea_product_id"/><br/><br/><?php
 	if ( is_user_logged_in() ) {
 		?>
 		<br/>
@@ -268,7 +283,7 @@ function list_woo_product_ideas_load_more() {
 	if ( $posts_query -> have_posts() ) {
 		//if we have posts:
 		$result[ 'have_posts' ] = true; //set result array item "have_posts" to true
-		
+
 		while ( $posts_query -> have_posts() ) : $posts_query -> the_post();
 			include RTWPIDEAS_PATH . 'templates/loop-common.php';
 		endwhile;

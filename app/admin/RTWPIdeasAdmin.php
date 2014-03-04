@@ -1,5 +1,4 @@
 <?php
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -93,6 +92,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				'not_found_in_trash' => __( 'No Idea found in Trash', 'rtCamp' ),
 				'parent_item_colon' => __( '', 'rtCamp' ),
 				'menu_name' => __( 'Ideas', 'rtCamp' ),
+				'menu_icon' => RTWPIDEAS_URL . '/app/assets/img/16x16-green.png',
 			);
 
 			$args = array(
@@ -157,40 +157,42 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				if ( ! isset( $post ) ) {
 					return;
 				}
-				$complete = '';
+				$completeNew = '';
+				$completeAccepted = '';
+				$completeDeclined = '';
+				$completeCompleted = '';
 				$label = get_post_status();
 				if ( $post -> post_status == 'new' ) {
-					$complete = ' selected=\"selected\"';
+					$completeNew = ' selected=\"selected\"';
 					$label = 'New';
 				}
 				if ( $post -> post_status == 'accepted' ) {
-					$complete = ' selected=\"selected\"';
+					$completeAccepted = ' selected=\"selected\"';
 					$label = 'Accepted';
 				}
 				if ( $post -> post_status == 'declined' ) {
-					$complete = ' selected=\"selected\"';
+					$completeDeclined = ' selected=\"selected\"';
 					$label = 'Declined';
 				}
 				if ( $post -> post_status == 'completed' ) {
-					$complete = ' selected=\"selected\"';
+					$completeCompleted = ' selected=\"selected\"';
 					$label = 'Completed';
 				}
 				echo '
 				<script>
 				jQuery(document).ready(function($){
-					$("select#post_status").append("<option value=\"new\" ' . $complete . '>New</option>");
-					$("select#post_status").append("<option value=\"accepted\" ' . $complete . '>Accepted</option>");
-					$("select#post_status").append("<option value=\"declined\" ' . $complete . '>Declined</option>");
-					$("select#post_status").append("<option value=\"completed\" ' . $complete . '>Completed</option>");
-					$(".inline-edit-status select").append("<option value=\"new\" ' . $complete . '>New</option>");
-					$(".inline-edit-status select").append("<option value=\"accepted\" ' . $complete . '>Accepted</option>");
-					$(".inline-edit-status select").append("<option value=\"declined\" ' . $complete . '>Declined</option>");
-					$(".inline-edit-status select").append("<option value=\"completed\" ' . $complete . '>Completed</option>");
+					$("select#post_status").append("<option value=\"new\" ' . $completeNew . '>New</option>");
+					$("select#post_status").append("<option value=\"accepted\" ' . $completeAccepted . '>Accepted</option>");
+					$("select#post_status").append("<option value=\"declined\" ' . $completeDeclined . '>Declined</option>");
+					$("select#post_status").append("<option value=\"completed\" ' . $completeCompleted . '>Completed</option>");
+					$(".inline-edit-status select").append("<option value=\"new\" ' . $completeNew . '>New</option>");
+					$(".inline-edit-status select").append("<option value=\"accepted\" ' . $completeAccepted . '>Accepted</option>");
+					$(".inline-edit-status select").append("<option value=\"declined\" ' . $completeDeclined . '>Declined</option>");
+					$(".inline-edit-status select").append("<option value=\"completed\" ' . $completeCompleted . '>Completed</option>");
 					$("#post-status-display").html("' . $label . '");
-					$("#publishing-action input").val("Update");
+					$("#publishing-action").html("<span class=\"spinner\"><\/span><input name=\"original_publish\" type=\"hidden\" id=\"original_publish\" value=\"Update\"><input type=\"submit\" id=\"save-publish\" class=\"button button-primary button-large\" value=\"Update\" ><\/input>");
 					$(".save-post-status").click(function(){
 						$("#publish").hide();
-						//$("#publish").val("Update");
 						$("#publishing-action").html("<span class=\"spinner\"><\/span><input name=\"original_publish\" type=\"hidden\" id=\"original_publish\" value=\"Update\"><input type=\"submit\" id=\"save-publish\" class=\"button button-primary button-large\" value=\"Update\" ><\/input>");
 					});
 					$("#save-publish").click(function(){
