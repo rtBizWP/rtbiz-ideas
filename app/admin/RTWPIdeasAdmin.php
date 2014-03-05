@@ -267,6 +267,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				for ( $i = 0; $i < count( $temp ); $i ++  ) {
 					array_push( $recipients, $temp[ $i ] );
 				}
+				$message = '';
 				$message .= '<h2>Idea status changed to '.$new_status.' for [ ' . $title . ' ]</h2>';
 				$message .= '<h3>[' . $new_status . '] ' . $title . '</h3>';
 				$message .= '<label>Author: <a href="' . get_author_posts_url( $author ) . '">' . get_author_name( $author ) . '</a></label><br/>';
@@ -302,7 +303,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				for ( $i = 0; $i < count( $temp ); $i ++  ) {
 					array_push( $recipients, $temp[ $i ] );
 				}
-
+				$message = '';
 				$message .= '<h2> New Comment on ' . $idea -> post_title . '</h2>';
 				$message .= '<label>Commentator: '.$comment_author.'</label><br/>';
 				$message .= '<label>Comment: '.$comment_content.'</label>';

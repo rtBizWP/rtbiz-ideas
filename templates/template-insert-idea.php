@@ -104,7 +104,7 @@ wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 	<div>
 		<label for="txtIdeaTitle"><?php _e( 'Title:', 'wp-ideas' ) ?></label>
 
-		<input type="text" name="txtIdeaTitle" id="txtIdeaTitle" class="required" value="<?php if ( isset( $_POST[ 'txtIdeaTitle' ] ) ) echo $_POST[ 'txtIdeaTitle' ]; ?>" />
+		<input type="text" name="txtIdeaTitle" id="txtIdeaTitle" class="required" value="<?php if ( isset( esc_attr( $_POST[ 'txtIdeaTitle' ] ) ) ) echo esc_attr( $_POST[ 'txtIdeaTitle' ] ); ?>" />
 
 		<label class="error" id="txtIdeaTitleError" style="display:none;"></label>
 

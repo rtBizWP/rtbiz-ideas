@@ -23,7 +23,7 @@ if ( ! class_exists( 'RTWPIdeas' ) ) {
 			$updateDB = new RTDBUpdate( false, RTWPIDEAS_PATH . 'index.php', RTWPIDEAS_PATH . 'app/schema/' );
 			$updateDB -> do_upgrade();
 			$this -> init_attributes();
-			add_action( "template_redirect", array( $this, 'rtwpideas_template' ) );
+			add_action( 'template_redirect', array( $this, 'rtwpideas_template' ) );
 			add_filter( 'woocommerce_product_tabs', array( $this, 'woo_ideas_tab' ) );
 		}
 
@@ -85,7 +85,9 @@ if ( ! class_exists( 'RTWPIdeas' ) ) {
 
 		function woo_ideas_tab_content() {
 			global $post;
-			echo do_shortcode( '[wpideas product_id = '.$post->ID.' ]' );
+			if ( isset( $post ) ) {
+				echo sanitize_html_class( do_shortcode( '[wpideas product_id = ' . $post -> ID . ' ]' ) );
+			}
 		}
 
 	}

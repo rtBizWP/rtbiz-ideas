@@ -18,18 +18,20 @@ get_header();
 		<label class="success" id="lblIdeaSuccess" style="display:none;">Idea submitted</label>
 		<div id="loop-common">
 			<?php if ( have_posts() ) : ?>
-				<?php
-				while ( have_posts() ) : the_post();
-					include RTWPIDEAS_PATH . 'templates/loop-common.php';
-				endwhile;
-				?>
+	<?php
+	while ( have_posts() ) : the_post();
+		include RTWPIDEAS_PATH . 'templates/loop-common.php';
+	endwhile;
+	?>
 				<div class="navigation">
 					<div class="alignleft"><?php previous_posts_link( '&laquo; Previous Page' ) ?></div>
 					<div class="alignright"><?php next_posts_link( 'Next Page &raquo;', '' ) ?></div>
 				</div>
-				<?php if ( is_single() ) :
-				comments_template();
-				endif; ?>
+	<?php
+	if ( is_single() ) :
+		comments_template();
+	endif;
+	?>
 			<?php else : ?>
 				<?php get_template_part( 'content', 'none' ); ?>
 			<?php endif; ?>
