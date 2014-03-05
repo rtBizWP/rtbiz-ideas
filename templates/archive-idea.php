@@ -32,8 +32,6 @@ get_header();
 		comments_template();
 	endif;
 	?>
-			<?php else : ?>
-				<?php get_template_part( 'content', 'none' ); ?>
 			<?php endif; ?>
 		</div>
 	</div>

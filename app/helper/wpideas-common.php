@@ -47,7 +47,12 @@ function wpideas_insert_new_idea() {
 		}
 
 		if ( ! $hasError ) {
-			$idea_information = array( 'post_title' => wp_strip_all_tags( $_POST[ 'txtIdeaTitle' ] ), 'post_content' => $_POST[ 'txtIdeaContent' ], 'post_type' => RT_WPIDEAS_SLUG, 'post_status' => 'new', );
+			$idea_information = array( 
+				'post_title' => wp_strip_all_tags( $_POST[ 'txtIdeaTitle' ] ), 
+				'post_content' => $_POST[ 'txtIdeaContent' ], 
+				'post_type' => RT_WPIDEAS_SLUG, 
+				'post_status' => 'new', 
+			);
 
 			$idea_id = wp_insert_post( $idea_information );
 
@@ -150,7 +155,7 @@ function wpideas_search_callback() {
 			?>
 			</div>
 				<?php
-				echo 'There are no ideas matching your search.<br /><br /> <a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Click Here </a> &nbsp; to suggest one. ';
+				echo 'Looks like we do not have your idea. <br /><br /> Have you got better one? &nbsp; <a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Click Here </a> &nbsp;  to suggest.';
 		}else{
 			echo '<h4>It seems that you have not activated woocommerce yet. Go to this <a href="http://wordpress.org/plugins/woocommerce/">link</a></h4>';
 		}
