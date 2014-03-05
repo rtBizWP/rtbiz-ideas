@@ -55,6 +55,8 @@ function wpideas_insert_new_idea() {
 
 			$idea_id = wp_insert_post( $idea_information );
 
+			update_post_meta( $idea_id, '_rt_wpideas_meta_votes', 0 );
+			
 			if ( isset( $_POST[ 'product_id' ] ) ) {
 				update_post_meta( $idea_id, '_rt_wpideas_product_id', $_POST[ 'product_id' ] );
 			}
@@ -68,16 +70,34 @@ function wpideas_insert_new_idea() {
 							'type' => $files[ 'type' ][ $key ],
 							'tmp_name' => $files[ 'tmp_name' ][ $key ],
 							'error' => $files[ 'error' ][ $key ],
-							'size' => $files[ 'size' ][ $key ]
+							'size' => $files[ 'size' ][ $key ],
 						);
-						$_FILES = array( "upload" => $file );
+						$_FILES = array( 'upload' => $file, );
 						foreach ( $_FILES as $file => $array ) {
 							$newupload = wpideas_insert_attachment( $file, $idea_id );
 						}
 					}
 				}
 			}
-			if ( $_POST[ 'product' ] != '' ) {
+
+			$headers[] = 'From: WP Ideas <wpideas@rtcamp.net>';
+			//$headers[] = 'Cc: John Q Codex <jqc@wordpress.org>';
+			//$headers[] = 'Cc: iluvwp@wordpress.org';
+
+			$subject = _e( 'New Idea', 'wp-ideas' );
+			
+			$recipients = array();
+
+			$recipients = explode( ',', trim( get_option( 'wpideas_adminemails' ) ) );
+
+			$message .= '<h3>' . get_current_user() . ' posted a new idea</h3>';
+			$message .= '<h2>' . $_POST[ 'txtIdeaTitle' ] . '</h2>';
+			$message .= '<p>' . $_POST[ 'txtIdeaContent' ] . '</p>';
+
+			$rtwpideasAdmin = new RTWPIdeasAdmin();
+			$rtwpideasAdmin -> sendNotifications( $recipients, $subject, $message, $headers );
+
+			if ( isset( $_POST[ 'product' ] ) ) {
 				echo 'product';
 			}
 		} else {
@@ -192,14 +212,16 @@ add_shortcode( 'ideas', 'list_all_idea_shortcode' );
 
 
 add_action( "wp_ajax_list_woo_product_ideas_load_more", "list_woo_product_ideas_load_more" ); // when logged in
-add_action( "wp_ajax_nopriv_list_woo_product_ideas_load_more", "list_woo_product_ideas_load_more" ); //when logged out 
+add_action( "wp_ajax_nopriv_list_woo_product_ideas_load_more", "list_woo_product_ideas_load_more" ); //when logged out
+add_action( 'wp_ajax_list_woo_product_ideas_refresh', 'list_woo_product_ideas_refresh' );
+add_action( 'wp_ajax_nopriv_list_woo_product_ideas_refresh', 'list_woo_product_ideas_refresh' );
+
 /**
  * woocommerce product idea tab shortcode
  * 
  * @global type $post
  * @param type $atts
  */
-
 function list_woo_product_ideas( $atts ) {
 
 	global $post;
@@ -255,6 +277,33 @@ function list_woo_product_ideas( $atts ) {
 }
 
 add_shortcode( 'wpideas', 'list_woo_product_ideas' );
+
+function list_woo_product_ideas_refresh() {
+
+	$posts_per_page = 3;
+
+	$args = array(
+		'post_type' => RT_WPIDEAS_SLUG,
+		'posts_per_page' => $posts_per_page,
+		'meta_query' => array(
+			array(
+				'key' => '_rt_wpideas_product_id',
+				'value' => $_POST[ 'product_id' ],
+			)
+		)
+	);
+
+	$posts = new WP_Query( $args );
+	if ( $posts -> have_posts() ):
+		while ( $posts -> have_posts() ) : $posts -> the_post();
+			include RTWPIDEAS_PATH . 'templates/loop-common.php';
+		endwhile;
+		wp_reset_postdata();
+	else :
+		?><p>No idea for this product.</p><?php
+	endif;
+	die();
+}
 
 function list_woo_product_ideas_load_more() {
 

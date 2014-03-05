@@ -28,6 +28,13 @@ wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 				data: data,
 				processData: false,
 				contentType: false,
+				beforeSend: function(xhr) {
+					$('#txtIdeaTitle').attr('disable', 'disable');
+					$('#txtIdeaContent').attr('disable', 'disable');
+					$('#txtIdeaProduct').attr('disable', 'disable');
+					$('#file').attr('disable', 'disable');
+					$('#ideaLoading').show();
+				},
 				success: function(res) {
 					try {
 						var json = JSON.parse(res);
@@ -53,12 +60,9 @@ wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 					}
 					catch (e)
 					{
-						alert(res);
 						tb_remove();
 						if (res === 'product') {
-							$("body, html").animate({
-								scrollTop: $('#tab-ideas_tab').offset().top
-							}, 600);
+							woo_list_ideas_product($('#product_id').val());
 						}
 						$('#txtSearchIdea').val('');
 						$('#txtSearchIdea').keyup();
@@ -68,11 +72,28 @@ wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 					setTimeout(function() {
 						jQuery('article:nth-child(1)').removeClass('sticky');
 						$('#lblIdeaSuccess').hide();
-					}, 2000);
+					}, 5000);
+					$('#txtIdeaTitle').removeAttr('disabled');
+					$('#txtIdeaContent').removeAttr('disabled');
+					$('#txtIdeaProduct').removeAttr('disabled');
+					$('#file').removeAttr('disabled');
+					$('#ideaLoading').hide();
 				},
 			});
 		});
 	});
+	function woo_list_ideas_product(product_id) {
+		var data = {
+			action: 'list_woo_product_ideas_refresh',
+			product_id: product_id,
+		}
+		jQuery.post(rt_wpideas_ajax_url, data, function(res) {
+			jQuery('#wpidea-content').html(res);
+			jQuery("body, html").animate({
+				scrollTop: jQuery('#tab-ideas_tab').offset().top
+			}, 600);
+		});
+	}
 
 </script>
 <form id="insertIdeaForm" method="post" enctype="multipart/form-data" action="">
@@ -139,7 +160,7 @@ wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 		<input type="hidden" name="submitted" id="submitted" value="true" />
 		<?php wp_nonce_field( 'idea_nonce', 'idea_nonce_field' ); ?>
 		<input type="button" id="btninsertIdeaFormSubmit" value="<?php _e( 'Submit My Idea', 'wp-ideas' ) ?>" />
+		<img src="<?php echo RTWPIDEAS_URL . 'app/assets/img/indicator.gif'; ?>" id="ideaLoading" style="display:none;" />
 		<a href="javascript:tb_remove();" id="insertIdeaFormCancel">Cancel</a>
 	</div>
-	<div id="output1"></div>
 </form>

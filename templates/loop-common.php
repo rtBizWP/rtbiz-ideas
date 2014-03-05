@@ -33,7 +33,7 @@
 	</div>
 	<header class="rtwpIdeaHeader">
 		<h1 class="rtwpIdeaTitle"><a href="<?php the_permalink(); ?>" rel="bookmark"
-									 title="<?php printf( esc_attr__( 'Permanent Link to %s', 'rtCamp' ), the_title_attribute( 'echo=0' ) ); ?>"><?php the_title(); ?></a>
+									 title="<?php printf( esc_attr__( '%s', 'wp-ideas' ), the_title_attribute( 'echo=0' ) ); ?>"><?php the_title(); ?></a>
 		</h1>
 
 		<div class="rtwpIdeaDescription">
@@ -76,8 +76,9 @@
 				}
 				?></ul><?php
 		}
+		if( ! is_single() ) {
 		?>
-
+		
 		<div class="rtwpIdeaMeta">
 			<a href="<?php the_permalink(); ?>#comments"
 			   title="Comments for <?php the_title(); ?>"><?php comments_number( 'No Comments', '1 Comment', '% Comments' ); ?></a>
@@ -100,5 +101,6 @@
 			<span class="rtwpStyle-separator">&nbsp;·&nbsp;</span>
 			<a href="#" title="Author of <?php the_title(); ?>"><?php the_author(); ?> →</a>
 		</div>
+		<?php } ?>
 	</header>
 </article>
