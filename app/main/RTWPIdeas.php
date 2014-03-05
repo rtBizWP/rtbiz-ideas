@@ -20,8 +20,8 @@ if ( ! class_exists( 'RTWPIdeas' ) ) {
 		 */
 		public function __construct() {
 			// DB Upgrade
-			$updateDB = new RTDBUpdate( false, RTWPIDEAS_PATH . 'index.php', RTWPIDEAS_PATH . 'app/schema/' );
-			$updateDB -> do_upgrade();
+			$updateDB = new RT_DB_Update(  RTWPIDEAS_PATH . 'index.php', RTWPIDEAS_PATH . 'app/schema/',false );
+			$updateDB->do_upgrade();
 			$this -> init_attributes();
 			add_action( 'template_redirect', array( $this, 'rtwpideas_template' ) );
 			add_filter( 'woocommerce_product_tabs', array( $this, 'woo_ideas_tab' ) );

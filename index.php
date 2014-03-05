@@ -127,6 +127,8 @@ function rt_wordpress_idea_autoloader( $class_name ) {
  */
 spl_autoload_register( 'rt_wordpress_idea_autoloader' );
 
+include_once 'app/lib/wp-helpers.php';
+
 include_once 'app/helper/wpideas-votes.php';
 include_once 'app/helper/wpideas-common.php';
 /**

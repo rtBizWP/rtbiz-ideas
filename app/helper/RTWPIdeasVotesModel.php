@@ -5,7 +5,7 @@
  * @author kaklo
  */
 if ( ! class_exists( 'RTWPIdeasVotesModel' ) ){
-    class RTWPIdeasVotesModel extends RTDBModel
+    class RTWPIdeasVotesModel extends RT_DB_Model
     {
 
         public function __construct()
