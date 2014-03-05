@@ -7,6 +7,9 @@ wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 <script>
 	jQuery(document).ready(function($) {
 
+		jQuery('#insertIdeaFormCancel').click(function(){
+			jQuery('#TB_closeWindowButton').click();
+		});
 		jQuery('#btninsertIdeaFormSubmit').click(function(e) {
 			e.preventDefault();
 			data = new FormData();
@@ -104,7 +107,7 @@ wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 	<div>
 		<label for="txtIdeaTitle"><?php _e( 'Title:', 'wp-ideas' ) ?></label>
 
-		<input type="text" name="txtIdeaTitle" id="txtIdeaTitle" class="required" value="<?php if ( isset( esc_attr( $_POST[ 'txtIdeaTitle' ] ) ) ) echo esc_attr( $_POST[ 'txtIdeaTitle' ] ); ?>" />
+		<input type="text" name="txtIdeaTitle" id="txtIdeaTitle" class="required" value="<?php if ( isset( $_POST[ 'txtIdeaTitle' ] ) ) echo $_POST[ 'txtIdeaTitle' ]; ?>" />
 
 		<label class="error" id="txtIdeaTitleError" style="display:none;"></label>
 
@@ -164,6 +167,6 @@ wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 		<?php wp_nonce_field( 'idea_nonce', 'idea_nonce_field' ); ?>
 		<input type="button" id="btninsertIdeaFormSubmit" value="<?php _e( 'Submit My Idea', 'wp-ideas' ) ?>" />
 		<img src="<?php echo RTWPIDEAS_URL . 'app/assets/img/indicator.gif'; ?>" id="ideaLoading" style="display:none;" />
-		<a href="javascript:tb_remove();" id="insertIdeaFormCancel">Cancel</a>
+		<a href="javascript:;" id="insertIdeaFormCancel">Cancel</a>
 	</div>
 </form>

@@ -142,20 +142,23 @@ function wpideas_search_callback() {
 		wp_reset_postdata();
 	else :
 	if ( is_user_logged_in() ) {
-		?>
-		<div id="my-content-id" style="display:none;">
-		<?php
-		include RTWPIDEAS_PATH . 'templates/template-insert-idea.php';
-		?>
-		</div>
-		<script>jQuery("#TB_overlay").unbind("click", tb_remove);</script>
+		if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+			?>
+			<div id="my-content-id" style="display:none;">
 			<?php
-			echo 'There are no ideas matching your search.<br /><br /> <a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Click Here </a> &nbsp; to suggest one. ';
+			include RTWPIDEAS_PATH . 'templates/template-insert-idea.php';
+			?>
+			</div>
+				<?php
+				echo 'There are no ideas matching your search.<br /><br /> <a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Click Here </a> &nbsp; to suggest one. ';
+		}else{
+			echo '<h4>It seems that you have not activated woocommerce yet. Go to this <a href="http://wordpress.org/plugins/woocommerce/">link</a></h4>';
+		}
 	} else {
 		echo '<br/><a id="btnOpenThickbox" href="/wp-login.php">Login to Suggest Idea</a>';
 	}
-		endif;
-		die(); // this is required to return a proper result
+	endif;
+	die(); // this is required to return a proper result
 }
 
 /**
