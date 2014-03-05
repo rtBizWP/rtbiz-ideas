@@ -1,4 +1,7 @@
 <?php
+/**
+ * Insert idea
+ */
 wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 ?>
 <script>

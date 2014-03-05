@@ -1,10 +1,4 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Description of RTWPIdeasAdmin
  *
@@ -387,8 +381,8 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 						<tr valign="top">
 							<th scope="row"><label for="adminemails">Email Addresses</label></th>
 							<td>
-								<input name="wpideas_adminemails" type="text" id="wpideas_adminemails" value="<?php echo get_option( 'wpideas_adminemails' ); ?>" class="regular-text">
-								<p class="description">Admin &AMP; other emails separated by comma (,)</p></td>
+								<input name="wpideas_adminemails" type="text" id="wpideas_adminemails" value="<?php echo get_option( 'wpideas_adminemails' ); ?>" class="regular-text" />
+								<p class="description">Admin &AMP; other emails separated by comma (,)</p>
 							</td>
 						</tr>
 						<tr valign="top">
