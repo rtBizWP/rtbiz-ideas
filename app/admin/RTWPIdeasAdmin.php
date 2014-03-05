@@ -1,11 +1,16 @@
 <?php
 /**
- * Description of RTWPIdeasAdmin
+ * RTWPIdeasAdmin - admin class for plugin
  *
- * @author kaklo
+ * PHP version 5
+ *
+ * @category Development
+ * @package  RTWPIdeas
+ * @author   kaklo <mehul.kaklotar@rtcamp.com>
+ * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @link     http://rtcamp.com
  */
 if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
-
 	class RTWPIdeasAdmin {
 
 		/**

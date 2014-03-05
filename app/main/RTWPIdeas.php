@@ -1,10 +1,15 @@
 <?php
 
 /**
- * Created by PhpStorm.
- * User: faishal
- * Date: 07/02/14
- * Time: 2:20 PM
+ * RTWPIdeas - client class for plugin
+ *
+ * PHP version 5
+ *
+ * @category Development
+ * @package  RTWPIdeas
+ * @author   kaklo <mehul.kaklotar@rtcamp.com>
+ * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @link     http://rtcamp.com
  */
 if ( ! class_exists( 'RTWPIdeas' ) ) {
 
