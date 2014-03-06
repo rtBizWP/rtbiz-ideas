@@ -48,26 +48,20 @@ if ( ! class_exists( 'RTWPIdeas' ) ) {
 		function rtwpideas_template( $template ) {
 			global $wp;
 			//A Specific Custom Post Type
-			if ( isset( $wp -> query_vars[ 'post_type' ] ) ) {
-				if ( $wp -> query_vars[ 'post_type' ] == 'idea' ) {
-					$templatefilename = 'archive-idea.php';
-					if ( file_exists( RTWPIDEAS_PATH . 'templates/' . $templatefilename ) ) {
-						$return_template = RTWPIDEAS_PATH . 'templates/' . $templatefilename;
-					}
-					$this -> do_theme_redirect( $return_template );
-				}
+			if ( isset( $wp -> query_vars[ 'post_type' ] ) && $wp -> query_vars[ 'post_type' ] == RT_WPIDEAS_SLUG ) {
+                $templatefilename = 'archive-idea.php';
+                if ( file_exists( RTWPIDEAS_PATH . 'templates/' . $templatefilename ) ) {
+                    $return_template = RTWPIDEAS_PATH . 'templates/' . $templatefilename;
+                }
+                $this -> do_theme_redirect( $return_template );
 			}
 		}
 
 		function do_theme_redirect( $url ) {
 			global $post, $wp_query;
-			if ( have_posts() ) {
-				add_thickbox();
-				include($url);
-				die();
-			} else {
-				$wp_query -> is_404 = true;
-			}
+			add_thickbox();
+			include($url);
+			die();
 		}
 
 		function woo_ideas_tab( $tabs ) {

@@ -41,10 +41,10 @@ function wpideas_insert_new_idea() {
 			$ideaResponse[ 'content' ] = 'Please enter details.';
 			$hasError = true;
 		}
-		if ( $_POST[ 'product_id' ] === '' ) {
+		/*if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) && $_POST[ 'product_id' ] === '' ) {
 			$ideaResponse[ 'product' ] = 'Please select product.';
 			$hasError = true;
-		}
+		}*/
 
 		if ( ! $hasError ) {
 			$idea_information = array( 
@@ -58,7 +58,7 @@ function wpideas_insert_new_idea() {
 
 			update_post_meta( $idea_id, '_rt_wpideas_meta_votes', 0 );
 
-			if ( isset( $_POST[ 'product_id' ] ) ) {
+			if ( isset( $_POST[ 'product_id' ] ) && $_POST[ 'product_id' ] != '' ) {
 				update_post_meta( $idea_id, '_rt_wpideas_product_id', $_POST[ 'product_id' ] );
 			}
 
@@ -79,7 +79,7 @@ function wpideas_insert_new_idea() {
 			//$headers[] = 'Cc: John Q Codex <jqc@wordpress.org>';
 			//$headers[] = 'Cc: iluvwp@wordpress.org';
 
-			$subject = _e( 'New Idea', 'wp-ideas' );
+			$subject = __( 'New Idea', 'wp-ideas' );
 
 			$recipients = array();
 
@@ -93,7 +93,7 @@ function wpideas_insert_new_idea() {
 			$rtwpideasAdmin = new RTWPIdeasAdmin();
 			$rtwpideasAdmin -> sendNotifications( $recipients, $subject, $message, $headers );
 
-			if ( isset( $_POST[ 'product' ] ) ) {
+			if ( isset( $_POST[ 'product' ] ) && $_POST[ 'product' ] == 'product_page' ) {
 				echo 'product';
 			}
 		} else {
@@ -147,18 +147,15 @@ function wpideas_search_callback() {
 		wp_reset_postdata();
 	else :
 	if ( is_user_logged_in() ) {
-		if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
-			?>
-			<div id="my-content-id" style="display:none;">
-			<?php
-			include RTWPIDEAS_PATH . 'templates/template-insert-idea.php';
-			?>
-			</div>
-				<?php
-				echo 'Looks like we do not have your idea. <br /><br /> Have you got better one? &nbsp; <a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Click Here </a> &nbsp;  to suggest.';
-		}else{
-			echo '<h4>It seems that you have not activated woocommerce yet. Go to this <a href="http://wordpress.org/plugins/woocommerce/">link</a></h4>';
-		}
+        ?>
+        <div id="my-content-id" style="display:none;">
+        <?php
+        include RTWPIDEAS_PATH . 'templates/template-insert-idea.php';
+        ?>
+        </div>
+            <?php
+            echo 'Looks like we do not have your idea. <br /><br /> Have you got better one? &nbsp; <a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Click Here </a> &nbsp;  to suggest.';
+
 	} else {
 		echo '<br/><a id="btnOpenThickbox" href="/wp-login.php">Login to Suggest Idea</a>';
 	}
@@ -177,7 +174,10 @@ function wpideas_search_callback() {
  */
 function list_all_idea_shortcode( $atts ) {
 	global $post;
-	$default = array( 'type' => 'post', 'post_type' => RT_WPIDEAS_SLUG, );
+	$default = array( 
+		'type' => 'post',
+		'post_type' => RT_WPIDEAS_SLUG,
+		);
 	$r = shortcode_atts( $default, $atts );
 	extract( $r );
 
@@ -232,19 +232,27 @@ function list_woo_product_ideas( $atts ) {
 	$args = array( 'post_type' => $post_type, 'posts_per_page' => $posts_per_page, 'meta_query' => array( array( 'key' => '_rt_wpideas_product_id', 'value' => $product_id, ) ) );
 
 	echo '<br/>';
-	echo '<div id="wpidea-content">';
+
 	$posts = new WP_Query( $args );
 	if ( $posts -> have_posts() ):
+        ?>
+        <div id="wpidea-content">
+        <?php
 		while ( $posts -> have_posts() ) : $posts -> the_post();
 			include RTWPIDEAS_PATH . 'templates/loop-common.php';
 		endwhile;
+        ?>
+        </div>
+        <a href="javascript:;" data-nonce="<?php echo esc_attr( wp_create_nonce( 'load_ideas' ) ); ?>" id="ideaLoadMore"><?php _e( 'Load More', 'wp-ideas' ); ?></a>
+        <input type="hidden" value="<?php echo esc_attr( $product_id ); ?>" id="idea_product_id"/><br/><br/>
+        <?php
 		wp_reset_postdata();
 	else :
 		?><p>No idea for this product.</p><?php
 	endif;
-	echo '</div>';
-	?><a href="javascript:;" data-nonce="<?php echo esc_attr( wp_create_nonce( 'load_ideas' ) ); ?>" id="ideaLoadMore"><?php _e( 'Load More', 'wp-ideas' ); ?></a>
-	<input type="hidden" value="<?php echo esc_attr( $product_id ); ?>" id="idea_product_id"/><br/><br/><?php
+	?>
+
+    <?php
 	if ( is_user_logged_in() ) {
 		?>
 		<br/>
@@ -266,7 +274,16 @@ function list_woo_product_ideas_refresh() {
 
 	$posts_per_page = 3;
 
-	$args = array( 'post_type' => RT_WPIDEAS_SLUG, 'posts_per_page' => $posts_per_page, 'meta_query' => array( array( 'key' => '_rt_wpideas_product_id', 'value' => $_POST[ 'product_id' ], ) ) );
+	$args = array(
+        'post_type' => RT_WPIDEAS_SLUG,
+        'posts_per_page' => $posts_per_page,
+        'meta_query' => array(
+            array(
+                'key' => '_rt_wpideas_product_id',
+                'value' => $_POST[ 'product_id' ],
+            )
+        )
+    );
 
 	$posts = new WP_Query( $args );
 	if ( $posts -> have_posts() ):

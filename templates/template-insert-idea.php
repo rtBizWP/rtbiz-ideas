@@ -17,7 +17,7 @@ wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 			data.append("txtIdeaTitle", $('#txtIdeaTitle').val());
 			data.append("txtIdeaContent", $('#txtIdeaContent').val());
 			data.append("product_id", $('#product_id').val());
-			data.append("product", $('#product').val());
+			data.append("product", $('#product_page').val());
 			// Get the selected files from the input.
 			var files = document.getElementById('file').files;
 			// Loop through each of the selected files.
@@ -69,22 +69,18 @@ wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 						tb_remove();
 						if (res === 'product') {
 							woo_list_ideas_product($('#product_id').val());
-						}
-						$('#txtSearchIdea').val('');
-						$('#txtSearchIdea').keyup();
-						$('#lblIdeaSuccess').show();
+						}else {
+                            search_idea();
+                        }
+                        $('#lblIdeaSuccess').show();
 					}
-					jQuery('article:nth-child(1)').addClass('sticky');
-					setTimeout(function() {
-						jQuery('article:nth-child(1)').removeClass('sticky');
-						$('#lblIdeaSuccess').hide();
-					}, 5000);
+
 					$('#txtIdeaTitle').removeAttr('disabled');
 					$('#txtIdeaContent').removeAttr('disabled');
 					$('#txtIdeaProduct').removeAttr('disabled');
 					$('#file').removeAttr('disabled');
 					$('#ideaLoading').hide();
-				},
+				}
 			});
 		});
 	});
@@ -100,6 +96,16 @@ wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 			}, 600);
 		});
 	}
+    function search_idea(){
+        var data = {
+            action: 'wpideas_search',
+            searchtext: ''
+        };
+
+        jQuery.post(rt_wpideas_ajax_url, data, function (response) {
+            jQuery('#loop-common').html(response);
+        });
+    }
 
 </script>
 <form id="insertIdeaForm" method="post" enctype="multipart/form-data" action="">
@@ -128,28 +134,38 @@ wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 		<label class="error" id="txtIdeaContentError" style="display:none;"></label>
 	</div>
 	<?php
-	if ( get_post_type() != 'product' ) {
-		?> 
+    if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+        if ( get_post_type() != 'product' ){
+            $rtargs = array(
+                'post_type' => 'product',
+                'posts_per_page' => -1,
+            );
+            query_posts( $rtargs );
+        }
+    }
+
+
+        if( isset($rtargs) && !empty( $rtargs ) && have_posts() ){
+		?>
 		<div>
 			<select class="required" id="product_id" name="product_id">
 				<option value=""> Select Product </option>
-				<?php
-				$args = array(
-					'post_type' => 'product',
-					'posts_per_page' => -1,
-				);
+                <?php
+                global $post;
 
-				query_posts( $args );
-				while ( have_posts() ) : the_post();
-					echo '<option value="' . get_the_ID() . '">' . get_the_title() . '</option>';
-				endwhile;
+				while ( have_posts() ){
+                    the_post();
+                    echo '<option value="' . get_the_ID() . '" >' . get_the_title() . '</option>';
+                }
+                wp_reset_query();
 				?>
-			</select> 
+			</select>
 			<label class="error" id="txtIdeaProductError" style="display:none;"></label>
 		</div>
 
 		<?php
-	}
+        }
+
 	?>
 
 	<div>
@@ -161,7 +177,7 @@ wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 			<input type="hidden" id="product_id" name="product_id" value="<?php
 			global $post;
 			echo $post -> ID;
-			?>" /><input type="hidden" id="product" name="product" value="product" />
+			?>" /><input type="hidden" id="product_page" name="product_page" value="product_page" />
 			   <?php } ?>
 		<input type="hidden" name="submitted" id="submitted" value="true" />
 		<?php wp_nonce_field( 'idea_nonce', 'idea_nonce_field' ); ?>

@@ -95,7 +95,6 @@ if ( ! class_exists( 'RTWPIdeasVotesModel' ) ){
         {
             global $wpdb;
             $row = new WP_Query( 's=' . $txtSearch . '&post_type=idea' );
-
             return $row;
         }
 
