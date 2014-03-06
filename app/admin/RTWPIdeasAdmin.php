@@ -214,6 +214,13 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 		 */
 		function wpideas_idea_status_changed( $new_status, $old_status, $post ) {
 			if ( $new_status != $old_status ) {
+
+                update_post_meta( $post -> post_ID, '_rt_wpideas_status_changer', get_current_user_id() );
+
+                $user_info = get_userdata( get_current_user_id() );
+
+                $status_changer = $user_info->user_login;
+
 				$headers[] = 'From: WP Ideas <wpideas@rtcamp.net>';
 				//$headers[] = 'Cc: John Q Codex <jqc@wordpress.org>';
 				//$headers[] = 'Cc: iluvwp@wordpress.org';
@@ -230,10 +237,11 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 					array_push( $recipients, $temp[ $i ] );
 				}
 				$message = '';
-				$message .= '<h2>Idea status changed to '.$new_status.' for [ ' . $title . ' ]</h2>';
+				$message .= '<h2>Idea status changed to '.$new_status.' for [ ' . $title . ' ] </h2>';
 				$message .= '<h3>[' . $new_status . '] ' . $title . '</h3>';
-				$message .= '<label>Author: <a href="' . get_author_posts_url( $author ) . '">' . get_author_name( $author ) . '</a></label><br/>';
-				$message .= '<label>Votes: ' . get_post_meta( $post -> ID, '_rt_wpideas_meta_votes', true ) . '</label>';
+                $message .= '<label><b>Status updated by: </b> ' . $status_changer . '</label><br/>';
+				$message .= '<label><b>Author:</b> <a href="' . get_author_posts_url( $author ) . '">' . $user_info->first_name .' '. $user_info->last_name .'('. $user_info->user_login .')</a></label><br/>';
+				$message .= '<label><b>Votes:</b> ' . get_post_meta( $post -> ID, '_rt_wpideas_meta_votes', true ) . '</label>';
 
 				$this -> sendNotifications( $recipients, $subject, $message, $headers );
 			}
@@ -251,9 +259,10 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				//$headers[] = 'Cc: John Q Codex <jqc@wordpress.org>';
 				//$headers[] = 'Cc: iluvwp@wordpress.org';
 
-				$comment_content = $comment_object -> comment_content;
-				$comment_author = $comment_object -> comment_author;
-				$idea_id = $comment_object -> comment_post_ID;
+				$comment_content = $comment_object->comment_content;
+				$comment_author = $comment_object->comment_author;
+                $comment_author_url = get_comment_author_link( $comment_object->comment_ID );
+				$idea_id = $comment_object->comment_post_ID;
 				$idea = get_post( $idea_id );
 
 				$subject = '[WP Ideas] Comment On ' . $idea -> post_title;
@@ -267,8 +276,9 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				}
 				$message = '';
 				$message .= '<h2> New Comment on ' . $idea -> post_title . '</h2>';
-				$message .= '<label>Commentator: '.$comment_author.'</label><br/>';
-				$message .= '<label>Comment: '.$comment_content.'</label>';
+				$message .= '<label><b>Commentator:</b> '. $comment_author_url .'</label><br/>';
+				$message .= '<label><b>Content:</b> '.$comment_content.'</label><br/>';
+                $message .= '<label><b>Link:</b> '.get_comment_link( $comment_object ).'</label>';
 
 				$this -> sendNotifications( $recipients, $subject, $message, $headers );
 			}
