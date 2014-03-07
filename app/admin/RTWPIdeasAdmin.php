@@ -37,7 +37,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 		 * Init global variables
 		 */
 		function init_attributes() {
-			
+
 		}
 
 		/**
@@ -79,7 +79,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 			);
 
 			register_post_type( RT_WPIDEAS_SLUG, $args );
-            flush_rewrite_rules( true );
+//            flush_rewrite_rules( true );
 		}
 
 		/**
@@ -122,7 +122,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 
 		/**
 		 * Fill the post status select box and change the value accordingly
-		 * 
+		 *
 		 * @global type $pagenow
 		 * @global type $post
 		 * @return type
@@ -183,7 +183,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 
 		/**
 		 * Votes columns in idea list admin
-		 * 
+		 *
 		 * @param array $defaults
 		 * @return type
 		 */
@@ -194,7 +194,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 
 		/**
 		 * Votes column value with vote count
-		 * 
+		 *
 		 * @param type $column_name
 		 * @param type $idea_id
 		 */
@@ -207,7 +207,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 
 		/**
 		 * Send email notification when idea status changes if email notification is set to true
-		 * 
+		 *
 		 * @param type $new_status
 		 * @param type $old_status
 		 * @param type $post
@@ -249,7 +249,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 
 		/**
 		 * Send email notifications when comment is posted on idea if email notification is set to true
-		 * 
+		 *
 		 * @param type $comment_id
 		 * @param type $comment_object
 		 */
@@ -286,7 +286,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 
 		/**
 		 * Send email
-		 * 
+		 *
 		 * @param type $recipients
 		 * @param type $subject
 		 * @param type $message
