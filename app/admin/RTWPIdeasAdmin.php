@@ -79,7 +79,6 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 			);
 
 			register_post_type( RT_WPIDEAS_SLUG, $args );
-            flush_rewrite_rules( true );
 		}
 
 		/**
