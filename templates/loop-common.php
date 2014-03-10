@@ -15,21 +15,34 @@
         <div class="rtwpIdeaVoteButton">
             <input type="button" id="btnVote-<?php the_ID(); ?>" class="btnVote" data-id="<?php the_ID(); ?>"
                    value="<?php
-                   if ( is_user_logged_in() ){
-                       $is_voted = check_user_voted( get_the_ID() );
-                       if ( isset( $is_voted ) && $is_voted ){
-                           echo 'Vote Down';
-                       } else {
-                           if ( isset( $is_voted ) && ! $is_voted ){
-                               echo 'Vote Up';
-                           } else {
-                               echo 'Vote';
-                           }
-                       }
-                   } else {
-                       echo 'Vote';
-                   }
-                   ?>"/>
+				   if( get_post_status( get_the_ID() ) != 'new' ){
+						echo ucfirst( get_post_status( get_the_ID() ) );
+				   }else{
+						   if ( is_user_logged_in() ){
+							   $is_voted = check_user_voted( get_the_ID() );
+							   if ( isset( $is_voted ) && $is_voted ){
+								   echo 'Vote Down';
+							   } else {
+								   if ( isset( $is_voted ) && ! $is_voted ){
+									   echo 'Vote Up';
+								   } else {
+									   echo 'Vote';
+								   }
+							   }
+						   } else {
+							   echo 'Vote';
+						   }
+				   }
+
+                   ?>" <?php if( get_post_status( get_the_ID() ) != 'new' ){
+				echo ' disabled="disabled"';
+			} ?> <?php if( get_post_status( get_the_ID() ) == 'accepted' ){
+				echo ' style="background-color:GREEN;"';
+			}else if( get_post_status( get_the_ID() ) == 'declined' ){
+				echo ' style="background-color:RED;"';
+			}else if( get_post_status( get_the_ID() ) == 'completed' ){
+				echo ' style="background-color:GREEN;"';
+			} ?> />
         </div>
     </div>
     <header class="rtwpIdeaHeader">
