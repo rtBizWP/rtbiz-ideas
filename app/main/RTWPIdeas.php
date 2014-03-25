@@ -21,10 +21,13 @@ if ( ! class_exists( 'RTWPIdeas' ) ) {
 		public function __construct() {
 			// DB Upgrade
 			$updateDB = new RT_DB_Update(  RTWPIDEAS_PATH . 'index.php', RTWPIDEAS_PATH . 'app/schema/',false );
+			add_action( 'rt_db_update_finished', array( $this, 'refresh_permalinks_after_update' ) );
 			$updateDB->do_upgrade();
+			remove_action( 'rt_db_update_finished', array( $this, 'refresh_permalinks_after_update' ) );
 			$this -> init_attributes();
 			add_action( 'template_redirect', array( $this, 'rtwpideas_template' ) );
 			add_filter( 'woocommerce_product_tabs', array( $this, 'woo_ideas_tab' ) );
+
 		}
 
 		/**
@@ -82,6 +85,10 @@ if ( ! class_exists( 'RTWPIdeas' ) ) {
 			if ( isset( $post ) ) {
 				echo sanitize_html_class( do_shortcode( '[wpideas product_id = ' . $post -> ID . ' ]' ) );
 			}
+		}
+
+		function refresh_permalinks_after_update(){
+
 		}
 
 	}

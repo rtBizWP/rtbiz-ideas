@@ -229,6 +229,8 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				$author = $post -> post_author;
 				$title = $post -> post_title;
 
+				$author_info = get_userdata( $author );
+
 				$recipients = array();
 				array_push( $recipients, get_the_author_meta( 'user_email', $author ) );
 				$temp = explode( ',', trim( get_option( 'wpideas_adminemails' ) ) );
@@ -238,8 +240,8 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				$message = '';
 				$message .= '<h2>Idea status changed to '.$new_status.' for [ ' . $title . ' ] </h2>';
 				$message .= '<h3>[' . $new_status . '] ' . $title . '</h3>';
-				$message .= '<label><b>Status updated by: </b> ' . $status_changer . '</label><br/>';
-				$message .= '<label><b>Author:</b> <a href="' . get_author_posts_url( $author ) . '">' . $user_info->first_name .' '. $user_info->last_name .'('. $user_info->user_login .')</a></label><br/>';
+				$message .= '<label><b>Status updated by: </b><a href="' . get_author_posts_url( $user_info->ID ) . '"> ' . $status_changer . '</a></label><br/>';
+				$message .= '<label><b>Author:</b> <a href="' . get_author_posts_url( $author ) . '">' . $author_info->first_name .' '. $author_info->last_name .'('. $author_info->user_login .')</a></label><br/>';
 				$message .= '<label><b>Votes:</b> ' . get_post_meta( $post -> ID, '_rt_wpideas_meta_votes', true ) . '</label>';
 
 				$this -> sendNotifications( $recipients, $subject, $message, $headers );
