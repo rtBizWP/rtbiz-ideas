@@ -24,7 +24,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 			add_action( 'manage_idea_posts_custom_column', array( $this, 'wpideas_ideas_table_columns' ), 10, 2 );
 			add_action( 'admin_menu', array( $this, 'wpideas_settings_menu' ) );
 			add_action( 'admin_init', array( $this, 'register_ideas_settings' ) );
-			if ( get_option( 'wpideas_emailenabled' ) == 'true' && get_option( 'wpideas_status_changes' ) == '1' ) {
+			if ( get_option( 'wpideas_emailenabled' ) == 'true' && get_option( 'wpideas_status_changes' ) == '1' ){
 				add_action( 'transition_post_status', array( $this, 'wpideas_idea_status_changed' ), 10, 3 );
 			}
 			if ( get_option( 'wpideas_emailenabled' ) == 'true' && get_option( 'wpideas_comment_posted' ) == '1' ) {
@@ -212,13 +212,13 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 		 * @param type $post
 		 */
 		function wpideas_idea_status_changed( $new_status, $old_status, $post ) {
-			if ( $new_status != $old_status ) {
+			if ( $new_status != $old_status && get_post_type() == RT_WPIDEAS_SLUG ) {
 
-                update_post_meta( $post -> post_ID, '_rt_wpideas_status_changer', get_current_user_id() );
+				update_post_meta( $post -> post_ID, '_rt_wpideas_status_changer', get_current_user_id() );
 
-                $user_info = get_userdata( get_current_user_id() );
+				$user_info = get_userdata( get_current_user_id() );
 
-                $status_changer = $user_info->user_login;
+				$status_changer = $user_info->user_login;
 
 				$headers[] = 'From: WP Ideas <wpideas@rtcamp.net>';
 				//$headers[] = 'Cc: John Q Codex <jqc@wordpress.org>';
@@ -238,7 +238,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				$message = '';
 				$message .= '<h2>Idea status changed to '.$new_status.' for [ ' . $title . ' ] </h2>';
 				$message .= '<h3>[' . $new_status . '] ' . $title . '</h3>';
-                $message .= '<label><b>Status updated by: </b> ' . $status_changer . '</label><br/>';
+				$message .= '<label><b>Status updated by: </b> ' . $status_changer . '</label><br/>';
 				$message .= '<label><b>Author:</b> <a href="' . get_author_posts_url( $author ) . '">' . $user_info->first_name .' '. $user_info->last_name .'('. $user_info->user_login .')</a></label><br/>';
 				$message .= '<label><b>Votes:</b> ' . get_post_meta( $post -> ID, '_rt_wpideas_meta_votes', true ) . '</label>';
 
@@ -253,7 +253,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 		 * @param type $comment_object
 		 */
 		function wpideas_idea_comment_posted( $comment_id, $comment_object ) {
-			if ( $comment_object -> comment_approved > 0 ) {
+			if ( $comment_object -> comment_approved > 0 && get_post_type() == RT_WPIDEAS_SLUG ) {
 				$headers[] = 'From: WP Ideas <wpideas@rtcamp.net>';
 				//$headers[] = 'Cc: John Q Codex <jqc@wordpress.org>';
 				//$headers[] = 'Cc: iluvwp@wordpress.org';
