@@ -36,14 +36,7 @@ get_header();
                         endif;
                     else :
                         if ( is_user_logged_in() ) {
-                                ?>
-                                <div id="my-content-id" style="display:none;">
-                                    <?php
-                                    include RTWPIDEAS_PATH . 'templates/template-insert-idea.php';
-                                    ?>
-                                </div>
-                                <?php
-                                echo 'Looks like we do not have any idea. <br /><br /> Be first one to suggest idea.&nbsp; <a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Click Here </a> &nbsp;  to suggest.';
+                                echo 'Looks like we do not have any idea. <br /><br /> Be first one to suggest idea.&nbsp; <a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=wpideas-insert-idea" class="thickbox"> Click Here </a> &nbsp;  to suggest.';
 
                         } else {
                             echo '<br/><a id="btnOpenThickbox" href="/wp-login.php">Login to Suggest Idea</a>';
@@ -52,6 +45,11 @@ get_header();
                     endif; ?>
             </div>
         </div>
+		<div id="wpideas-insert-idea" style="display:none;">
+			<?php
+			include RTWPIDEAS_PATH . 'templates/template-insert-idea.php';
+			?>
+		</div>
         <!-- #content -->
     </div><!-- #primary -->
 <?php

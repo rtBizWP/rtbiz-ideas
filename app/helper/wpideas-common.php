@@ -147,15 +147,7 @@ function wpideas_search_callback() {
 		wp_reset_postdata();
 	else :
 	if ( is_user_logged_in() ) {
-        ?>
-        <div id="my-content-id" style="display:none;">
-        <?php
-        include RTWPIDEAS_PATH . 'templates/template-insert-idea.php';
-        ?>
-        </div>
-            <?php
-            echo 'Looks like we do not have your idea. <br /><br /> Have you got better one? &nbsp; <a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Click Here </a> &nbsp;  to suggest.';
-
+            echo 'Looks like we do not have your idea. <br /><br /> Have you got better one? &nbsp; <a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=wpideas-insert-idea" class="thickbox"> Click Here </a> &nbsp;  to suggest.';
 	} else {
 		echo '<br/><a id="btnOpenThickbox" href="/wp-login.php">Login to Suggest Idea</a>';
 	}
@@ -219,17 +211,22 @@ add_action( 'wp_ajax_nopriv_list_woo_product_ideas_refresh', 'list_woo_product_i
  * @param type  $atts
  */
 function list_woo_product_ideas( $atts ) {
+
 	global $post;
 	$default = array( 'type' => 'post', 'post_type' => RT_WPIDEAS_SLUG, 'product_id' => '', );
 	$r = shortcode_atts( $default, $atts );
 	extract( $r );
 
 	$posts_per_page = 3;
+
+	add_thickbox();
+
 	$args = array( 'post_type' => $post_type, 'posts_per_page' => $posts_per_page, 'meta_query' => array( array( 'key' => '_rt_wpideas_product_id', 'value' => $product_id, ) ) );
+
+	echo '<br/>';
+
 	$posts = new WP_Query( $args );
 	if ( $posts -> have_posts() ):
-		add_thickbox();
-		echo '<br/>';
         ?>
         <div id="wpidea-content">
         <?php
@@ -257,7 +254,7 @@ function list_woo_product_ideas( $atts ) {
 		?>
 		</div>
 			<?php
-			echo '<a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Suggest Idea for this product</a> <br/><br/>';
+			echo '<a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Suggest Idea </a> &nbsp; for this product. <br/><br/>';
 	} else {
 		echo '<br/><a id="btnOpenThickbox" href="/wp-login.php">Login to Suggest Idea</a>';
 	}
