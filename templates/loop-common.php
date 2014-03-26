@@ -118,7 +118,7 @@
 				<?php
 					$author = get_userdata($post->post_author);
 				?>
-                <a href="<?php echo get_author_posts_url( $author->ID ); ?>" title="Author of <?php the_title(); ?>"><?php the_author(); ?> →</a>
+                <?php echo bp_core_get_userlink( $author->ID ); ?>
             </div>
     </header>
 </article>
