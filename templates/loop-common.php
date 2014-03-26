@@ -118,7 +118,11 @@
 				<?php
 					$author = get_userdata($post->post_author);
 				?>
-                <?php echo bp_core_get_userlink( $author->ID ); ?>
+                <?php
+					if( function_exists( 'bp_core_get_userlink' ) ){
+						echo bp_core_get_userlink( $author->ID );
+					}
+				?>
             </div>
     </header>
 </article>
