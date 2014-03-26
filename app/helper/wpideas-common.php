@@ -235,7 +235,9 @@ function list_woo_product_ideas( $atts ) {
 		endwhile;
         ?>
         </div>
-        <a href="javascript:;" data-nonce="<?php echo esc_attr( wp_create_nonce( 'load_ideas' ) ); ?>" id="ideaLoadMore"><?php _e( 'Load More', 'wp-ideas' ); ?></a>
+		<div class="idea-loadmore">
+        <a href="javascript:;" data-nonce="<?php echo esc_attr( wp_create_nonce( 'load_ideas' ) ); ?>" id="ideaLoadMore" class="rtp-readmore button rtp-button-beta-light tiny aligncenter"><?php _e( 'Load More', 'wp-ideas' ); ?></a>
+		</div>
         <input type="hidden" value="<?php echo esc_attr( $product_id ); ?>" id="idea_product_id"/><br/><br/>
         <?php
 		wp_reset_postdata();

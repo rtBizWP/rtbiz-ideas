@@ -237,15 +237,13 @@ figure {
 	color: #B8BECC;
 }
 #ideaLoadMore{
-	width: 100%;
-	font-size: 18px;
+	font-size: 16px;
 	text-decoration: none;
-	background-color: #4b74bb;
+	background-color: #50A1D7;
 	color: #FFFFFF;
 	padding: 10px 10px;
 	border-radius: 5px;
 	margin: 0 auto;
-	float: right;
 	text-align: center;
 }
 .searchidea{
@@ -267,4 +265,7 @@ figure {
     -moz-border-radius: 5px; /* FF1+ */
     -webkit-border-radius: 5px; /* Saf3-4 */
     border-radius: 5px; /* Opera 10.5, IE 9, Saf5, Chrome */
+}
+.idea-loadmore{
+    text-align: center;
 }
