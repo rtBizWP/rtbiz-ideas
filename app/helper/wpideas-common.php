@@ -222,10 +222,12 @@ function list_woo_product_ideas( $atts ) {
 	add_thickbox();
 
 	$args = array( 'post_type' => $post_type, 'posts_per_page' => $posts_per_page, 'meta_query' => array( array( 'key' => '_rt_wpideas_product_id', 'value' => $product_id, ) ) );
-
+	$args_count = array( 'post_type' => $post_type, 'meta_query' => array( array( 'key' => '_rt_wpideas_product_id', 'value' => $product_id, ) ) );
 	echo '<br/>';
 
 	$posts = new WP_Query( $args );
+	$posts_count = new WP_Query( $args_count );
+	echo '<div id="wpidea-content-wrapper">';
 	if ( $posts -> have_posts() ):
         ?>
         <div id="wpidea-content">
@@ -235,13 +237,16 @@ function list_woo_product_ideas( $atts ) {
 		endwhile;
         ?>
         </div>
-        <a href="javascript:;" data-nonce="<?php echo esc_attr( wp_create_nonce( 'load_ideas' ) ); ?>" id="ideaLoadMore"><?php _e( 'Load More', 'wp-ideas' ); ?></a>
+        <?php if($posts_count->post_count > 3 ){ ?>
+		<a href="javascript:;" data-nonce="<?php echo esc_attr( wp_create_nonce( 'load_ideas' ) ); ?>" id="ideaLoadMore"><?php _e( 'Load More', 'wp-ideas' ); ?></a>
         <input type="hidden" value="<?php echo esc_attr( $product_id ); ?>" id="idea_product_id"/><br/><br/>
         <?php
+		}
 		wp_reset_postdata();
 	else :
 		?><p>No idea for this product.</p><?php
 	endif;
+	echo '</div>';
 	?>
 
     <?php
@@ -276,12 +281,32 @@ function list_woo_product_ideas_refresh() {
             )
         )
     );
+	$args_count = array(
+		'post_type' => RT_WPIDEAS_SLUG,
+		'meta_query' => array(
+			array(
+				'key' => '_rt_wpideas_product_id',
+				'value' => $_POST[ 'product_id' ],
+			)
+		)
+	);
 
 	$posts = new WP_Query( $args );
+	$posts_count = new WP_Query( $args_count );
 	if ( $posts -> have_posts() ):
-		while ( $posts -> have_posts() ) : $posts -> the_post();
-			include RTWPIDEAS_PATH . 'templates/loop-common.php';
-		endwhile;
+		?>
+		<div id="wpidea-content">
+			<?php
+			while ( $posts -> have_posts() ) : $posts -> the_post();
+				include RTWPIDEAS_PATH . 'templates/loop-common.php';
+			endwhile;
+			?>
+		</div>
+		<?php if($posts_count->post_count > 3 ){ ?>
+		<a href="javascript:;" data-nonce="<?php echo esc_attr( wp_create_nonce( 'load_ideas' ) ); ?>" id="ideaLoadMore"><?php _e( 'Load More', 'wp-ideas' ); ?></a>
+		<input type="hidden" value="<?php echo $_POST[ 'product_id' ]; ?>" id="idea_product_id"/><br/><br/>
+	<?php
+	}
 		wp_reset_postdata();
 	else :
 		?><p>No idea for this product.</p><?php

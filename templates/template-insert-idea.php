@@ -26,7 +26,6 @@
 				// Add the file to the request.
 				data.append('upload[]', file, file.name);
 			}
-			console.log(files);
 			//data.append("upload", $('#file').get(0).files[0]);
 			$.ajax({
 				url: rt_wpideas_ajax_url,
@@ -96,7 +95,7 @@
 			product_id: product_id,
 		}
 		jQuery.post(rt_wpideas_ajax_url, data, function(res) {
-			jQuery('#wpidea-content').html(res);
+			jQuery('#wpidea-content-wrapper').html(res);
 			jQuery("body, html").animate({
 				scrollTop: jQuery('#tab-ideas_tab').offset().top
 			}, 600);
