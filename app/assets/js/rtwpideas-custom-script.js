@@ -51,6 +51,8 @@ jQuery(document).ready(function ($) {
     });
 
     jQuery('#ideaLoadMore').live('click', function (e) {
+        jQuery('#ideaLoadMore').hide();
+        jQuery('#ideaLoading').show();
         var post_type = 'idea'; // this is optional and can be set from anywhere, stored in mockup etc...
         var offset = $('#wpidea-content article').length;
         var product_id = $('#idea_product_id').val();
@@ -71,6 +73,8 @@ jQuery(document).ready(function ($) {
             url: rt_wpideas_ajax_url,
             data: data,
             success: function (response) {
+                jQuery('#ideaLoadMore').show();
+                jQuery('#ideaLoading').hide();
                 response = JSON.parse(response);
                 if (response.have_posts) {//if have posts:
                     var $newElems = $(response['html'].replace(/(\r\n|\n|\r)/gm, ''));
