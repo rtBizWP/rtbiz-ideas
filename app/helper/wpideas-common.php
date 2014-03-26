@@ -147,15 +147,7 @@ function wpideas_search_callback() {
 		wp_reset_postdata();
 	else :
 	if ( is_user_logged_in() ) {
-        ?>
-        <div id="my-content-id" style="display:none;">
-        <?php
-        include RTWPIDEAS_PATH . 'templates/template-insert-idea.php';
-        ?>
-        </div>
-            <?php
             echo 'Looks like we do not have your idea. <br /><br /> Have you got better one? &nbsp; <a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Click Here </a> &nbsp;  to suggest.';
-
 	} else {
 		echo '<br/><a id="btnOpenThickbox" href="/wp-login.php">Login to Suggest Idea</a>';
 	}

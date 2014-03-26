@@ -50,6 +50,11 @@ get_header();
                     endif; ?>
             </div>
         </div>
+		<div id="my-content-id" style="display:none;">
+			<?php
+			include RTWPIDEAS_PATH . 'templates/template-insert-idea.php';
+			?>
+		</div>
         <!-- #content -->
     </div><!-- #primary -->
 <?php

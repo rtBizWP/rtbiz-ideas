@@ -2,7 +2,6 @@
 /**
  * Insert idea
  */
-wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 ?>
 <script>
 	jQuery(document).ready(function($) {
@@ -27,6 +26,7 @@ wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 				// Add the file to the request.
 				data.append('upload[]', file, file.name);
 			}
+			console.log(files);
 			//data.append("upload", $('#file').get(0).files[0]);
 			$.ajax({
 				url: rt_wpideas_ajax_url,
@@ -73,6 +73,12 @@ wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
                             search_idea();
                         }
                         $('#lblIdeaSuccess').show();
+						$('#txtIdeaTitleError').hide();
+						$('#txtIdeaContentError').hide();
+						$('#txtIdeaProductError').hide();
+						$('#txtIdeaTitle').val("");
+						$('#txtIdeaContent').val("");
+						$('#file').val("");
 					}
 
 					$('#txtIdeaTitle').removeAttr('disabled');
@@ -182,7 +188,7 @@ wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 		<input type="hidden" name="submitted" id="submitted" value="true" />
 		<?php wp_nonce_field( 'idea_nonce', 'idea_nonce_field' ); ?>
 		<input type="button" id="btninsertIdeaFormSubmit" value="<?php _e( 'Submit My Idea', 'wp-ideas' ) ?>" />
-		<img src="<?php echo RTWPIDEAS_URL . 'app/assets/img/indicator.gif'; ?>" id="ideaLoading" style="display:none;" />
+		<img src="<?php echo RTWPIDEAS_URL . 'app/assets/img/indicator.gif'; ?>" id="ideaLoading" style="display:none;height: 50px;" />
 		<a href="javascript:;" id="insertIdeaFormCancel">Cancel</a>
 	</div>
 </form>

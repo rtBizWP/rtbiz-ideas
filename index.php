@@ -96,6 +96,7 @@ function rtwpideas_enqueue_styles_and_scripts() {
 	wp_enqueue_style( 'rtwpideas-client-styles' );
 	$ajax_url = admin_url( 'admin-ajax.php' );
 	wp_localize_script( 'rtwpideas-custom-script', 'rt_wpideas_ajax_url', $ajax_url );
+	wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 	//wp_register_script( 'validation', 'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js', array( 'jquery' ) );
 	//wp_enqueue_script( 'validation' );
 }
