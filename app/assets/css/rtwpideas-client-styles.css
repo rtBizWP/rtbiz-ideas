@@ -237,13 +237,15 @@ figure {
 	color: #B8BECC;
 }
 #ideaLoadMore{
-	font-size: 16px;
+	width: 100%;
+	font-size: 18px;
 	text-decoration: none;
-	background-color: #50A1D7;
+	background-color: #4b74bb;
 	color: #FFFFFF;
 	padding: 10px 10px;
 	border-radius: 5px;
 	margin: 0 auto;
+	float: right;
 	text-align: center;
 }
 .searchidea{
@@ -307,4 +309,10 @@ figure {
         -moz-border-bottom-left-radius: 5px;
         -webkit-border-bottom-left-radius: 5px;
     }
+}
+#TB_overlay{
+    z-index: 999;
+}
+#TB_window{
+    z-index: 9999;
 }
