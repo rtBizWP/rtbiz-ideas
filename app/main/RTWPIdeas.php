@@ -24,7 +24,7 @@ if ( ! class_exists( 'RTWPIdeas' ) ) {
 			$updateDB->do_upgrade();
 			$this -> init_attributes();
 			add_action( 'template_redirect', array( $this, 'rtwpideas_template' ) );
-			add_filter( 'woocommerce_product_tabs', array( $this, 'woo_ideas_tab' ) );
+			add_filter( 'woocommerce_product_tabs', array( $this, 'woo_ideas_tab' ), 999,1 );
 		}
 
 		/**

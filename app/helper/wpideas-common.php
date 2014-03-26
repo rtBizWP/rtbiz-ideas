@@ -219,22 +219,17 @@ add_action( 'wp_ajax_nopriv_list_woo_product_ideas_refresh', 'list_woo_product_i
  * @param type  $atts
  */
 function list_woo_product_ideas( $atts ) {
-
 	global $post;
 	$default = array( 'type' => 'post', 'post_type' => RT_WPIDEAS_SLUG, 'product_id' => '', );
 	$r = shortcode_atts( $default, $atts );
 	extract( $r );
 
 	$posts_per_page = 3;
-
-	add_thickbox();
-
 	$args = array( 'post_type' => $post_type, 'posts_per_page' => $posts_per_page, 'meta_query' => array( array( 'key' => '_rt_wpideas_product_id', 'value' => $product_id, ) ) );
-
-	echo '<br/>';
-
 	$posts = new WP_Query( $args );
 	if ( $posts -> have_posts() ):
+		add_thickbox();
+		echo '<br/>';
         ?>
         <div id="wpidea-content">
         <?php
@@ -262,7 +257,7 @@ function list_woo_product_ideas( $atts ) {
 		?>
 		</div>
 			<?php
-			echo '<a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Suggest Idea </a> &nbsp; for this product. <br/><br/>';
+			echo '<a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Suggest Idea for this product</a> <br/><br/>';
 	} else {
 		echo '<br/><a id="btnOpenThickbox" href="/wp-login.php">Login to Suggest Idea</a>';
 	}
