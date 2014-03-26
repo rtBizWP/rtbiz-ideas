@@ -117,12 +117,12 @@
                 <span class="rtwpStyle-separator">&nbsp;·&nbsp;</span>
 				<?php
 					$author = get_userdata($post->post_author);
-				?>
-                <?php
 					if( function_exists( 'bp_core_get_userlink' ) ){
 						echo bp_core_get_userlink( $author->ID );
-					}
+					}else{
 				?>
+                	<a href="<?php echo get_author_posts_url( $author->ID ); ?>" title="Author of <?php the_title(); ?>"><?php the_author(); ?> →</a>
+				<?php } ?>
             </div>
     </header>
 </article>
