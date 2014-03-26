@@ -14,7 +14,7 @@ get_header();
             <header class="page-header">
                 <h1 class="page-title"><?php _e( 'Ideas', 'wp-ideas' ); ?></h1>
 				<div class="searchidea">
-                <input type="text" placeholder="Search Ideas Here" id="txtSearchIdea" name="txtSearchIdea"/><a id="btnNewThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> New Idea </a>
+                <input type="text" placeholder="Search Ideas Here" id="txtSearchIdea" name="txtSearchIdea"/><a id="btnNewThickbox" href="#TB_inline?width=600&height=550&inlineId=wpideas-insert-idea" class="thickbox"> New Idea </a>
 				</div>
             </header>
             <label class="success" id="lblIdeaSuccess" style="display:none;">Idea submitted</label>
