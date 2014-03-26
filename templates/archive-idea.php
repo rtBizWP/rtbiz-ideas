@@ -13,11 +13,13 @@ get_header();
 
             <header class="page-header">
                 <h1 class="page-title"><?php _e( 'Ideas', 'wp-ideas' ); ?></h1>
-                <input type="text" placeholder="Search Ideas Here" id="txtSearchIdea" name="txtSearchIdea"/>
+				<div class="searchidea">
+                <input type="text" placeholder="Search Ideas Here" id="txtSearchIdea" name="txtSearchIdea"/><a id="btnNewThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> New Idea </a>
+				</div>
             </header>
             <label class="success" id="lblIdeaSuccess" style="display:none;">Idea submitted</label>
 
-            <div id="loop-common">
+            <div id="loop-common" class="idea-loop-common">
                 <?php if ( have_posts() ) : ?>
                     <?php
                     while ( have_posts() ) : the_post();
