@@ -238,8 +238,10 @@ function list_woo_product_ideas( $atts ) {
         ?>
         </div>
         <?php if($posts_count->post_count > 3 ){ ?>
-		<a href="javascript:;" data-nonce="<?php echo esc_attr( wp_create_nonce( 'load_ideas' ) ); ?>" id="ideaLoadMore"><?php _e( 'Load More', 'wp-ideas' ); ?></a>
-        <input type="hidden" value="<?php echo esc_attr( $product_id ); ?>" id="idea_product_id"/><br/><br/>
+		<div class="idea-loadmore">
+			<a href="javascript:;" data-nonce="<?php echo esc_attr( wp_create_nonce( 'load_ideas' ) ); ?>" id="ideaLoadMore" class="rtp-readmore button rtp-button-beta-light tiny aligncenter"><?php _e( 'Load More', 'wp-ideas' ); ?></a>
+			<input type="hidden" value="<?php echo esc_attr( $product_id ); ?>" id="idea_product_id"/><br/><br/>
+		</div>
         <?php
 		}
 		wp_reset_postdata();
@@ -259,7 +261,7 @@ function list_woo_product_ideas( $atts ) {
 		?>
 		</div>
 			<?php
-			echo '<a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Suggest Idea </a> &nbsp; for this product. <br/><br/>';
+			echo '<a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Suggest Idea for this product</a>';
 	} else {
 		echo '<br/><a id="btnOpenThickbox" href="/wp-login.php">Login to Suggest Idea</a>';
 	}
@@ -303,8 +305,10 @@ function list_woo_product_ideas_refresh() {
 			?>
 		</div>
 		<?php if($posts_count->post_count > 3 ){ ?>
-		<a href="javascript:;" data-nonce="<?php echo esc_attr( wp_create_nonce( 'load_ideas' ) ); ?>" id="ideaLoadMore"><?php _e( 'Load More', 'wp-ideas' ); ?></a>
-		<input type="hidden" value="<?php echo $_POST[ 'product_id' ]; ?>" id="idea_product_id"/><br/><br/>
+		<div class="idea-loadmore">
+			<a href="javascript:;" data-nonce="<?php echo esc_attr( wp_create_nonce( 'load_ideas' ) ); ?>" id="ideaLoadMore" class="rtp-readmore button rtp-button-beta-light tiny aligncenter"><?php _e( 'Load More', 'wp-ideas' ); ?></a>
+			<input type="hidden" value="<?php echo $_POST[ 'product_id' ]; ?>" id="idea_product_id"/><br/><br/>
+		</div>
 	<?php
 	}
 		wp_reset_postdata();

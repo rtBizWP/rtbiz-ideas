@@ -237,15 +237,14 @@ figure {
 	color: #B8BECC;
 }
 #ideaLoadMore{
-	width: 100%;
 	font-size: 18px;
 	text-decoration: none;
-	background-color: #4b74bb;
+	background-color: #35B5EB;
 	color: #FFFFFF;
 	padding: 10px 10px;
 	border-radius: 5px;
 	margin: 0 auto;
-	float: right;
+    width: 150px;
 	text-align: center;
 }
 .searchidea{
@@ -257,6 +256,12 @@ figure {
     vertical-align: bottom;
     float: left;
     line-height: 20px;
+    border-top-left-radius: 0px;
+    -moz-border-top-left-radius: 0px;
+    -webkit-border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    -moz-border-bottom-left-radius: 0px;
+    -webkit-border-bottom-left-radius: 0px;
 }
 .idea-loop-common{clear: both;}
 
@@ -267,6 +272,42 @@ figure {
     -moz-border-radius: 5px; /* FF1+ */
     -webkit-border-radius: 5px; /* Saf3-4 */
     border-radius: 5px; /* Opera 10.5, IE 9, Saf5, Chrome */
+    border-top-right-radius: 0px;
+    -moz-border-top-right-radius: 0px;
+    -webkit-border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    -moz-border-bottom-right-radius: 0px;
+    -webkit-border-bottom-right-radius: 0px;
+}
+.idea-loadmore{
+    text-align: center;
+}
+#lblIdeaSuccess{
+    clear: both;
+    background: #D2FAD2;
+    padding: 10px;
+    border: 1px solid #90EE90;
+    border-radius: 5px;
+    font-weight: 600;
+}
+@media only screen and (max-width: 480px) {
+    #txtSearchIdea{
+        width:100%;
+        border-top-right-radius: 5px;
+        -moz-border-top-right-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        -moz-border-bottom-right-radius: 5px;
+        -webkit-border-bottom-right-radius: 5px;
+    }
+    #btnNewThickbox{
+        border-top-left-radius:5px;
+        -moz-border-top-left-radius: 5px;
+        -webkit-border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        -moz-border-bottom-left-radius: 5px;
+        -webkit-border-bottom-left-radius: 5px;
+    }
 }
 #TB_overlay{
     z-index: 999;
