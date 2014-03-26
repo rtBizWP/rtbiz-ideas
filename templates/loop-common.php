@@ -115,7 +115,10 @@
                 }
                 ?>
                 <span class="rtwpStyle-separator">&nbsp;·&nbsp;</span>
-                <a href="#" title="Author of <?php the_title(); ?>"><?php the_author(); ?> →</a>
+				<?php
+					$author = get_userdata($post->post_author);
+				?>
+                <a href="<?php echo get_author_posts_url( $author->ID ); ?>" title="Author of <?php the_title(); ?>"><?php the_author(); ?> →</a>
             </div>
     </header>
 </article>
