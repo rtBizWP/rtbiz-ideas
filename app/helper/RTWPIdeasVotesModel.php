@@ -98,6 +98,17 @@ if ( ! class_exists( 'RTWPIdeasVotesModel' ) ){
             return $row;
         }
 
+		function get_voters_of_idea( $idea_id )
+		{
+			$columns = array();
+			$return = array();
+			if( ! empty( $idea_id ) ){
+				$columns[ 'post_id' ] = array( 'compare' => '=', 'value' => array( $idea_id ), );
+				$return               = parent::get( $columns );
+			}
+			return $return;
+		}
+
         /**
          * Insert vote
          *

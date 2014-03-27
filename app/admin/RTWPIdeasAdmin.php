@@ -76,6 +76,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				'hierarchical' => false,
 				'menu_position' => null,
 				'supports' => array( 'title', 'editor', 'author', 'thumbnail', 'revisions', 'excerpt', 'comments', 'page-attributes', 'custom-fields' ),
+				'register_meta_box_cb' => array( $this, 'wpideas_add_voters_metabox' ),
 			);
 
 			register_post_type( RT_WPIDEAS_SLUG, $args );
@@ -384,6 +385,23 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				<?php submit_button(); ?>
 			</form>
 			<?php
+		}
+
+		function wpideas_add_voters_metabox(){
+			add_meta_box( 'Voters', __( 'Voters' ), array( $this, 'wpideas_get_voters_of_idea' ), RT_WPIDEAS_SLUG, 'side', 'default' );
+		}
+
+		function wpideas_get_voters_of_idea( $post ){
+			global $rtWpideasVotes;
+			$row = $rtWpideasVotes->get_voters_of_idea( $post->ID );
+			if( ! empty( $row ) ){
+				for( $i = 0; $i < sizeof( $row ); $i++ ){
+					$voter_info = get_userdata( $row[$i]->user_id );
+					echo '<a href="'. get_edit_user_link( $row[$i]->user_id ) .'">'. $voter_info->user_login .'</a><br/>';
+				}
+			}else{
+				echo __('No votes yet.', 'wp-ideas' );
+			}
 		}
 
 	}
