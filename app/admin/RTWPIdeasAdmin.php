@@ -228,6 +228,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 
 				$author = $post -> post_author;
 				$title = $post -> post_title;
+				$post_link = get_permalink( $post->ID );
 
 				$author_info = get_userdata( $author );
 
@@ -238,11 +239,16 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 					array_push( $recipients, $temp[ $i ] );
 				}
 				$message = '';
-				$message .= '<h2>Idea status changed to '.$new_status.' for [ ' . $title . ' ] </h2>';
+				$message .= '<h2>Idea status changed to '.$new_status.' for [ <a href="'.$post_link.'"> ' . $title . '</a> ] </h2>';
 				$message .= '<h3>[' . $new_status . '] ' . $title . '</h3>';
 				$message .= '<label><b>Status updated by: </b><a href="' . get_author_posts_url( $user_info->ID ) . '"> ' . $status_changer . '</a></label><br/>';
 				$message .= '<label><b>Author:</b> <a href="' . get_author_posts_url( $author ) . '">' . $author_info->first_name .' '. $author_info->last_name .'('. $author_info->user_login .')</a></label><br/>';
-				$message .= '<label><b>Votes:</b> ' . get_post_meta( $post -> ID, '_rt_wpideas_meta_votes', true ) . '</label>';
+				if( get_post_meta( $post -> ID, '_rt_wpideas_meta_votes', true ) != 0 ){
+					$votes_count = get_post_meta( $post -> ID, '_rt_wpideas_meta_votes', true );
+				}else{
+					$votes_count = 0;
+				}
+				$message .= '<label><b>Votes:</b> ' . $votes_count . '</label>';
 
 				$this -> sendNotifications( $recipients, $subject, $message, $headers );
 			}
@@ -265,6 +271,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
                 $comment_author_url = get_comment_author_link( $comment_object->comment_ID );
 				$idea_id = $comment_object->comment_post_ID;
 				$idea = get_post( $idea_id );
+				$idea_link = get_permalink( $idea_id );
 
 				$subject = '[WP Ideas] Comment On ' . $idea -> post_title;
 
@@ -275,11 +282,11 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				for ( $i = 0; $i < count( $temp ); $i ++  ) {
 					array_push( $recipients, $temp[ $i ] );
 				}
-				$message = '';
-				$message .= '<h2> New Comment on ' . $idea -> post_title . '</h2>';
+				$message  = '';
+				$message .= '<h2> New Comment on <a href="'. $idea_link .'">' . $idea -> post_title . '</h2>';
 				$message .= '<label><b>Commentator:</b> '. $comment_author_url .'</label><br/>';
 				$message .= '<label><b>Content:</b> '.$comment_content.'</label><br/>';
-                $message .= '<label><b>Link:</b> '.get_comment_link( $comment_object ).'</label>';
+                $message .= '<label><b>Link:</b> <a href="'. get_comment_link( $comment_object ). '">Go to comment</a></label>';
 
 				$this -> sendNotifications( $recipients, $subject, $message, $headers );
 			}
