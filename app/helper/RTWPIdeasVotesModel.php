@@ -98,6 +98,13 @@ if ( ! class_exists( 'RTWPIdeasVotesModel' ) ){
             return $row;
         }
 
+		/**
+		 * Get voters of idea
+		 *
+		 * @param $idea_id
+		 *
+		 * @return array
+		 */
 		function get_voters_of_idea( $idea_id )
 		{
 			$columns = array();

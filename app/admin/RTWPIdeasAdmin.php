@@ -387,10 +387,18 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 			<?php
 		}
 
+		/**
+		 * Add voters metabox in idea edit page
+		 */
 		function wpideas_add_voters_metabox(){
 			add_meta_box( 'Voters', __( 'Voters' ), array( $this, 'wpideas_get_voters_of_idea' ), RT_WPIDEAS_SLUG, 'side', 'default' );
 		}
 
+		/**
+		 * Get voters of idea
+		 *
+		 * @param $post
+		 */
 		function wpideas_get_voters_of_idea( $post ){
 			global $rtWpideasVotes;
 			$row = $rtWpideasVotes->get_voters_of_idea( $post->ID );
