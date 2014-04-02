@@ -12,7 +12,7 @@ get_header();
         <div id="content" class="site-content" role="main">
 
             <header class="page-header">
-                <h1 class="page-title"><?php _e( 'Ideas', 'wp-ideas' ); ?></h1>
+                <h1 class="page-title"><a href="<?php echo home_url().'/'.RT_WPIDEAS_SLUG ?>"><?php _e( 'Ideas', 'wp-ideas' ); ?></a></h1>
 				<div class="searchidea">
                 <input type="text" placeholder="Search Ideas Here" id="txtSearchIdea" name="txtSearchIdea"/>
 				<?php
