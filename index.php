@@ -130,13 +130,18 @@ spl_autoload_register( 'rt_wordpress_idea_autoloader' );
 
 include_once 'app/lib/wp-helpers.php';
 
-include_once 'app/helper/wpideas-votes.php';
-include_once 'app/helper/wpideas-common.php';
-/**
- * Instantiate the RTWPIdeas class.
- */
-global $rtWpIdeas;
-$rtWpIdeas = new RTWPIdeas();
+
+function rtp_wp_idea_loader(){
+	include_once 'app/helper/wpideas-votes.php';
+	include_once 'app/helper/wpideas-common.php';
+	/**
+	 * Instantiate the RTWPIdeas class.
+	 */
+	global $rtWpIdeas;
+	$rtWpIdeas = new RTWPIdeas();
+}
+
+add_action( 'plugins_loaded', 'rtp_wp_idea_loader' );
 /*
  * Look Ma! Very few includes! Next File: /app/main/RTWPIdeas.php
  */
