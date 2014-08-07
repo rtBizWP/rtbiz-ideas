@@ -70,7 +70,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				'query_var' => true,
 				'rewrite' => array(
 					'slug' => RT_WPIDEAS_SLUG,
-					'with_front' => true,
+					'with_front' => false,
 				),
 				'has_archive' => true,
 				'hierarchical' => false,
