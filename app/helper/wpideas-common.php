@@ -353,7 +353,16 @@ function list_woo_product_ideas_load_more() {
 }
 
 
-
+/**
+ *
+ * Get rtideas Templates
+ *
+ * @param $template_name
+ * @param array $args
+ * @param string $template_path
+ * @param string $default_path
+ * @return void
+ */
 function rtideas_get_template( $template_name, $args = array(), $template_path = '', $default_path = '' ) {
 
 	if ( $args && is_array( $args ) )
@@ -368,6 +377,14 @@ function rtideas_get_template( $template_name, $args = array(), $template_path =
 	do_action( 'rtideas_after_template_part', $template_name, $template_path, $located, $args );
 }
 
+/**
+ * Loads rtideas Templates
+ *
+ * @param $template_name
+ * @param string $template_path
+ * @param string $default_path
+ * @return mixed|void
+ */
 function rtideas_locate_template( $template_name, $template_path = '', $default_path = '' ) {
 
 	global $rtWpIdeas;

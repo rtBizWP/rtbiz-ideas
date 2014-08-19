@@ -62,13 +62,6 @@ if ( ! class_exists( 'RTWPIdeas' ) ) {
 			return $template;
 		}
 
-		function do_theme_redirect( $url ) {
-			global $post, $wp_query;
-			add_thickbox();
-			include($url);
-			die();
-		}
-
 		function woo_ideas_tab( $tabs ) {
 
 			// Adds the new tab
