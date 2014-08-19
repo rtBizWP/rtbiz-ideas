@@ -14,6 +14,11 @@
 if ( ! class_exists( 'RTWPIdeas' ) ) {
 
 	class RTWPIdeas {
+		
+		/**
+		 * @var mixed|void - RTWPIdeas Templates Path / URL
+		 */
+		public $templateURL;
 
 		/**
 		 *  Constructor
@@ -24,7 +29,9 @@ if ( ! class_exists( 'RTWPIdeas' ) ) {
 			$updateDB->do_upgrade();
 			$this -> init_attributes();
 			add_action( 'template_redirect', array( $this, 'rtwpideas_template' ) );
+			add_action( 'template_include', array( $this, 'rtwpideas_template' ) );
 			add_filter( 'woocommerce_product_tabs', array( $this, 'woo_ideas_tab' ), 999,1 );
+			$this->templateURL = apply_filters( 'rt_wp_ideas_template_url', 'rt_ideas' );
 		}
 
 		/**
@@ -49,19 +56,10 @@ if ( ! class_exists( 'RTWPIdeas' ) ) {
 			global $wp;
 			//A Specific Custom Post Type
 			if ( isset( $wp -> query_vars[ 'post_type' ] ) && $wp -> query_vars[ 'post_type' ] == RT_WPIDEAS_SLUG ) {
-                $templatefilename = 'archive-idea.php';
-                if ( file_exists( RTWPIDEAS_PATH . 'templates/' . $templatefilename ) ) {
-                    $return_template = RTWPIDEAS_PATH . 'templates/' . $templatefilename;
-                }
-                $this -> do_theme_redirect( $return_template );
+				add_thickbox();
+				$template = rtideas_locate_template( 'archive-idea.php' );
 			}
-		}
-
-		function do_theme_redirect( $url ) {
-			global $post, $wp_query;
-			add_thickbox();
-			include($url);
-			die();
+			return $template;
 		}
 
 		function woo_ideas_tab( $tabs ) {

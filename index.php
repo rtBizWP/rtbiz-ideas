@@ -89,6 +89,15 @@ if ( ! defined( 'RT_WPIDEAS_SLUG' ) ) {
 	define( 'RT_WPIDEAS_SLUG', 'idea' );
 }
 
+if ( ! defined( 'RT_IDEAS_PATH_TEMPLATES' ) ) {
+
+    /**
+     * The url to the templates directory
+     *
+     */
+	define( 'RT_IDEAS_PATH_TEMPLATES', plugin_dir_path( __FILE__ ) . 'templates/' );
+}
+
 function rtwpideas_enqueue_styles_and_scripts() {
 	wp_register_script( 'rtwpideas-custom-script', plugins_url( '/app/assets/js/rtwpideas-custom-script.js', __FILE__ ), array( 'jquery' ) );
 	wp_enqueue_script( 'rtwpideas-custom-script' );
