@@ -31,7 +31,7 @@ get_header();
                 <?php if ( have_posts() ) : ?>
                     <?php
                     while ( have_posts() ) : the_post();
-                        include RTWPIDEAS_PATH . 'templates/loop-common.php';
+                        rtideas_get_template( 'loop-common.php' );
                     endwhile;
                     ?>
                     <div class="navigation">
@@ -55,7 +55,7 @@ get_header();
         </div>
 		<div id="wpideas-insert-idea" style="display:none;">
 			<?php
-			include RTWPIDEAS_PATH . 'templates/template-insert-idea.php';
+			rtideas_get_template( 'template-insert-idea.php' );
 			?>
 		</div>
         <!-- #content -->

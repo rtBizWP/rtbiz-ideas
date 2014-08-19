@@ -142,7 +142,7 @@ function wpideas_search_callback() {
 	$ideas = new WP_Query( $args );
 	if ( $ideas -> have_posts() ):
 		while ( $ideas -> have_posts() ) : $ideas -> the_post();
-			include RTWPIDEAS_PATH . 'templates/loop-common.php';
+			rtideas_get_template( 'loop-common.php' );
 		endwhile;
 		wp_reset_postdata();
 	else :
@@ -187,7 +187,7 @@ function list_all_idea_shortcode( $atts ) {
 	$posts = new WP_Query( $args );
 	if ( $posts -> have_posts() ):
 		while ( $posts -> have_posts() ) : $posts -> the_post();
-			include RTWPIDEAS_PATH . 'templates/loop-common.php';
+			rtideas_get_template( 'loop-common.php' );
 		endwhile;
 		wp_reset_postdata();
 	else :
@@ -233,7 +233,7 @@ function list_woo_product_ideas( $atts ) {
         <div id="wpidea-content">
         <?php
 		while ( $posts -> have_posts() ) : $posts -> the_post();
-			include RTWPIDEAS_PATH . 'templates/loop-common.php';
+			rtideas_get_template( 'loop-common.php' );
 		endwhile;
         ?>
         </div>
@@ -301,7 +301,7 @@ function list_woo_product_ideas_refresh() {
 		<div id="wpidea-content">
 			<?php
 			while ( $posts -> have_posts() ) : $posts -> the_post();
-				include RTWPIDEAS_PATH . 'templates/loop-common.php';
+				rtideas_get_template( 'loop-common.php' );
 			endwhile;
 			?>
 		</div>
@@ -339,7 +339,7 @@ function list_woo_product_ideas_load_more() {
 		$result[ 'have_posts' ] = true; //set result array item "have_posts" to true
 
 		while ( $posts_query -> have_posts() ) : $posts_query -> the_post();
-			include RTWPIDEAS_PATH . 'templates/loop-common.php';
+			rtideas_get_template( 'loop-common.php' );
 		endwhile;
 		$result[ 'html' ] = ob_get_clean(); // put alloutput data into "html" item
 	} else {
@@ -350,4 +350,46 @@ function list_woo_product_ideas_load_more() {
 	$result = json_encode( $result );
 	echo $result;
 	die();
+}
+
+
+
+function rtideas_get_template( $template_name, $args = array(), $template_path = '', $default_path = '' ) {
+
+	if ( $args && is_array( $args ) )
+		extract( $args );
+
+	$located = rtideas_locate_template( $template_name, $template_path, $default_path );
+
+	do_action( 'rtideas_before_template_part', $template_name, $template_path, $located, $args );
+
+	include( $located );
+
+	do_action( 'rtideas_after_template_part', $template_name, $template_path, $located, $args );
+}
+
+function rtideas_locate_template( $template_name, $template_path = '', $default_path = '' ) {
+
+	global $rtWpIdeas;
+	if ( ! $template_path ) {
+		$template_path = $rtWpIdeas->templateURL;
+	}
+	if ( ! $default_path ) {
+		$default_path = RT_IDEAS_PATH_TEMPLATES;
+	}
+
+	// Look within passed path within the theme - this is priority
+	$template = locate_template(
+			array(
+				trailingslashit( $template_path ) . $template_name,
+				$template_name
+			)
+	);
+
+	// Get default template
+	if ( ! $template )
+		$template = $default_path . $template_name;
+
+	// Return what we found
+	return apply_filters( 'rtideas_locate_template', $template, $template_name, $template_path );
 }
