@@ -96,6 +96,7 @@
             ?>
 
             <div class="rtwpIdeaMeta">
+				<?php edit_post_link( 'Manage Idea', '<span>', '</span>' ); ?> &#124;
                 <a href="<?php the_permalink(); ?>#comments"
                    title="Comments for <?php the_title(); ?>"><?php comments_number( 'No Comments', '1 Comment', '% Comments' ); ?></a>
                 <?php
