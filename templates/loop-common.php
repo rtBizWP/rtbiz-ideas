@@ -116,6 +116,7 @@
                 ?>
                 <span class="rtwpStyle-separator">&nbsp;·&nbsp;</span>
 				<?php
+                                global $post;
 					$author = get_userdata($post->post_author);
 					if( function_exists( 'bp_core_get_userlink' ) ){
 						echo bp_core_get_userlink( $author->ID );

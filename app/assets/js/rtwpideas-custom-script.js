@@ -79,9 +79,13 @@ jQuery(document).ready(function ($) {
                 if (response.have_posts) {//if have posts:
                     var $newElems = $(response['html'].replace(/(\r\n|\n|\r)/gm, ''));
                     $('#wpidea-content').append($newElems);
-                } else {
-                    $('#ideaLoadMore').hide();
-                }
+                    
+                    if (!response.have_more_posts) {
+                     $('#ideaLoadMore').hide();
+                    }
+                } 
+                
+                
             }
         });
     });
