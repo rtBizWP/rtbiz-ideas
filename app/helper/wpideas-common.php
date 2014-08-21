@@ -169,7 +169,12 @@ function list_all_idea_shortcode( $atts ) {
 	$default = array( 
 		'type' => 'post',
 		'post_type' => RT_WPIDEAS_SLUG,
-		);
+		'posts_per_page' => get_option( 'posts_per_page' ),
+		'order'	=> 'DESC',
+		'orderby' => 'date',
+		'post_status' => 'new',
+		'post__not_in' => ''
+	);
 	$r = shortcode_atts( $default, $atts );
 	extract( $r );
 
@@ -181,8 +186,17 @@ function list_all_idea_shortcode( $atts ) {
 		return '<div class="warning"><p>No such post type <em>' . $post_type . '</em> found.</p></div>';
 
 	$return = '<h3>' . $post_type_ob -> name . '</h3>';
+	
+	$post__not_in = explode(",", $post__not_in); // explode values
 
-	$args = array( 'post_type' => $post_type, );
+	$args = array( 
+		'post_type' => $post_type,
+		'posts_per_page' => $posts_per_page,
+		'order'	=> $order,
+		'orderby' => $orderby,
+		'post_status' => $post_status,
+		'post__not_in' => $post__not_in
+	);
 
 	$posts = new WP_Query( $args );
 	if ( $posts -> have_posts() ):

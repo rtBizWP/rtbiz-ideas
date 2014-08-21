@@ -127,6 +127,24 @@
 	<div>
 		<label for="txtIdeaContent"><?php _e( 'Detail:', 'wp-ideas' ) ?></label>
 
+		<?php if ( get_option( 'wpideas_editorenabled' ) == 1 ) {
+				if ( isset( $_POST[ 'txtIdeaContent' ] ) ) {
+					if ( function_exists( 'stripslashes' ) ) {
+						$content = stripslashes( $_POST[ 'txtIdeaContent' ] );
+					} else {
+						$content = $_POST[ 'txtIdeaContent' ];
+					}
+				} else {
+					$content = '';
+				}
+			
+				$editor_id = 'txtIdeaContent';
+				$settings = array( 'media_buttons' => false, 'editor_class' => 'required', 'textarea_rows' => 100 );
+				
+				wp_editor( $content, $editor_id, $settings );
+		
+		} else {
+		?>
 		<textarea name="txtIdeaContent" id="txtIdeaContent" style="height:250px;" class="required"><?php
 			if ( isset( $_POST[ 'txtIdeaContent' ] ) ) {
 				if ( function_exists( 'stripslashes' ) ) {
@@ -136,6 +154,7 @@
 				}
 			}
 			?></textarea>
+		<?php } ?>
 		<label class="error" id="txtIdeaContentError" style="display:none;"></label>
 	</div>
 	<?php

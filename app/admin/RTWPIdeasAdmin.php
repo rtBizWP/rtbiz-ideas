@@ -321,6 +321,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 			register_setting( 'ideas-settings-group', 'wpideas_adminemails' );
 			register_setting( 'ideas-settings-group', 'wpideas_status_changes', '' );
 			register_setting( 'ideas-settings-group', 'wpideas_comment_posted', '' );
+			register_setting( 'ideas-settings-group', 'wpideas_editorenabled', '' );
 		}
 
 		/**
@@ -379,6 +380,13 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 										Status Changes
 										<input name="wpideas_comment_posted" type="checkbox" id="wpideas_comment_posted" value="1" <?php checked( '1', get_option( 'wpideas_comment_posted' ) ); ?> >
 										Comment Posted</label>
+								</fieldset></td>
+						</tr>
+						<tr valign="top">
+							<th scope="row">Enable WYSIWYG Editor</th>
+							<td> <fieldset><legend class="screen-reader-text"><span>Enable WYSIWYG Editor</span></legend><label>
+										<input name="wpideas_editorenabled" type="checkbox" id="wpideas_editorenabled" value="1" <?php checked( '1', get_option( 'wpideas_editorenabled' ) ); ?> >
+										Enable Editor
 								</fieldset></td>
 						</tr>
 					</tbody></table>
