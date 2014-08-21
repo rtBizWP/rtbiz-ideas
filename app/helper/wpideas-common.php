@@ -345,23 +345,13 @@ function list_woo_product_ideas_load_more() {
 	$product_id = isset( $_REQUEST[ 'product_id' ] ) ? $_REQUEST[ 'product_id' ] : 0;
 
 	$args = array( 'post_type' => $post_type, 'offset' => $offset, 'posts_per_page' => 3, 'meta_query' => array( array( 'key' => '_rt_wpideas_product_id', 'value' => $product_id, ) ) );
-        $args_count = array( 'post_type' => $post_type, 'posts_per_page' => -1,'meta_query' => array( array( 'key' => '_rt_wpideas_product_id', 'value' =>  $product_id, ) ) );
 
 	$posts_query = new WP_Query( $args );
-        $posts_count = new WP_Query( $args_count );
 
 	if ( $posts_query -> have_posts() ) {
 		//if we have posts:
-                $result[ 'have_posts' ] = true; //set result array item "have_posts" to true
+		$result[ 'have_posts' ] = true; //set result array item "have_posts" to true
 
-                if ($posts_query->post_count == 3 && $posts_count->post_count > $offset+3 ) {
-                    
-                     $result[ 'have_more_posts' ] = true; 
-                }else{
-                    
-                    $result[ 'have_more_posts' ] = false; 
-                }
-                
 		while ( $posts_query -> have_posts() ) : $posts_query -> the_post();
 			rtideas_get_template( 'loop-common.php' );
 		endwhile;
