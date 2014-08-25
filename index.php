@@ -146,8 +146,9 @@ function rtp_wp_idea_loader(){
 	/**
 	 * Instantiate the RTWPIdeas class.
 	 */
-	global $rtWpIdeas;
+	global $rtWpIdeas, $rtWpIdeasAttributes;
 	$rtWpIdeas = new RTWPIdeas();
+	$rtWpIdeasAttributes = new RTWPIdeasAttributes();
 }
 
 add_action( 'plugins_loaded', 'rtp_wp_idea_loader' );
