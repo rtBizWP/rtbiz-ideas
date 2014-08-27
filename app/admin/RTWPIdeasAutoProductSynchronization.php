@@ -20,6 +20,8 @@ if( !class_exists( 'RTWPIdeasAutoProductSynchronization' ) ){
 	class RTWPIdeasAutoProductSynchronization {
 
 		public function __construct() {
+			$taxonomy_metadata = new Rt_Wp_Ideas_Taxonomy_Metadata\Taxonomy_Metadata();
+			$taxonomy_metadata->activate();
 			$this->hooks();
 		}
 		
@@ -47,10 +49,10 @@ if( !class_exists( 'RTWPIdeasAutoProductSynchronization' ) ){
 		 * @return void
 		 */
 		public function insert_products() {
-			$args = array( 'posts_per_page' => -1, 'post_type' => 'product' );
-			$products_array = get_posts( $args );
-			$product_names = wp_list_pluck( $products_array, 'post_title' );
-			$product_ids = wp_list_pluck( $products_array, 'ID' );
+			$args = array( 'posts_per_page' => -1, 'post_type' => 'product' ); 
+			$products_array = get_posts( $args ); // Get Woo Commerce post object
+			$product_names = wp_list_pluck( $products_array, 'post_title' ); // Get Woo Commerce post_title
+			$product_ids = wp_list_pluck( $products_array, 'ID' ); // Get Woo Commerce Post ID
 			
 			$taxonomies = array(
 				'product' => $product_names
@@ -59,11 +61,12 @@ if( !class_exists( 'RTWPIdeasAutoProductSynchronization' ) ){
 	
 			foreach ( $taxonomies as $taxonomy => $terms ) {
 				foreach ( $terms as $term ) {
-					if ( ! get_term_by( 'slug', sanitize_title( $term ), $taxonomy ) ){
+					if ( ! get_term_by( 'slug', sanitize_title( $term ), $taxonomy ) && $taxonomy == "product"){
 						wp_insert_term( $term, $taxonomy );
 					}
 				}
 			}
+			
 		}
 		
 		/**

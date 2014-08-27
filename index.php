@@ -98,6 +98,15 @@ if ( ! defined( 'RT_IDEAS_PATH_TEMPLATES' ) ) {
 	define( 'RT_IDEAS_PATH_TEMPLATES', plugin_dir_path( __FILE__ ) . 'templates/' );
 }
 
+if ( ! defined( 'RT_WPIDEAS_PATH_VENDOR' ) ) {
+
+    /**
+     * The url to the app/helper directory
+     *
+     */
+	define( 'RT_WPIDEAS_PATH_VENDOR', plugin_dir_path( __FILE__ ) . 'app/vendor/' );
+}
+
 function rtwpideas_enqueue_styles_and_scripts() {
 	wp_register_script( 'rtwpideas-custom-script', plugins_url( '/app/assets/js/rtwpideas-custom-script.js', __FILE__ ), array( 'jquery' ) );
 	wp_enqueue_script( 'rtwpideas-custom-script' );
@@ -111,6 +120,8 @@ function rtwpideas_enqueue_styles_and_scripts() {
 }
 
 add_action( 'wp_enqueue_scripts', 'rtwpideas_enqueue_styles_and_scripts' );
+
+include_once RT_WPIDEAS_PATH_VENDOR . 'taxonomy-metadata.php';
 
 /**
  * Loader function for all the classes
@@ -143,6 +154,7 @@ include_once 'app/lib/wp-helpers.php';
 function rtp_wp_idea_loader(){
 	include_once 'app/helper/wpideas-votes.php';
 	include_once 'app/helper/wpideas-common.php';
+	
 	/**
 	 * Instantiate the RTWPIdeas class.
 	 */
