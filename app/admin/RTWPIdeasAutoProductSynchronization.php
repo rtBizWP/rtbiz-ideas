@@ -37,7 +37,7 @@ if( !class_exists( 'RTWPIdeasAutoProductSynchronization' ) ){
 		
 		function old_product_synchronization_enabled() {
 			if ( get_option( 'wpideas_old_product_synchronizationenabled' ) == 1 ){
-				$this->insert_products();
+				// $this->insert_products();
 				$this->delete_products();
 			}
 		}
@@ -56,19 +56,40 @@ if( !class_exists( 'RTWPIdeasAutoProductSynchronization' ) ){
 		  $product_ids = wp_list_pluck( $products_array, 'ID' ); // Get Woo Commerce Post ID
 		
 		  $taxonomies = array(
-		    'product' => $product_names
+		    'product' => $product_names,
+		    'product_id' => $product_ids
 		  );
-		
-		
-		  foreach ( $taxonomies as $taxonomy => $terms ) {
+		  
+		  /*foreach ( $taxonomies as $taxonomy => $terms ) {
 		    foreach ( $terms as $term ) {
-		      if ( ! get_term_by( 'slug', sanitize_title( $term ), $taxonomy ) && $taxonomy == "product"){
+		      if ( ! get_term_by( 'slug', sanitize_title( $term ), $taxonomy ) && $taxonomy == "product" && ! empty( $_POST['ID'] ) ){
 		      	$term = wp_insert_term( $term, $taxonomy );
 			  	$term_id = $term["term_id"];
-			  	Rt_Wp_Ideas_Taxonomy_Metadata\add_term_meta($term_id, "_product_id", "product_id", true); // todo: need to fetch product_id
-		      }
+				Rt_Wp_Ideas_Taxonomy_Metadata\add_term_meta($term_id, "_product_id", $_POST['ID'], true); // todo: need to fetch product_id
+			  }
 		    }
+		  }*/
+		  
+		  $taxonomy = "product";
+		  $term = sanitize_title( $_POST['post_title'] );
+		  
+		  if ( $taxonomy == "product" && ! empty( $_POST['ID'] ) ){
+				$post = get_post( $_POST['ID'] );
+				$slug = $post->post_name;
+		      	$term = wp_insert_term(
+				  $term, // the term 
+				  'product', // the taxonomy
+				  array(
+				    'slug' => $slug
+				  )
+				);
+				if (is_array($term)){
+					$term_id = $term["term_id"];
+					Rt_Wp_Ideas_Taxonomy_Metadata\add_term_meta($term_id, "_product_id", $_POST['ID'], true); // todo: need to fetch product_id
+				}
 		  }
+		  
+		  
 		
 		}
 		
@@ -81,16 +102,17 @@ if( !class_exists( 'RTWPIdeasAutoProductSynchronization' ) ){
 		public function delete_products() {
 			$args = array( 'posts_per_page' => -1, 'post_type' => 'product' ); // get all woo commerce product
 			$products_array = get_posts( $args );
-			$product_names = wp_list_pluck( $products_array, 'post_title' );
+			$product_names = wp_list_pluck( $products_array, 'post_name' );
 			
 			$product_taxonomies = get_terms( 'product', 'hide_empty=0' ); // Get all the product list from product taxonomy under Ideas
-			$product_taxonomy_names = wp_list_pluck( $product_taxonomies, 'name' );
+			$product_taxonomy_names = wp_list_pluck( $product_taxonomies, 'slug' );
 			
 			$product_taxonomies_to_delete = array_diff($product_taxonomy_names, $product_names); // Do a array diff
 			
 			foreach ( $product_taxonomies_to_delete as $product_taxonomy_to_delete ) {
-				$product_taxonomies_obj = get_term_by('name', $product_taxonomy_to_delete, 'product');
+				$product_taxonomies_obj = get_term_by('slug', $product_taxonomy_to_delete, 'product');
 				wp_delete_term( $product_taxonomies_obj->term_id, 'product' ); // Now Delete those products which are not present in woo-commerce product section.
+				Rt_Wp_Ideas_Taxonomy_Metadata\delete_term_meta($product_taxonomies_obj->term_id, '_product_id');
 			}
 		}
 		

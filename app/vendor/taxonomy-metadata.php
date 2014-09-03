@@ -2,7 +2,7 @@
 /*
 Plugin Name: Taxonomy Metadata
 Description: Infrastructure plugin which implements metadata functionality for taxonomy terms, including for tags and categories.
-Version: 0.3
+Version: 0.4
 Author: mitcho (Michael Yoshitaka Erlewine), sirzooro
 Author URI: http://mitcho.com/
 */
@@ -13,7 +13,7 @@ class Taxonomy_Metadata {
 	function __construct() {
 		add_action( 'init', array($this, 'wpdbfix') );
 		add_action( 'switch_blog', array($this, 'wpdbfix') );
-		add_action('wpmu_new_blog', 'new_blog', 10, 6);
+		add_action('wpmu_new_blog', array($this, 'new_blog'), 10, 6);
 	}
 
 	/*
@@ -23,19 +23,20 @@ class Taxonomy_Metadata {
 		global $wpdb;
 		$wpdb->taxonomymeta = "{$wpdb->prefix}taxonomymeta";
 	}
-
+	
 	/*
 	 * TABLE MANAGEMENT
 	 */
 
 	function activate( $network_wide = false ) {
 		global $wpdb;
-                // if activated on a particular blog, just set it up there.
+	
+		// if activated on a particular blog, just set it up there.
 		if ( !$network_wide ) {
 			$this->setup_blog();
 			return;
 		}
-
+	
 		$blogs = $wpdb->get_col( "SELECT blog_id FROM {$wpdb->blogs} WHERE site_id = '{$wpdb->siteid}'" );
 		foreach ( $blogs as $blog_id ) {
 			$this->setup_blog( $blog_id );
@@ -43,22 +44,22 @@ class Taxonomy_Metadata {
 		// I feel dirty... this line smells like perl.
 		do {} while ( restore_current_blog() );
 	}
-
+	
 	function setup_blog( $id = false ) {
-                global $wpdb;
-
+		global $wpdb;
+		
 		if ( $id !== false)
 			switch_to_blog( $id );
-
-		$charset_collate = '';
+	
+		$charset_collate = '';	
 		if ( ! empty($wpdb->charset) )
 			$charset_collate = "DEFAULT CHARACTER SET $wpdb->charset";
 		if ( ! empty($wpdb->collate) )
 			$charset_collate .= " COLLATE $wpdb->collate";
-
+	
 		$tables = $wpdb->get_results("show tables like '{$wpdb->prefix}taxonomymeta'");
 		if (!count($tables))
-			$wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}taxonomymeta (
+			$wpdb->query("CREATE TABLE {$wpdb->prefix}taxonomymeta (
 				meta_id bigint(20) unsigned NOT NULL auto_increment,
 				taxonomy_id bigint(20) unsigned NOT NULL default '0',
 				meta_key varchar(255) default NULL,
@@ -74,7 +75,8 @@ class Taxonomy_Metadata {
 			$this->setup_blog($blog_id);
 	}
 }
-
+$taxonomy_metadata = new Taxonomy_Metadata;
+register_activation_hook( __FILE__, array($taxonomy_metadata, 'activate') );
 
 // THE REST OF THIS CODE IS FROM http://core.trac.wordpress.org/ticket/10142
 // BY sirzooro
@@ -141,15 +143,4 @@ function get_term_meta($term_id, $key, $single = false) {
  */
 function update_term_meta($term_id, $meta_key, $meta_value, $prev_value = '') {
 	return update_metadata('taxonomy', $term_id, $meta_key, $meta_value, $prev_value);
-}
-
-function get_terms_by_meta_key_value($meta_key, $meta_value, $single = false) {
-    global $wpdb;
-    $wpdb->taxonomymeta = "{$wpdb->prefix}taxonomymeta";
-    $sql = $wpdb->prepare("select t.* from {$wpdb->terms} t,{$wpdb->taxonomymeta} tm
-             where t.term_ID=tm.taxonomy_id and tm.meta_key like %s and tm.meta_value like %s;", $meta_key, $meta_value);
-    if ($single)
-        return $wpdb->get_row($sql);
-    else
-        return $wpdb->get_results($sql);
 }
