@@ -28,7 +28,7 @@ if( !class_exists( 'RTWPIdeasAutoProductSynchronization' ) ){
 		
 		function hooks() {
 			if ( get_option( 'wpideas_auto_product_synchronizationenabled' ) == 1 ){
-				add_action( 'draft_to_publish', array( $this, 'insert_products' ) );
+				add_action( 'save_post', array( $this, 'insert_products' ) );
 				add_action( 'wp_untrash_post', array( $this, 'insert_products' ) );
 				add_action( 'delete_post', array( $this, 'delete_products' ) );
 				add_action( 'trashed_post', array( $this, 'delete_products' ) );
@@ -48,8 +48,19 @@ if( !class_exists( 'RTWPIdeasAutoProductSynchronization' ) ){
 		 * @access public
 		 * @return void
 		 */
-		public function insert_products( $post ) {
-		
+		public function insert_products( $post_id ) {
+		  	
+		   
+		  // If this is just a revision, don't.
+		  if ( wp_is_post_revision( $post_id ) || empty( $_POST['post_type'] ) ){
+			return;
+		  }
+		  
+		  // If this isn't a 'product' post, don't update it.
+    	  if ( 'product' != $_POST['post_type'] ){
+        	return;
+    	  }
+		  
 		  $args = array( 'posts_per_page' => -1, 'post_type' => 'product' );
 		  $products_array = get_posts( $args ); // Get Woo Commerce post object
 		  $product_names = wp_list_pluck( $products_array, 'post_title' ); // Get Woo Commerce post_title
