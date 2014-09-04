@@ -96,6 +96,10 @@
             ?>
 
             <div class="rtwpIdeaMeta">
+				<?php
+				if ( is_user_logged_in() ) {
+					edit_post_link( 'Manage Idea', '<span>', '</span>' ); ?> &#124;
+				<?php } ?>
                 <a href="<?php the_permalink(); ?>#comments"
                    title="Comments for <?php the_title(); ?>"><?php comments_number( 'No Comments', '1 Comment', '% Comments' ); ?></a>
                 <?php
