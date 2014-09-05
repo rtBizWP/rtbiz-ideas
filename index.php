@@ -4,7 +4,7 @@
   Plugin Name: rtBiz Ideas
   Plugin URI: https://rtcamp.com
   Description: User submitted ideas/feature-request tracking for General Purpose. Also WooCommerce Support added.
-  Version: 1.1
+  Version: 1.0.1
   Author: rtCamp
   Text Domain: rtbiz-ideas
   Author URI: https://rtcamp.com
@@ -142,7 +142,7 @@ function rt_wordpress_idea_autoloader( $class_name ) {
  */
 spl_autoload_register( 'rt_wordpress_idea_autoloader' );
 
-include_once 'app/lib/wp-helpers.php';
+include_once 'app/lib/rt-lib.php';
 
 
 function rtbiz_idea_loader(){
