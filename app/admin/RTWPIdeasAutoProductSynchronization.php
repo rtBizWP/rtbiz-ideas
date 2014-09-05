@@ -20,7 +20,7 @@ if( !class_exists( 'RTWPIdeasAutoProductSynchronization' ) ){
 	class RTWPIdeasAutoProductSynchronization {
 		
 		public function __construct() {
-			$taxonomy_metadata = new Rt_Wp_Ideas_Taxonomy_Metadata\Taxonomy_Metadata();
+			$taxonomy_metadata = new Rt_Biz_Ideas_Taxonomy_Metadata\Taxonomy_Metadata();
 			$taxonomy_metadata->activate();
 			$this->hooks();
 			$this->old_product_synchronization_enabled();
@@ -79,7 +79,7 @@ if( !class_exists( 'RTWPIdeasAutoProductSynchronization' ) ){
     	  }
 		  
 		  
-		  // Rt_Wp_Ideas_Taxonomy_Metadata\get_term_meta($term_id, $key, $single);
+		  // Rt_Biz_Ideas_Taxonomy_Metadata\get_term_meta($term_id, $key, $single);
 		  $taxonomymeta = $wpdb->get_row( "SELECT * FROM $wpdb->taxonomymeta WHERE meta_key ='_product_id' AND meta_value = $post_id " );
 		  //print_r($taxonomymeta); die();
 		  
@@ -108,7 +108,7 @@ if( !class_exists( 'RTWPIdeasAutoProductSynchronization' ) ){
 				);
 				if ( is_array( $term ) ){
 					$term_id = $term["term_id"];
-					Rt_Wp_Ideas_Taxonomy_Metadata\add_term_meta( $term_id, $key, $post_id, true ); // todo: need to fetch product_id
+					Rt_Biz_Ideas_Taxonomy_Metadata\add_term_meta( $term_id, $key, $post_id, true ); // todo: need to fetch product_id
 				}
 		  }
 		  
@@ -172,7 +172,7 @@ if( !class_exists( 'RTWPIdeasAutoProductSynchronization' ) ){
 				);
 				if (is_array($term)){
 					$term_id = $term["term_id"];
-					Rt_Wp_Ideas_Taxonomy_Metadata\add_term_meta($term_id, "_product_id", $product_id_array[$i], true); // todo: need to fetch product_id
+					Rt_Biz_Ideas_Taxonomy_Metadata\add_term_meta($term_id, "_product_id", $product_id_array[$i], true); // todo: need to fetch product_id
 				}
 			}
 			
@@ -199,7 +199,7 @@ if( !class_exists( 'RTWPIdeasAutoProductSynchronization' ) ){
 			foreach ( $product_taxonomies_to_delete as $product_taxonomy_to_delete ) {
 				$product_taxonomies_obj = get_term_by('slug', $product_taxonomy_to_delete, 'product');
 				wp_delete_term( $product_taxonomies_obj->term_id, 'product' ); // Now Delete those products which are not present in woo-commerce product section.
-				Rt_Wp_Ideas_Taxonomy_Metadata\delete_term_meta($product_taxonomies_obj->term_id, '_product_id');
+				Rt_Biz_Ideas_Taxonomy_Metadata\delete_term_meta($product_taxonomies_obj->term_id, '_product_id');
 			}
 		}
 		
@@ -210,7 +210,7 @@ if( !class_exists( 'RTWPIdeasAutoProductSynchronization' ) ){
 		 * @return void
 		 */
 		public function delete_products_meta( $term_id ) {
-			Rt_Wp_Ideas_Taxonomy_Metadata\delete_term_meta( $term_id, '_product_id' );
+			Rt_Biz_Ideas_Taxonomy_Metadata\delete_term_meta( $term_id, '_product_id' );
 		}
 		
 		

@@ -5,4 +5,4 @@ CREATE TABLE %s (
   vote_count bigint(20) NOT NULL,
   PRIMARY KEY  (ID),
   UNIQUE KEY post_user_id (post_id,user_id)
-);
+) CHARACTER SET utf8 COLLATE utf8_general_ci;

@@ -7,7 +7,7 @@ Author: mitcho (Michael Yoshitaka Erlewine), sirzooro
 Author URI: http://mitcho.com/
 */
 
-namespace Rt_Wp_Ideas_Taxonomy_Metadata;
+namespace Rt_Biz_Ideas_Taxonomy_Metadata;
 
 class Taxonomy_Metadata {
 	function __construct() {

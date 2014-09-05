@@ -15,7 +15,7 @@ try {
 
 	$readme_txt_path = null;
 	while ( true ) {
-		foreach ( array( 'readme.txt', 'README.txt' ) as $readme_filename ) {
+		foreach ( array( 'readme.txt', 'readme.txt.txt' ) as $readme_filename ) {
 			if ( file_exists( $readme_filename ) ) {
 				$readme_txt_path = realpath( $readme_filename );
 				break;
@@ -28,7 +28,7 @@ try {
 		}
 	}
 	if ( empty( $readme_txt_path ) ) {
-		throw new Exception( 'Failed to find a readme.txt or README.txt above the current working directory.' );
+		throw new Exception( 'Failed to find a readme.txt or readme.txt.txt above the current working directory.' );
 	}
 
 	$readme_root = dirname( $readme_txt_path );
@@ -48,7 +48,7 @@ try {
 	if ( ! $is_written ) {
 		throw new Exception( sprintf( 'Failed to write to %s', $readme_md_path ) );
 	}
-	fwrite( STDERR, 'Successfully converted WordPress README to Markdown' . PHP_EOL );
+	fwrite( STDERR, 'Successfully converted WordPress readme.txt to Markdown' . PHP_EOL );
 	fwrite( STDOUT, $readme_md_path . PHP_EOL );
 }
 catch( Exception $e ) {

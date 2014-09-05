@@ -69,7 +69,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				'show_in_menu' => true,
 				'query_var' => true,
 				'rewrite' => array(
-					'slug' => RT_WPIDEAS_SLUG,
+					'slug' => RTBIZ_IDEAS_SLUG,
 					'with_front' => false,
 				),
 				'has_archive' => true,
@@ -79,7 +79,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				'register_meta_box_cb' => array( $this, 'wpideas_add_voters_metabox' ),
 			);
 
-			register_post_type( RT_WPIDEAS_SLUG, $args );
+			register_post_type( RTBIZ_IDEAS_SLUG, $args );
 		}
 
 		/**
@@ -129,7 +129,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 		 */
 		function wpideas_append_post_status_list() {
 			global $pagenow;
-			if ( get_post_type() == RT_WPIDEAS_SLUG && ( $pagenow == 'edit.php' || $pagenow == 'post-new.php' || ( isset( $_GET[ 'action' ] ) && $_GET[ 'action' ] ) == 'edit' ) ) {
+			if ( get_post_type() == RTBIZ_IDEAS_SLUG && ( $pagenow == 'edit.php' || $pagenow == 'post-new.php' || ( isset( $_GET[ 'action' ] ) && $_GET[ 'action' ] ) == 'edit' ) ) {
 				global $post;
 				if ( ! isset( $post ) ) {
 					return;
@@ -213,7 +213,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 		 * @param type $post
 		 */
 		function wpideas_idea_status_changed( $new_status, $old_status, $post ) {
-			if ( $new_status != $old_status && get_post_type() == RT_WPIDEAS_SLUG ) {
+			if ( $new_status != $old_status && get_post_type() == RTBIZ_IDEAS_SLUG ) {
 
 				update_post_meta( $post -> post_ID, '_rt_wpideas_status_changer', get_current_user_id() );
 
@@ -262,7 +262,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 		 * @param type $comment_object
 		 */
 		function wpideas_idea_comment_posted( $comment_id, $comment_object ) {
-			if ( $comment_object -> comment_approved > 0 && get_post_type() == RT_WPIDEAS_SLUG ) {
+			if ( $comment_object -> comment_approved > 0 && get_post_type() == RTBIZ_IDEAS_SLUG ) {
 				$headers[] = 'From: WP Ideas <wpideas@rtcamp.net>';
 				//$headers[] = 'Cc: John Q Codex <jqc@wordpress.org>';
 				//$headers[] = 'Cc: iluvwp@wordpress.org';
@@ -412,7 +412,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 		 * Add voters metabox in idea edit page
 		 */
 		function wpideas_add_voters_metabox(){
-			add_meta_box( 'Voters', __( 'Voters' ), array( $this, 'wpideas_get_voters_of_idea' ), RT_WPIDEAS_SLUG, 'side', 'default' );
+			add_meta_box( 'Voters', __( 'Voters' ), array( $this, 'wpideas_get_voters_of_idea' ), RTBIZ_IDEAS_SLUG, 'side', 'default' );
 		}
 
 		/**

@@ -206,7 +206,7 @@
 		<input type="hidden" name="submitted" id="submitted" value="true" />
 		<?php wp_nonce_field( 'idea_nonce', 'idea_nonce_field' ); ?>
 		<input type="button" id="btninsertIdeaFormSubmit" value="<?php _e( 'Submit My Idea', 'wp-ideas' ) ?>" />
-		<img src="<?php echo RTWPIDEAS_URL . 'app/assets/img/indicator.gif'; ?>" id="ideaLoading" style="display:none;height: 50px;" />
+		<img src="<?php echo RTBIZ_IDEAS_URL . 'app/assets/img/indicator.gif'; ?>" id="ideaLoading" style="display:none;height: 50px;" />
 		<a href="javascript:;" id="insertIdeaFormCancel">Cancel</a>
 	</div>
 </form>

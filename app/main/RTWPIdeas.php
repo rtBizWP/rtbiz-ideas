@@ -25,7 +25,7 @@ if ( ! class_exists( 'RTWPIdeas' ) ) {
 		 */
 		public function __construct() {
 			// DB Upgrade
-			$updateDB = new RT_DB_Update(  RTWPIDEAS_PATH . 'index.php', RTWPIDEAS_PATH . 'app/schema/',false );
+			$updateDB = new RT_DB_Update(  RTBIZ_IDEAS_PATH . 'index.php', RTBIZ_IDEAS_PATH . 'app/schema/',false );
 			$updateDB->do_upgrade();
 			$this -> init_attributes();
 			add_action( 'template_redirect', array( $this, 'rtwpideas_template' ) );
@@ -55,7 +55,7 @@ if ( ! class_exists( 'RTWPIdeas' ) ) {
 		function rtwpideas_template( $template ) {
 			global $wp;
 			//A Specific Custom Post Type
-			if ( isset( $wp -> query_vars[ 'post_type' ] ) && $wp -> query_vars[ 'post_type' ] == RT_WPIDEAS_SLUG ) {
+			if ( isset( $wp -> query_vars[ 'post_type' ] ) && $wp -> query_vars[ 'post_type' ] == RTBIZ_IDEAS_SLUG ) {
 				add_thickbox();
 				$template = rtideas_locate_template( 'archive-idea.php' );
 			}

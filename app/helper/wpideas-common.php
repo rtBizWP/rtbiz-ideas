@@ -50,7 +50,7 @@ function wpideas_insert_new_idea() {
 			$idea_information = array( 
 				'post_title' => wp_strip_all_tags( $_POST[ 'txtIdeaTitle' ] ), 
 				'post_content' => $_POST[ 'txtIdeaContent' ], 
-				'post_type' => RT_WPIDEAS_SLUG, 
+				'post_type' => RTBIZ_IDEAS_SLUG,
 				'post_status' => 'new', 
 			);
 
@@ -137,7 +137,7 @@ add_action( 'wp_ajax_nopriv_wpideas_search', 'wpideas_search_callback' );
  */
 function wpideas_search_callback() {
 	$txtSearch = $_POST[ 'searchtext' ];
-	$args = array( 's' => $txtSearch, 'post_type' => RT_WPIDEAS_SLUG, );
+	$args = array( 's' => $txtSearch, 'post_type' => RTBIZ_IDEAS_SLUG, );
 
 	$ideas = new WP_Query( $args );
 	if ( $ideas -> have_posts() ):
@@ -168,7 +168,7 @@ function list_all_idea_shortcode( $atts ) {
 	global $post;
 	$default = array( 
 		'type' => 'post',
-		'post_type' => RT_WPIDEAS_SLUG,
+		'post_type' => RTBIZ_IDEAS_SLUG,
 		'posts_per_page' => get_option( 'posts_per_page' ),
 		'order'	=> 'DESC',
 		'orderby' => 'date',
@@ -227,7 +227,7 @@ add_action( 'wp_ajax_nopriv_list_woo_product_ideas_refresh', 'list_woo_product_i
 function list_woo_product_ideas( $atts ) {
 
 	global $post;
-	$default = array( 'type' => 'post', 'post_type' => RT_WPIDEAS_SLUG, 'product_id' => '', );
+	$default = array( 'type' => 'post', 'post_type' => RTBIZ_IDEAS_SLUG, 'product_id' => '', );
 	$r = shortcode_atts( $default, $atts );
 	extract( $r );
 
@@ -254,7 +254,7 @@ function list_woo_product_ideas( $atts ) {
         <?php if($posts_count->post_count > 3 ){ ?>
 		<div class="idea-loadmore">
 			<a href="javascript:;" data-nonce="<?php echo esc_attr( wp_create_nonce( 'load_ideas' ) ); ?>" id="ideaLoadMore" class="rtp-readmore button rtp-button-beta-light tiny aligncenter"><?php _e( 'Load More', 'wp-ideas' ); ?></a>
-			<img src="<?php echo RTWPIDEAS_URL . 'app/assets/img/indicator.gif'; ?>" id="ideaLoading" class="aligncenter" style="display:none;height: 50px;" />
+			<img src="<?php echo RTBIZ_IDEAS_URL . 'app/assets/img/indicator.gif'; ?>" id="ideaLoading" class="aligncenter" style="display:none;height: 50px;" />
 			<input type="hidden" value="<?php echo esc_attr( $product_id ); ?>" id="idea_product_id"/><br/><br/>
 		</div>
         <?php
@@ -272,7 +272,7 @@ function list_woo_product_ideas( $atts ) {
 		<br/>
 		<div id="my-content-id" style="display:none;">
 		<?php
-		include RTWPIDEAS_PATH . 'templates/template-insert-idea.php';
+		include RTBIZ_IDEAS_PATH . 'templates/template-insert-idea.php';
 		?>
 		</div>
 			<?php
@@ -289,7 +289,7 @@ function list_woo_product_ideas_refresh() {
 	$posts_per_page = 3;
 
 	$args = array(
-        'post_type' => RT_WPIDEAS_SLUG,
+        'post_type' => RTBIZ_IDEAS_SLUG,
         'posts_per_page' => $posts_per_page,
         'meta_query' => array(
             array(
@@ -299,7 +299,7 @@ function list_woo_product_ideas_refresh() {
         )
     );
 	$args_count = array(
-		'post_type' => RT_WPIDEAS_SLUG,
+		'post_type' => RTBIZ_IDEAS_SLUG,
 		'meta_query' => array(
 			array(
 				'key' => '_rt_wpideas_product_id',
@@ -322,7 +322,7 @@ function list_woo_product_ideas_refresh() {
 		<?php if($posts_count->post_count > 3 ){ ?>
 		<div class="idea-loadmore">
 			<a href="javascript:;" data-nonce="<?php echo esc_attr( wp_create_nonce( 'load_ideas' ) ); ?>" id="ideaLoadMore" class="rtp-readmore button rtp-button-beta-light tiny aligncenter"><?php _e( 'Load More', 'wp-ideas' ); ?></a>
-			<img src="<?php echo RTWPIDEAS_URL . 'app/assets/img/indicator.gif'; ?>" id="ideaLoading" class="aligncenter" style="display:none;height: 50px;" />
+			<img src="<?php echo RTBIZ_IDEAS_URL . 'app/assets/img/indicator.gif'; ?>" id="ideaLoading" class="aligncenter" style="display:none;height: 50px;" />
 			<input type="hidden" value="<?php echo $_POST[ 'product_id' ]; ?>" id="idea_product_id"/><br/><br/>
 		</div>
 	<?php
@@ -406,7 +406,7 @@ function rtideas_locate_template( $template_name, $template_path = '', $default_
 		$template_path = $rtWpIdeas->templateURL;
 	}
 	if ( ! $default_path ) {
-		$default_path = RT_IDEAS_PATH_TEMPLATES;
+		$default_path = RTBIZ_IDEAS_PATH_TEMPLATES;
 	}
 
 	// Look within passed path within the theme - this is priority

@@ -12,14 +12,14 @@ get_header();
         <div id="content" class="site-content" role="main">
 
             <header class="page-header">
-                <h1 class="page-title"><a href="<?php echo home_url().'/'.RT_WPIDEAS_SLUG ?>"><?php _e( 'Ideas', 'wp-ideas' ); ?></a></h1>
+                <h1 class="page-title"><a href="<?php echo home_url().'/'.RTBIZ_IDEAS_SLUG ?>"><?php _e( 'Ideas', 'wp-ideas' ); ?></a></h1>
 				<div class="searchidea">
                 <input type="text" placeholder="Search Ideas Here" id="txtSearchIdea" name="txtSearchIdea"/>
 				<?php
 					if ( is_user_logged_in() ) {
 						$href = '#TB_inline?width=600&height=550&inlineId=wpideas-insert-idea';
 					}else{
-						$href = wp_login_url( home_url('/').RT_WPIDEAS_SLUG );
+						$href = wp_login_url( home_url('/').RTBIZ_IDEAS_SLUG );
 					}
 				?>
 				<a id="btnNewThickbox" href="<?php echo $href; ?>" class="thickbox"> New Idea </a>

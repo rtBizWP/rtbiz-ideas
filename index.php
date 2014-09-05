@@ -1,110 +1,104 @@
 <?php
 
 /*
-  Plugin Name: WordPress Ideas
-  Plugin URI: http://git.rtcamp.com/crm/wordpress-ideas
-  Description: User submitted ideas/feature-request tracking like http://www.uservoice.com/
-  Version: 1.0
+  Plugin Name: rtBiz Ideas
+  Plugin URI: https://rtcamp.com
+  Description: User submitted ideas/feature-request tracking for General Purpose. Also WooCommerce Support added.
+  Version: 1.1
   Author: rtCamp
-  Text Domain: wp-ideas
-  Author URI: http://rtcamp.com/?utm_source=dashboard&utm_medium=plugin&utm_campaign=wp-ideas
+  Text Domain: rtbiz-ideas
+  Author URI: https://rtcamp.com
  */
 
-/**
- * Created by PhpStorm.
- * User: faishal
- * Date: 07/02/14
- * Time: 2:13 PM
- */
 /**
  * Main file, contains the plugin metadata and activation processes
  *
- * @package rtWpIdeas
+ * @package rtbiz-ideas
  * @subpackage Main
  */
-if ( ! defined( 'RTWPIDEAS_PATH' ) ) {
+if ( ! defined( 'RTBIZ_IDEAS_PATH' ) ) {
     /**
      * The server file system path to the plugin directory
      */
-    define( 'RTWPIDEAS_PATH', plugin_dir_path( __FILE__ ) );
+    define( 'RTBIZ_IDEAS_PATH', plugin_dir_path( __FILE__ ) );
 }
 
 
-if ( ! defined( 'RTWPIDEAS_URL' ) ) {
+if ( ! defined( 'RTBIZ_IDEAS_URL' ) ) {
 
     /**
      * The url to the plugin directory
      *
      */
-	define( 'RTWPIDEAS_URL', plugin_dir_url( __FILE__ ) );
+	define( 'RTBIZ_IDEAS_URL', plugin_dir_url( __FILE__ ) );
 }
 
-if ( ! defined( 'RTWPIDEAS_BASE_NAME' ) ) {
+if ( ! defined( 'RTBIZ_IDEAS_BASE_NAME' ) ) {
 
     /**
      * The url to the plugin directory
      *
      */
-	define( 'RTWPIDEAS_BASE_NAME', plugin_basename( __FILE__ ) );
+	define( 'RTBIZ_IDEAS_BASE_NAME', plugin_basename( __FILE__ ) );
 }
 
-if ( ! defined( 'RT_WPIDEAS_PATH_ADMIN' ) ) {
+if ( ! defined( 'RTBIZ_IDEAS_PATH_ADMIN' ) ) {
 
     /**
      * The url to the app/admin directory
      *
      */
-	define( 'RT_WPIDEAS_PATH_ADMIN', plugin_dir_path( __FILE__ ) . 'app/admin/' );
+	define( 'RTBIZ_IDEAS_PATH_ADMIN', plugin_dir_path( __FILE__ ) . 'app/admin/' );
 }
-if ( ! defined( 'RT_WPIDEAS_PATH_MAIN' ) ) {
+if ( ! defined( 'RTBIZ_IDEAS_PATH_MAIN' ) ) {
 
     /**
      * The url to the app/main directory
      *
      */
-	define( 'RT_WPIDEAS_PATH_MAIN', plugin_dir_path( __FILE__ ) . 'app/main/' );
+	define( 'RTBIZ_IDEAS_PATH_MAIN', plugin_dir_path( __FILE__ ) . 'app/main/' );
 }
-if ( ! defined( 'RT_WPIDEAS_PATH_LIB' ) ) {
+if ( ! defined( 'RTBIZ_IDEAS_PATH_LIB' ) ) {
 
     /**
      * The url to the app/lib directory
      *
      */
-    define( 'RT_WPIDEAS_PATH_LIB', plugin_dir_path( __FILE__ ) . 'app/lib/' );
+    define( 'RTBIZ_IDEAS_PATH_LIB', plugin_dir_path( __FILE__ ) . 'app/lib/' );
 }
-if ( ! defined( 'RT_WPIDEAS_PATH_HELPER' ) ) {
+if ( ! defined( 'RTBIZ_IDEAS_PATH_HELPER' ) ) {
 
     /**
      * The url to the app/helper directory
      *
      */
-	define( 'RT_WPIDEAS_PATH_HELPER', plugin_dir_path( __FILE__ ) . 'app/helper/' );
+	define( 'RTBIZ_IDEAS_PATH_HELPER', plugin_dir_path( __FILE__ ) . 'app/helper/' );
 }
-if ( ! defined( 'RT_WPIDEAS_SLUG' ) ) {
+if ( ! defined( 'RTBIZ_IDEAS_SLUG' ) ) {
 
     /**
      * The post type / slug for the plugin - 'idea'
      *
      */
-	define( 'RT_WPIDEAS_SLUG', 'idea' );
+	define( 'RTBIZ_IDEAS_SLUG', 'idea' );
 }
 
-if ( ! defined( 'RT_IDEAS_PATH_TEMPLATES' ) ) {
+if ( ! defined( 'RTBIZ_IDEAS_PATH_TEMPLATES' ) ) {
 
     /**
      * The url to the templates directory
      *
      */
-	define( 'RT_IDEAS_PATH_TEMPLATES', plugin_dir_path( __FILE__ ) . 'templates/' );
+	define( 'RTBIZ_IDEAS_PATH_TEMPLATES', plugin_dir_path( __FILE__ ) . 'templates/' );
 }
 
-if ( ! defined( 'RT_WPIDEAS_PATH_VENDOR' ) ) {
+if ( ! defined( 'RTBIZ_IDEAS_PATH_VENDOR' ) ) {
 
     /**
      * The url to the app/helper directory
      *
      */
-	define( 'RT_WPIDEAS_PATH_VENDOR', plugin_dir_path( __FILE__ ) . 'app/vendor/' );
+	define( 'RTBIZ_IDEAS_PATH_VENDOR', plugin_dir_path( __FILE__ ) . 'app/vendor/' );
 }
 
 function rtwpideas_enqueue_styles_and_scripts() {
@@ -121,7 +115,7 @@ function rtwpideas_enqueue_styles_and_scripts() {
 
 add_action( 'wp_enqueue_scripts', 'rtwpideas_enqueue_styles_and_scripts' );
 
-include_once RT_WPIDEAS_PATH_VENDOR . 'taxonomy-metadata.php';
+include_once RTBIZ_IDEAS_PATH_VENDOR . 'taxonomy-metadata.php';
 
 /**
  * Loader function for all the classes
@@ -135,7 +129,7 @@ function rt_wordpress_idea_autoloader( $class_name ) {
 		'app/lib/rtdbmodel/' . $class_name . '.php',
 	);
 	foreach ( $rtlibpath as $path ) {
-		$path = RTWPIDEAS_PATH . $path;
+		$path = RTBIZ_IDEAS_PATH . $path;
 		if ( file_exists( $path ) ) {
 			include $path;
 			break;
@@ -151,7 +145,7 @@ spl_autoload_register( 'rt_wordpress_idea_autoloader' );
 include_once 'app/lib/wp-helpers.php';
 
 
-function rtp_wp_idea_loader(){
+function rtbiz_idea_loader(){
 	include_once 'app/helper/wpideas-votes.php';
 	include_once 'app/helper/wpideas-common.php';
 	
@@ -164,7 +158,7 @@ function rtp_wp_idea_loader(){
 	
 }
 
-add_action( 'plugins_loaded', 'rtp_wp_idea_loader' );
+add_action( 'plugins_loaded', 'rtbiz_idea_loader' );
 /*
  * Look Ma! Very few includes! Next File: /app/main/RTWPIdeas.php
  */
