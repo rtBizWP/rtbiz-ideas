@@ -120,7 +120,7 @@
                 ?>
                 <span class="rtwpStyle-separator">&nbsp;·&nbsp;</span>
 				<?php
-					$author = get_userdata($post->post_author);
+					$author = get_userdata( get_the_author_meta( 'ID' ) );
 					if( function_exists( 'bp_core_get_userlink' ) ){
 						echo bp_core_get_userlink( $author->ID );
 					}else{
