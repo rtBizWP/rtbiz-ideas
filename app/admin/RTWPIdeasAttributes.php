@@ -31,24 +31,29 @@ if( ! class_exists( 'RTWPIdeasAttributes' ) ){
 
 			$admin_cap = 'administrator';
 			$post_type = 'idea';
-			
-			$terms_caps = array();
 
-			$wp_ideas_rt_attributes->add_attributes_page( $this->attributes_page_slug, 'edit.php?post_type='.$post_type, $post_type, $admin_cap, $terms_caps, $render_type = false, $storage_type = true, $orderby = true );
+			$terms_caps = array(
+				'manage_terms' => 'manage_options',
+				'edit_terms'   => 'manage_options',
+				'delete_terms' => 'manage_options',
+				'assign_terms' => 'manage_options',
+			);
+
+			$wp_ideas_rt_attributes->add_attributes_page( $this->attributes_page_slug, 'edit.php?post_type='.$post_type, $post_type, $admin_cap, $terms_caps );
 			$wp_ideas_attributes_model = new RT_Attributes_Model();
 			$wp_ideas_attributes_relationship_model = new RT_Attributes_Relationship_Model();
 			
-			register_taxonomy(
-				'product',
-				$post_type,
-				array(
-					'label' => __( 'Product' ),
-					'rewrite' => array( 'slug' => 'product' ),
-					'hierarchical' => true,
-				)
-			);
+//			register_taxonomy(
+//				'product',
+//				$post_type,
+//				array(
+//					'label' => __( 'Product' ),
+//					'rewrite' => array( 'slug' => 'product' ),
+//					'hierarchical' => true,
+//				)
+//			);
 			
-			$auto_product_synchronization = new RTWPIdeasAutoProductSynchronization();
+//			$auto_product_synchronization = new RTWPIdeasAutoProductSynchronization();
 		}
 		
 	}

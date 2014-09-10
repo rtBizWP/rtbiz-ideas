@@ -28,8 +28,7 @@ if ( ! class_exists( 'RTWPIdeas' ) ) {
 			$updateDB = new RT_DB_Update(  RTBIZ_IDEAS_PATH . 'index.php', RTBIZ_IDEAS_PATH . 'app/schema/',false );
 			$updateDB->do_upgrade();
 			$this -> init_attributes();
-			add_action( 'template_redirect', array( $this, 'rtwpideas_template' ) );
-			add_action( 'template_include', array( $this, 'rtwpideas_template' ) );
+			add_filter( 'template_include', array( $this, 'rtwpideas_template' ) );
 			add_filter( 'woocommerce_product_tabs', array( $this, 'woo_ideas_tab' ), 999,1 );
 			$this->templateURL = apply_filters( 'rt_wp_ideas_template_url', 'rt_ideas' );
 		}

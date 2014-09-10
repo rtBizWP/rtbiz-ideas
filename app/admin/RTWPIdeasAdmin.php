@@ -322,8 +322,8 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 			register_setting( 'ideas-settings-group', 'wpideas_status_changes', '' );
 			register_setting( 'ideas-settings-group', 'wpideas_comment_posted', '' );
 			register_setting( 'ideas-settings-group', 'wpideas_editorenabled', '' );
-			register_setting( 'ideas-settings-group', 'wpideas_auto_product_synchronizationenabled', '' );
-			register_setting( 'ideas-settings-group', 'wpideas_old_product_synchronizationenabled', '' );
+//			register_setting( 'ideas-settings-group', 'wpideas_auto_product_synchronizationenabled', '' );
+//			register_setting( 'ideas-settings-group', 'wpideas_old_product_synchronizationenabled', '' );
 		}
 
 		/**
@@ -391,17 +391,17 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 										Enable Editor
 								</fieldset></td>
 						</tr>
-						<tr valign="top">
-							<th scope="row">Enable Auto Product Synchronization</th>
-							<td> <fieldset><legend class="screen-reader-text"><span>Enable Auto Product Synchronization</span></legend><label>
-										<input name="wpideas_auto_product_synchronizationenabled" type="checkbox" id="wpideas_auto_product_synchronizationenabled" value="1" <?php checked( '1', get_option( 'wpideas_auto_product_synchronizationenabled' ) ); ?> >
-										Enable Auto Product Synchronization
-								</fieldset></td>
-							<td> <fieldset><legend class="screen-reader-text"><span>Enable Old Product Synchronization</span></legend><label>
-										<input name="wpideas_old_product_synchronizationenabled" type="checkbox" id="wpideas_old_product_synchronizationenabled" value="1" <?php checked( '1', get_option( 'wpideas_old_product_synchronizationenabled' ) ); ?> >
-										Enable Old Product Synchronization
-								</fieldset></td>
-						</tr>
+<!--						<tr valign="top">-->
+<!--							<th scope="row">Enable Auto Product Synchronization</th>-->
+<!--							<td> <fieldset><legend class="screen-reader-text"><span>Enable Auto Product Synchronization</span></legend><label>-->
+<!--										<input name="wpideas_auto_product_synchronizationenabled" type="checkbox" id="wpideas_auto_product_synchronizationenabled" value="1" --><?php //checked( '1', get_option( 'wpideas_auto_product_synchronizationenabled' ) ); ?><!-- >-->
+<!--										Enable Auto Product Synchronization-->
+<!--								</fieldset></td>-->
+<!--							<td> <fieldset><legend class="screen-reader-text"><span>Enable Old Product Synchronization</span></legend><label>-->
+<!--										<input name="wpideas_old_product_synchronizationenabled" type="checkbox" id="wpideas_old_product_synchronizationenabled" value="1" --><?php //checked( '1', get_option( 'wpideas_old_product_synchronizationenabled' ) ); ?><!-- >-->
+<!--										Enable Old Product Synchronization-->
+<!--								</fieldset></td>-->
+<!--						</tr>-->
 					</tbody></table>
 				<?php submit_button(); ?>
 			</form>
