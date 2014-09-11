@@ -351,7 +351,7 @@ function list_woo_product_ideas_load_more() {
 	if ( $posts_query -> have_posts() ) {
 		//if we have posts:
 		$result[ 'have_posts' ] = true; //set result array item "have_posts" to true
-
+		ob_start();
 		while ( $posts_query -> have_posts() ) : $posts_query -> the_post();
 			rtideas_get_template( 'loop-common.php' );
 		endwhile;
