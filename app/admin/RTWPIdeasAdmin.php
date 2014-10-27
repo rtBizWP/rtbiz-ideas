@@ -30,7 +30,20 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 			if ( get_option( 'wpideas_emailenabled' ) == 'true' && get_option( 'wpideas_comment_posted' ) == '1' ) {
 				add_action( 'wp_insert_comment', array( $this, 'wpideas_idea_comment_posted' ), 99, 2 );
 			}
+			add_action( 'save_post', array( $this, 'wpideas_save_post' ), 13, 2 );
+
 			$this -> init_attributes();
+		}
+
+		function wpideas_save_post( $post_id ) {
+			if ( wp_is_post_revision( $post_id ) || RTBIZ_IDEAS_SLUG != get_post_type( $post_id ) ) {
+				return;
+			}
+			$has_voted= check_user_voted( $post_id );
+			if ( is_null( $has_voted ) ) {
+				add_vote( $post_id );
+				update_post_meta( $post_id, '_rt_wpideas_meta_votes', 1 );
+			}
 		}
 
 		/**
@@ -58,7 +71,6 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				'not_found_in_trash' => __( 'No Idea found in Trash', 'rtCamp' ),
 				'parent_item_colon' => __( '', 'rtCamp' ),
 				'menu_name' => __( 'Ideas', 'rtCamp' ),
-				'menu_icon' => '',
 			);
 
 			$args = array(
@@ -74,9 +86,10 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				),
 				'has_archive' => true,
 				'hierarchical' => false,
-				'menu_position' => null,
+				'menu_position' => 35,
 				'supports' => array( 'title', 'editor', 'author', 'thumbnail', 'revisions', 'excerpt', 'comments', 'page-attributes', 'custom-fields' ),
 				'register_meta_box_cb' => array( $this, 'wpideas_add_voters_metabox' ),
+				'menu_icon' => RTBIZ_IDEAS_URL. 'app/assets/img/rt-16X16.png',
 			);
 
 			register_post_type( RTBIZ_IDEAS_SLUG, $args );
