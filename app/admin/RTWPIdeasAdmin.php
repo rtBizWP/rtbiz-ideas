@@ -22,12 +22,18 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 			add_action( 'wp_before_admin_bar_render', array( $this, 'wpideas_append_post_status_list' ), 11 );
 			add_filter( 'manage_idea_posts_columns', array( $this, 'wpideas_ideas_table_head' ) );
 			add_action( 'manage_idea_posts_custom_column', array( $this, 'wpideas_ideas_table_columns' ), 10, 2 );
-			add_action( 'admin_menu', array( $this, 'wpideas_settings_menu' ) );
-			add_action( 'admin_init', array( $this, 'register_ideas_settings' ) );
-			if ( get_option( 'wpideas_emailenabled' ) == 'true' && get_option( 'wpideas_status_changes' ) == '1' ){
+//			add_action( 'admin_menu', array( $this, 'wpideas_settings_menu' ) );
+//			add_action( 'admin_init', array( $this, 'register_ideas_settings' ) );
+//			if ( get_option( 'wpideas_emailenabled' ) == 'true' && get_option( 'wpideas_status_changes' ) == '1' ){
+//				add_action( 'transition_post_status', array( $this, 'wpideas_idea_status_changed' ), 10, 3 );
+//			}
+			if ( is_status_change_notification_enable() ){
 				add_action( 'transition_post_status', array( $this, 'wpideas_idea_status_changed' ), 10, 3 );
 			}
-			if ( get_option( 'wpideas_emailenabled' ) == 'true' && get_option( 'wpideas_comment_posted' ) == '1' ) {
+//			if ( get_option( 'wpideas_emailenabled' ) == 'true' && get_option( 'wpideas_comment_posted' ) == '1' ) {
+//				add_action( 'wp_insert_comment', array( $this, 'wpideas_idea_comment_posted' ), 99, 2 );
+//			}
+			if ( is_comment_posted_notification_enable() ) {
 				add_action( 'wp_insert_comment', array( $this, 'wpideas_idea_comment_posted' ), 99, 2 );
 			}
 			add_action( 'save_post', array( $this, 'wpideas_save_post' ), 13, 2 );
@@ -57,6 +63,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 		 * Register custom post type
 		 */
 		function register_wpidea_post_type() {
+			$settings     = rt_idea_get_redux_settings();
 			$labels = array(
 				'name' => __( 'Ideas', 'rtCamp' ),
 				'singular_name' => __( 'Idea', 'rtCamp' ),
@@ -70,9 +77,9 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				'not_found' => __( 'No Idea found', 'rtCamp' ),
 				'not_found_in_trash' => __( 'No Idea found in Trash', 'rtCamp' ),
 				'parent_item_colon' => __( '', 'rtCamp' ),
-				'menu_name' => __( 'Ideas', 'rtCamp' ),
+				'menu_name' => __( isset( $settings['rt_idea_menu_label'] ) ? $settings['rt_idea_menu_label'] : 'Idea', 'rtCamp' ),
 			);
-
+			$menu_icon =  isset( $settings['rt_idea_logo_url']['url'] ) && ! empty( $settings['rt_idea_logo_url']['url'] )  ? $settings['rt_idea_logo_url']['url'] : RTBIZ_IDEAS_URL. 'app/assets/img/rt-16X16.png';
 			$args = array(
 				'labels' => $labels,
 				'public' => true,
@@ -89,7 +96,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				'menu_position' => 35,
 				'supports' => array( 'title', 'editor', 'author', 'thumbnail', 'revisions', 'excerpt', 'comments', 'page-attributes', 'custom-fields' ),
 				'register_meta_box_cb' => array( $this, 'wpideas_add_voters_metabox' ),
-				'menu_icon' => RTBIZ_IDEAS_URL. 'app/assets/img/rt-16X16.png',
+				'menu_icon' => $menu_icon,
 			);
 
 			register_post_type( RTBIZ_IDEAS_SLUG, $args );
@@ -248,7 +255,8 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 
 				$recipients = array();
 				array_push( $recipients, get_the_author_meta( 'user_email', $author ) );
-				$temp = explode( ',', trim( get_option( 'wpideas_adminemails' ) ) );
+//				$temp = explode( ',', trim( get_option( 'wpideas_adminemails' ) ) );
+				$temp = get_notification_emails();
 				for ( $i = 0; $i < count( $temp ); $i ++  ) {
 					array_push( $recipients, $temp[ $i ] );
 				}
@@ -292,7 +300,8 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				$author = $idea -> post_author;
 				$recipients = array();
 				array_push( $recipients, get_the_author_meta( 'user_email', $author ) );
-				$temp = explode( ',', trim( get_option( 'wpideas_adminemails' ) ) );
+//				$temp = explode( ',', trim( get_option( 'wpideas_adminemails' ) ) );
+				$temp = get_notification_emails();
 				for ( $i = 0; $i < count( $temp ); $i ++  ) {
 					array_push( $recipients, $temp[ $i ] );
 				}

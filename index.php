@@ -74,6 +74,15 @@ if ( ! defined( 'RTBIZ_IDEAS_PATH_HELPER' ) ) {
      */
 	define( 'RTBIZ_IDEAS_PATH_HELPER', plugin_dir_path( __FILE__ ) . 'app/helper/' );
 }
+if ( ! defined( 'RTBIZ_IDEAS_PATH_SETTINGS' ) ) {
+
+	/**
+	 * The url to the app/helper directory
+	 *
+	 */
+	define( 'RTBIZ_IDEAS_PATH_SETTINGS', plugin_dir_path( __FILE__ ) . 'app/settings/' );
+}
+
 if ( ! defined( 'RTBIZ_IDEAS_SLUG' ) ) {
 
     /**
@@ -125,6 +134,7 @@ function rt_wordpress_idea_autoloader( $class_name ) {
 	$rtlibpath = array(
 		'app/admin/' . $class_name . '.php',
 		'app/helper/' . $class_name . '.php',
+		'app/settings/' . $class_name . '.php',
 		'app/main/' . $class_name . '.php',
 		'app/lib/rtdbmodel/' . $class_name . '.php',
 	);
@@ -142,23 +152,35 @@ function rt_wordpress_idea_autoloader( $class_name ) {
  */
 spl_autoload_register( 'rt_wordpress_idea_autoloader' );
 
-include_once 'app/lib/rt-lib.php';
+include_once RTBIZ_IDEAS_PATH_LIB . 'rt-lib.php';
 
 
 function rtbiz_idea_loader(){
 	include_once 'app/helper/wpideas-votes.php';
 	include_once 'app/helper/wpideas-common.php';
-	
+	include_once 'app/settings/class-redux-framework-idea-config.php';
+	include_once 'app/helper/rt_idea_functions.php';
+	require_once RTBIZ_IDEAS_PATH_VENDOR . 'redux/ReduxCore/framework.php';
+
+//	global $rt_idea_autoload;
+//
+//	$rt_idea_autoload  = new RT_WP_Autoload( RTBIZ_IDEAS_PATH_LIB . 'rtdbmodel/' );
+//	$rt_idea_autoload =	new RT_WP_Autoload( RTBIZ_IDEAS_PATH_ADMIN );
+//	$rt_idea_autoload = new RT_WP_Autoload( RTBIZ_IDEAS_PATH_HELPER );
+//	$rt_idea_autoload = new RT_WP_Autoload( RTBIZ_IDEAS_PATH_MAIN );
+//	$rt_idea_autoload = new RT_WP_Autoload( RTBIZ_IDEAS_PATH_SETTINGS );
+
 	/**
 	 * Instantiate the RTWPIdeas class.
 	 */
-	global $rtWpIdeas, $rtWpIdeasAttributes, $taxonomy_metadata;
+	global $rtWpIdeas, $rtWpIdeasAttributes, $taxonomy_metadata, $reduxFrameworkIdeaConfig;
+	$reduxFrameworkIdeaConfig = new Redux_Framework_Idea_Config();
 	$rtWpIdeas = new RTWPIdeas();
 	$rtWpIdeasAttributes = new RTWPIdeasAttributes();
-	
+
 }
 
-add_action( 'plugins_loaded', 'rtbiz_idea_loader' );
+add_action( 'plugins_loaded', 'rtbiz_idea_loader', 10 );
 /*
  * Look Ma! Very few includes! Next File: /app/main/RTWPIdeas.php
  */

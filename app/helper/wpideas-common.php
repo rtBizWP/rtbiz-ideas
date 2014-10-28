@@ -83,7 +83,8 @@ function wpideas_insert_new_idea() {
 
 			$recipients = array();
 
-			$recipients = explode( ',', trim( get_option( 'wpideas_adminemails' ) ) );
+			//			$recipients = explode( ',', trim( get_option( 'wpideas_adminemails' ) ) );
+			$recipients = get_notification_emails();
 
 			$message = '';
 			$message .= '<h3>' . get_current_user() . ' posted a new idea</h3>';

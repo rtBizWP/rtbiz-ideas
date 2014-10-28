@@ -127,7 +127,7 @@
 	<div>
 		<label for="txtIdeaContent"><?php _e( 'Detail:', 'wp-ideas' ) ?></label>
 
-		<?php if ( get_option( 'wpideas_editorenabled' ) == 1 ) {
+		<?php if ( is_editor_enable() ) {
 				if ( isset( $_POST[ 'txtIdeaContent' ] ) ) {
 					if ( function_exists( 'stripslashes' ) ) {
 						$content = stripslashes( $_POST[ 'txtIdeaContent' ] );
