@@ -47,3 +47,12 @@ function is_editor_enable(){
 	}
 	return false;
 }
+
+function get_signature(){
+	$settings     = rt_idea_get_redux_settings();
+	if ( isset( $settings['idea_signature_enable'] ) && $settings['idea_signature_enable'] == 1 ){
+		if ( isset( $settings['idea_signature_text'] ) ) {
+			return $settings['idea_signature_text'];
+		}
+	}
+}

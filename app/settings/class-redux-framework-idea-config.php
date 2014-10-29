@@ -210,9 +210,9 @@ if ( ! class_exists( 'Redux_Framework_Idea_Config' ) ) {
 					'type' => 'textarea',
 					'title' => __('Email Signature'),
 					'subtitle' => __('Add here Email Signature'),
-					'desc' => __('You can add email signature here that will be send with every email send with the Idea plugin'),
+					'desc' => esc_attr("You can add email signature here that will be send with every email send with the Idea plugin, Allowed tags are <a> <br> <em> <strong>."),
 					'validate' => 'html_custom',
-					'default' => '<br />Send via rtCamp Idea Plugin<br />',
+					'default' => esc_attr('<br />Send via rtCamp Idea Plugin<br />'),
 					'allowed_html' => array(
 						'a' => array(
 							'href' => array(),
