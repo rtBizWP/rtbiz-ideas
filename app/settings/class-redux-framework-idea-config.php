@@ -124,18 +124,6 @@ if ( ! class_exists( 'Redux_Framework_Idea_Config' ) ) {
 		}
 
 		public function set_sections() {
-//			$reply_by_email = new RT_HD_Setting_Inbound_Email();
-//			$author_cap = rt_biz_get_access_role_cap( RT_HD_TEXT_DOMAIN, 'author' );
-//			$editor_cap = rt_biz_get_access_role_cap( RT_HD_TEXT_DOMAIN, 'editor' );
-//			$admin_cap  = rt_biz_get_access_role_cap( RT_HD_TEXT_DOMAIN, 'admin' );
-//
-//			$users         = rt_biz_get_module_users( rt_biz_sanitize_module_key( RT_HD_TEXT_DOMAIN ) );
-//			$users_options = array();
-//
-//			foreach ( $users as $user ) {
-//				$users_options[ $user->ID ] = $user->user_login;
-//			}
-
 			// ACTUAL DECLARATION OF SECTIONS
 			$general_fields = array(
 				array(
@@ -177,7 +165,7 @@ if ( ! class_exists( 'Redux_Framework_Idea_Config' ) ) {
 					'multi'    => true,
 				),
 				array(
-					'id'       => 'rthd_notification_events',
+					'id'       => 'rt_idea_notification_events',
 					'title'    => __( 'Notification Events' ),
 					'subtitle' => __( 'Events to be notified to users' ),
 					'desc'     => __( 'These events will be notified to the Notification Emails whenever they occur.' ),
@@ -262,7 +250,6 @@ if ( ! class_exists( 'Redux_Framework_Idea_Config' ) ) {
 		public function set_arguments() {
 
 			//$theme = wp_get_theme(); // For use with some settings. Not necessary.
-//			$author_cap = rt_biz_get_access_role_cap( RT_HD_TEXT_DOMAIN, 'author' );
 			$this->args = array(
 				// TYPICAL -> Change these values as you need/desire
 				'opt_name'           => 'redux_idea_settings',
@@ -401,14 +388,4 @@ if ( ! class_exists( 'Redux_Framework_Idea_Config' ) ) {
 
 	}
 
-}
-
-function rthd_get_redux_post_settings( $post ) {
-	// NOTE : Make modifications for what value to return.
-	if ( ! isset( $GLOBALS['redux_idea_settings'] ) ) {
-		$GLOBALS['redux_idea_settings'] = get_option( 'redux_idea_settings', array() );
-	}
-	$data = wp_parse_args( get_post_meta( $post->ID, 'redux_idea_settings', true ), $GLOBALS['redux_idea_settings'] );
-
-	return $GLOBALS['redux_idea_settings'];
 }

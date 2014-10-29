@@ -26,7 +26,7 @@ function get_notification_emails(){
 
 function is_status_change_notification_enable(){
 	$settings     = rt_idea_get_redux_settings();
-	if (  is_email_notification_enable() && isset( $settings['rthd_notification_events']['wpideas_status_changes'] ) && $settings['rthd_notification_events']['wpideas_status_changes'] == 1 ) {
+	if (  is_email_notification_enable() && isset( $settings['rt_idea_notification_events']['wpideas_status_changes'] ) && $settings['rt_idea_notification_events']['wpideas_status_changes'] == 1 ) {
 		return true;
 	}
 	return false;
@@ -34,7 +34,7 @@ function is_status_change_notification_enable(){
 
 function is_comment_posted_notification_enable(){
 	$settings     = rt_idea_get_redux_settings();
-	if ( is_email_notification_enable() && isset( $settings['rthd_notification_events']['wpideas_comment_posted'] ) && $settings['rthd_notification_events']['wpideas_comment_posted'] == 1 ) {
+	if ( is_email_notification_enable() && isset( $settings['rt_idea_notification_events']['wpideas_comment_posted'] ) && $settings['rt_idea_notification_events']['wpideas_comment_posted'] == 1 ) {
 		return true;
 	}
 	return false;
