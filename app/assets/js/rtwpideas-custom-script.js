@@ -89,6 +89,26 @@ jQuery(document).ready(function ($) {
         });
     });
 
+
+	jQuery('.subscribe_email_notification_button' ).click( function (){
+		var request = {};
+		var id = jQuery(this ).attr('id');
+		request['action']='subscribe_button';
+		request['post_id']=jQuery(this ).data().id;
+		console.log(request);
+		jQuery.ajax( {
+			             type: "post", //context: this,
+			             dataType: "json", url: rt_wpideas_ajax_url,
+			             data: request,
+			             success: function ( response ) {
+				             console.log( response );
+				             if ( response.status ) {
+					             jQuery( '#'+id ).attr('value',response.btntxt);
+				             }
+			             }
+		             } );
+	});
+
 	jQuery('#user_notification_save' ).click( function () {
 		var request = {};
 		var newstatus = jQuery('#status_change_notification').is(':checked');
@@ -112,8 +132,6 @@ jQuery(document).ready(function ($) {
 			}
 		}
 		if (newstatus != ideastatus || comment != commentstatus ) {
-			console.log(newstatus);
-			console.log(comment);
 			jQuery.ajax( {
 				             type: "post", //context: this,
 				             dataType: "json", url: rt_wpideas_ajax_url,

@@ -121,14 +121,17 @@
                 <span class="rtwpStyle-separator">&nbsp;·&nbsp;</span>
 				<?php
 					global $rtWpIdeasSubscirber;
+					$subcribebuttonflag= $rtWpIdeasSubscirber->check_subscriber_exist(get_the_ID(),get_current_user_id());
+					$subcribebuttonvalue= $subcribebuttonflag?'Unsubscribe':'subscribe';
 					$author = get_userdata( get_the_author_meta( 'ID' ) );
 					if( function_exists( 'bp_core_get_userlink' ) ){
 						echo bp_core_get_userlink( $author->ID );
 					}else{
 				?>
                 	<a href="<?php echo get_author_posts_url( $author->ID ); ?>" title="Author of <?php the_title(); ?>"><?php the_author(); ?> →</a>
-				<?php }
-				?>
+				<?php } ?>
+				<input type='button' id="subscriber-<?php the_ID(); ?>" class="subscribe_email_notification_button" value=<?php echo $subcribebuttonvalue; ?> data-id="<?php the_ID(); ?>" >
+
             </div>
     </header>
 </article>

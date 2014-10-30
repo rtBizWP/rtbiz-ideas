@@ -218,8 +218,29 @@ add_action( 'wp_ajax_nopriv_list_woo_product_ideas_load_more', 'list_woo_product
 add_action( 'wp_ajax_list_woo_product_ideas_refresh', 'list_woo_product_ideas_refresh' );
 add_action( 'wp_ajax_nopriv_list_woo_product_ideas_refresh', 'list_woo_product_ideas_refresh' );
 add_action( 'wp_ajax_subscribe_notification_setting', 'subscribe_notification_setting');
+add_action( 'wp_ajax_subscribe_button', 'subscribe_button');
 add_action( 'wp_ajax_nopriv_subscribe_notification_setting', 'subscribe_notification_setting');
+add_action( 'wp_ajax_nopriv_subscribe_button', 'subscribe_button');
 
+function subscribe_button(){
+	$response = array();
+	$response['status']=false;
+	global $rtWpIdeasSubscirber;
+	if (isset($_POST['post_id'])){
+		$subcribebuttonflag= $rtWpIdeasSubscirber->check_subscriber_exist($_POST['post_id'],get_current_user_id());
+		if ($subcribebuttonflag){
+			$rtWpIdeasSubscirber->delete_subscriber($_POST['post_id'],get_current_user_id());
+			$response['btntxt']='Subscribe';
+		}
+		else{
+			$rtWpIdeasSubscirber->add_subscriber($_POST['post_id'],get_current_user_id());
+			$response['btntxt']='Unsubscribe';
+		}
+		$response['status']=true;
+	}
+	echo json_encode($response);
+	die();
+}
 
 function subscribe_notification_setting(){
 	$response = array();
