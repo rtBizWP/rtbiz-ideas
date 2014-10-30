@@ -11,10 +11,10 @@
  * @return type
  */
 function add_vote( $post, $vote_count = 1 ) {
-	global $rtWpideasVotes;
+	global $rtWpideasVotes,$rtWpIdeasSubscirber;
 	$user = get_current_user_id();
 	$data = array( 'post_id' => $post, 'user_id' => $user, 'vote_count' => $vote_count, );
-
+	$rtWpIdeasSubscirber->add_subscriber($post,$user);
 	return $rtWpideasVotes -> add_vote( $data );
 }
 
@@ -29,10 +29,16 @@ function add_vote( $post, $vote_count = 1 ) {
  * @return type
  */
 function update_vote( $post, $vote_count ) {
-	global $rtWpideasVotes;
+	global $rtWpideasVotes,$rtWpIdeasSubscirber;
 	$user = get_current_user_id();
 	$where = array( 'post_id' => $post, 'user_id' => $user, );
 	$data = array( 'vote_count' => $vote_count, );
+	if( $vote_count <= 0 ){
+		$rtWpIdeasSubscirber->delete_subscriber( $post ,$user );
+	}
+	else{
+		$rtWpIdeasSubscirber->add_subscriber($post ,$user );
+	}
 
 	return $rtWpideasVotes -> update_vote( $data, $where );
 }
@@ -45,10 +51,10 @@ function update_vote( $post, $vote_count ) {
  * @return type
  */
 function delete_vote() {
-	global $post, $rtWpideasVotes;
+	global $post, $rtWpideasVotes,$rtWpIdeasSubscirber;
 	$user = get_current_user_id();
 	$where = array( 'post_id' => $post -> ID, 'user_id' => $user, );
-
+	$rtWpIdeasSubscirber->delete_subscriber($post -> ID,$user);
 	return $rtWpideasVotes -> delete_vote( $where );
 }
 
@@ -132,6 +138,8 @@ function vote_callback() {
 		$postid = intval( $_POST[ 'postid' ] );
 		if ( get_post_status( $postid ) == 'new' ) {
 			$is_voted = check_user_voted( $postid );
+//			global $rtWpIdeasSubscirber;
+//			$rtWpIdeasSubscirber->add_subscriber($postid,get_current_user_id());
 			if ( isset( $is_voted ) && $is_voted ) {
 				update_vote( $postid, 0 );
 				$votes = get_post_meta( $postid, '_rt_wpideas_meta_votes', true );

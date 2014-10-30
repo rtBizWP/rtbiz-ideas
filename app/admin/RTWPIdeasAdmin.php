@@ -33,19 +33,28 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 //			if ( get_option( 'wpideas_emailenabled' ) == 'true' && get_option( 'wpideas_comment_posted' ) == '1' ) {
 //				add_action( 'wp_insert_comment', array( $this, 'wpideas_idea_comment_posted' ), 99, 2 );
 //			}
-			if ( is_comment_posted_notification_enable() ) {
+//			if ( is_comment_posted_notification_enable() ) {
 				add_action( 'wp_insert_comment', array( $this, 'wpideas_idea_comment_posted' ), 99, 2 );
-			}
+//			}
 			add_action( 'save_post', array( $this, 'wpideas_save_post' ), 13, 2 );
+//			add_rewrite_rule('^idea/([^/]*)$','idea?tab=$matches[1]','top');
 
 			$this -> init_attributes();
+
+//			add_rewrite_rule(
+//				'^idea/([^/]*)$',
+//				'idea.php?tab=$matches[1]',
+//				'top'
+//			);
 		}
 
 		function wpideas_save_post( $post_id ) {
 			if ( wp_is_post_revision( $post_id ) || RTBIZ_IDEAS_SLUG != get_post_type( $post_id ) ) {
 				return;
 			}
+//			global $rtWpIdeasSubscirber;
 			$has_voted= check_user_voted( $post_id );
+//			$rtWpIdeasSubscirber->add_subscriber($post_id,get_current_user_id());
 			if ( is_null( $has_voted ) ) {
 				add_vote( $post_id );
 				update_post_meta( $post_id, '_rt_wpideas_meta_votes', 1 );
@@ -56,7 +65,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 		 * Init global variables
 		 */
 		function init_attributes() {
-			
+
 		}
 
 		/**
@@ -283,10 +292,16 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 		 * @param type $comment_object
 		 */
 		function wpideas_idea_comment_posted( $comment_id, $comment_object ) {
+//			error_log("$comment_object->comment_post_ID : -> ID ".$comment_object->comment_author .' : author', 3, "/var/tmp/my-errors.log");
+
 			if ( $comment_object -> comment_approved > 0 && get_post_type() == RTBIZ_IDEAS_SLUG ) {
+				global $rtWpIdeasSubscirber;
 				$headers[] = 'From: WP Ideas <wpideas@rtcamp.net>';
 				//$headers[] = 'Cc: John Q Codex <jqc@wordpress.org>';
 				//$headers[] = 'Cc: iluvwp@wordpress.org';
+//				error_log("$comment_object->comment_post_ID : -> ID ".$comment_object->comment_author .' : author', 3, "/var/tmp/my-errors.log");
+//				error_log(var_export($comment_object,true), 3, "/var/tmp/my-errors.log");
+				$rtWpIdeasSubscirber->add_subscriber($comment_object->comment_post_ID, $comment_object->user_id);
 
 				$comment_content = $comment_object->comment_content;
 				$comment_author = $comment_object->comment_author;

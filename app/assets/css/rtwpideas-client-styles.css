@@ -315,3 +315,7 @@ figure {
 #TB_window{
     z-index: 9999;
 }
+
+#myideas{
+	float: right;
+}

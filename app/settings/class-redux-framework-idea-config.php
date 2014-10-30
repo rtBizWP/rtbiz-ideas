@@ -171,8 +171,11 @@ if ( ! class_exists( 'Redux_Framework_Idea_Config' ) ) {
 					'desc'     => __( 'These events will be notified to the Notification Emails whenever they occur.' ),
 					'type'     => 'checkbox',
 					'options' => array(
-						'wpideas_status_changes'      => __( 'Receive status changes, admin responses.' ),
-						'wpideas_comment_posted'       => __( 'Receive comment updates.' ),
+//						'wpideas_status_changes'      => __( 'Receive status changes, admin responses.' ),
+//						'wpideas_comment_posted'       => __( 'Receive comment updates.' ),
+						'wpideas_idea_posted'       => __( 'New idea is posted' ),
+						'wpideas_comment_posted'       => __( 'New comment Added' ),
+						'wpideas_status_change'       => __( 'Idea status changed' ),
 					),
 				),
 				array(

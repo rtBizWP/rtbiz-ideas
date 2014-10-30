@@ -40,9 +40,10 @@ if ( ! class_exists( 'RTWPIdeas' ) ) {
 		 * @global RTWPIdeasAdmin $rtwpIdeasAdmin
 		 */
 		function init_attributes() {
-			global $rtWpideasVotes, $rtwpIdeasAdmin;
+			global $rtWpideasVotes, $rtwpIdeasAdmin,$rtWpIdeasSubscirber;
 			$rtwpIdeasAdmin = new RTWPIdeasAdmin();
 			$rtWpideasVotes = new RTWPIdeasVotesModel();
+			$rtWpIdeasSubscirber = new RTWPIdeasSubscriberModel();
 		}
 
 		/**

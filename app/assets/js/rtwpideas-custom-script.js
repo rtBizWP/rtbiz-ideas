@@ -5,7 +5,10 @@
  */
 jQuery(document).ready(function ($) {
 
-    jQuery('.btnVote').live('click', function () {
+	var ideastatus= jQuery('#status_change_notification').is(':checked');
+	var commentstatus= jQuery('#comment_notification').is(':checked');
+
+	jQuery('.btnVote').live('click', function () {
         $(this).attr('disabled', 'disabled');
         var data = {
             action: 'vote',
@@ -85,6 +88,46 @@ jQuery(document).ready(function ($) {
             }
         });
     });
+
+	jQuery('#user_notification_save' ).click( function () {
+		var request = {};
+		var newstatus = jQuery('#status_change_notification').is(':checked');
+		var comment = jQuery('#comment_notification').is(':checked');
+		request['action']='subscribe_notification_setting';
+		if ( newstatus != ideastatus ){
+			if( newstatus ){
+				request['status_change_notification']='YES'
+			}
+			else{
+				request['status_change_notification']='NO'
+			}
+
+		}
+		if( comment != commentstatus ){
+			if(comment){
+				request['comment_notification']= 'YES'
+			}
+			else{
+				request['comment_notification']= 'NO'
+			}
+		}
+		if (newstatus != ideastatus || comment != commentstatus ) {
+			console.log(newstatus);
+			console.log(comment);
+			jQuery.ajax( {
+				             type: "post", //context: this,
+				             dataType: "json", url: rt_wpideas_ajax_url,
+				             data: request,
+				             success: function ( response ) {
+									console.log( response );
+									if ( response.status ) {
+										jQuery( '#Notificationstatus' ).show();
+									}
+								}
+			             } );
+		}
+	});
+
 
 });
 

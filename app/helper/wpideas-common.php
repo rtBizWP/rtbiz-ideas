@@ -217,6 +217,37 @@ add_action( 'wp_ajax_list_woo_product_ideas_load_more', 'list_woo_product_ideas_
 add_action( 'wp_ajax_nopriv_list_woo_product_ideas_load_more', 'list_woo_product_ideas_load_more' ); //when logged out
 add_action( 'wp_ajax_list_woo_product_ideas_refresh', 'list_woo_product_ideas_refresh' );
 add_action( 'wp_ajax_nopriv_list_woo_product_ideas_refresh', 'list_woo_product_ideas_refresh' );
+add_action( 'wp_ajax_subscribe_notification_setting', 'subscribe_notification_setting');
+add_action( 'wp_ajax_nopriv_subscribe_notification_setting', 'subscribe_notification_setting');
+
+
+function subscribe_notification_setting(){
+	$response = array();
+	$response['status']=false;
+	global $rtWpIdeasSubscirber;
+	if ( isset($_POST['comment_notification'] ) ) {
+		if ( $_POST['comment_notification'] == 'NO' ) {
+			update_user_meta( get_current_user_id(), 'comment_notification', 'NO' );
+			$rtWpIdeasSubscirber->update_user_from_comment( get_current_user_id(),'NO' );
+		} else {
+			update_user_meta( get_current_user_id(), 'comment_notification', 'YES' );
+			$rtWpIdeasSubscirber->update_user_from_comment( get_current_user_id(),'YES' );
+		}
+		$response['status']=true;
+	}
+	if(isset($_POST['status_change_notification']) ) {
+		if ( $_POST['status_change_notification'] == 'NO') {
+			update_user_meta( get_current_user_id(), 'status_change_notification', 'NO' );
+			$rtWpIdeasSubscirber->update_user_from_status_change( get_current_user_id(), 'NO');
+		} else {
+			update_user_meta( get_current_user_id(), 'status_change_notification', 'YES' );
+			$rtWpIdeasSubscirber->update_user_from_status_change( get_current_user_id(), 'YES');
+		}
+		$response['status']=true;
+	}
+	echo json_encode($response);
+	die();
+}
 
 /**
  * woocommerce product idea tab shortcode
