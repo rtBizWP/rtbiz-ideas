@@ -320,7 +320,6 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 //				array_push( $recipients, get_the_author_meta( 'user_email', $author ) );
 				global $rtWpIdeasSubscirber;
 				$recipients =$rtWpIdeasSubscirber->get_subscriber_email($idea_id,'comment_post','YES');
-				error_log( var_export(is_comment_posted_notification_enable(),true) ." : -> system", 3, "/var/tmp/my-errors.log");
 //				$temp = explode( ',', trim( get_option( 'wpideas_adminemails' ) ) );
 				if (is_comment_posted_notification_enable()){
 					$temp = get_notification_emails();
@@ -334,7 +333,6 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 					}
 				}
 				add_action(  'transition_post_status',  'on_all_status_transitions', 10, 3 );*/
-				error_log( var_export($recipients,true) ." : -> system", 3, "/var/tmp/my-errors.log");
 				$message  = '';
 				$message .= '<h2> New Comment on <a href="'. $idea_link .'">' . $idea -> post_title . '</h2>';
 				$message .= '<label><b>Commentator:</b> '. $comment_author_url .'</label><br/>';

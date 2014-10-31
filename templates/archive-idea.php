@@ -26,7 +26,7 @@ get_header();
 				</div>
             </header>
 	        <?php if (is_user_logged_in()){ ?>
-	        <label id="myideas"> <a href="?tab=home"> My ideas </a>| <a href="?tab=settings">My Settings</a></label>
+	        <label id="myideas"> <a href="<?php echo home_url().'/'.RTBIZ_IDEAS_SLUG ?>?tab=home"> My ideas </a>| <a href="<?php echo home_url().'/'.RTBIZ_IDEAS_SLUG ?>?tab=settings">My Settings</a></label>
 			<?php } ?>
             <label class="success" id="lblIdeaSuccess" style="display:none;">Idea submitted</label>
 			<?php if ( isset($_REQUEST['tab']) && is_user_logged_in() ){
