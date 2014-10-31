@@ -323,6 +323,11 @@ figure {
 	float: right;
 }
 
+.subscribe_email_notification_button {
+	cursor: pointer;
+	text-decoration: underline;
+}
+/*
 .rtwpIdeaMeta .button-subscribe,
 .rtwpIdeaMeta .button-unsubscribe{
 	color: white;
@@ -332,9 +337,14 @@ figure {
 }
 
 .rtwpIdeaMeta .button-subscribe{
-	background: rgb(28, 184, 65); /* this is a green */
+	background: rgb(28, 184, 65); */
+/* this is a green *//*
+
 }
 
 .rtwpIdeaMeta .button-unsubscribe{
-	background: rgb(223, 117, 20); /* this is an orange */
+	background: rgb(223, 117, 20); */
+/* this is an orange *//*
+
 }
+*/

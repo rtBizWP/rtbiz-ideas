@@ -74,26 +74,18 @@ function wpideas_insert_new_idea() {
 					}
 				}
 			}
-
-			$headers[] = 'From: WP Ideas <wpideas@rtcamp.net>';
-			//$headers[] = 'Cc: John Q Codex <jqc@wordpress.org>';
-			//$headers[] = 'Cc: iluvwp@wordpress.org';
-
-			$subject = __( 'New Idea', 'wp-ideas' );
-
-			$recipients = array();
-
-			//			$recipients = explode( ',', trim( get_option( 'wpideas_adminemails' ) ) );
-			$recipients = get_notification_emails();
-
-			$message = '';
-			$message .= '<h3>' . get_current_user() . ' posted a new idea</h3>';
-			$message .= '<h2>' . $_POST[ 'txtIdeaTitle' ] . '</h2>';
-			$message .= '<p>' . $_POST[ 'txtIdeaContent' ] . '</p>';
-
-			$rtwpideasAdmin = new RTWPIdeasAdmin();
-			$rtwpideasAdmin -> sendNotifications( $recipients, $subject, $message, $headers );
-
+			if (is_new_idea_posted_notification_enable()) {
+				$headers[] = 'From: WP Ideas <wpideas@rtcamp.net>';
+				$subject = __( 'New Idea', 'wp-ideas' );
+				$recipients = get_notification_emails();
+				$message = '';
+				$currentuser = wp_get_current_user();
+				$message .= '<h3>' . $currentuser ->display_name . ' posted a new idea</h3>';
+				$message .= '<h2>' . $_POST['txtIdeaTitle'] . '</h2>';
+				$message .= '<p>' . $_POST['txtIdeaContent'] . '</p>';
+				$rtwpideasAdmin = new RTWPIdeasAdmin();
+				$rtwpideasAdmin->sendNotifications( $recipients, $subject, $message, $headers );
+			}
 			if ( isset( $_POST[ 'product' ] ) && $_POST[ 'product' ] == 'product_page' ) {
 				echo 'product';
 			}

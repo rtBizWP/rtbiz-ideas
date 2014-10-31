@@ -103,8 +103,8 @@ jQuery(document).ready(function ($) {
 			             data: request,
 			             success: function ( response ) {
 				             if ( response.status ) {
-					             jQuery( '#'+id ).attr('value',response.btntxt);
-					             jQuery( '#'+id  ).toggleClass("button-unsubscribe button-subscribe");
+					             jQuery( '#'+id ).text(response.btntxt);
+					             //jQuery( '#'+id  ).toggleClass("button-unsubscribe button-subscribe");
 				             }
 			             }
 		             } );

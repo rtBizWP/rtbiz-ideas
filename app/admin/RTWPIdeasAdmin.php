@@ -25,7 +25,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 //			add_action( 'admin_menu', array( $this, 'wpideas_settings_menu' ) );
 //			add_action( 'admin_init', array( $this, 'register_ideas_settings' ) );
 //			if ( get_option( 'wpideas_emailenabled' ) == 'true' && get_option( 'wpideas_status_changes' ) == '1' ){
-//				add_action( 'transition_post_status', array( $this, 'wpideas_idea_status_changed' ), 10, 3 );
+				add_action( 'transition_post_status', array( $this, 'wpideas_idea_status_changed' ), 10, 3 );
 //			}
 			if ( is_status_change_notification_enable() ){
 				add_action( 'transition_post_status', array( $this, 'wpideas_idea_status_changed' ), 10, 3 );
@@ -251,8 +251,6 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				$status_changer = $user_info->user_login;
 
 				$headers[] = 'From: WP Ideas <wpideas@rtcamp.net>';
-				//$headers[] = 'Cc: John Q Codex <jqc@wordpress.org>';
-				//$headers[] = 'Cc: iluvwp@wordpress.org';
 
 				$subject = '[WP Ideas] Idea Status Change';
 
@@ -262,12 +260,16 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 
 				$author_info = get_userdata( $author );
 
-				$recipients = array();
-				array_push( $recipients, get_the_author_meta( 'user_email', $author ) );
-//				$temp = explode( ',', trim( get_option( 'wpideas_adminemails' ) ) );
-				$temp = get_notification_emails();
-				for ( $i = 0; $i < count( $temp ); $i ++  ) {
-					array_push( $recipients, $temp[ $i ] );
+				global $rtWpIdeasSubscirber;
+				$recipients =$rtWpIdeasSubscirber->get_subscriber_email($post->ID ,'status_change','YES');
+				//				$recipients = array();
+				//				array_push( $recipients, get_the_author_meta( 'user_email', $author ) );
+				//				$temp = explode( ',', trim( get_option( 'wpideas_adminemails' ) ) );
+				if (is_status_change_notification_enable()) {
+					$temp = get_notification_emails();
+					for ( $i = 0; $i < count( $temp ); $i ++ ) {
+						array_push( $recipients, $temp[ $i ] );
+					}
 				}
 				$message = '';
 				$message .= '<h2>Idea status changed to '.$new_status.' for [ <a href="'.$post_link.'"> ' . $title . '</a> ] </h2>';
@@ -313,13 +315,24 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				$subject = '[WP Ideas] Comment On ' . $idea -> post_title;
 
 				$author = $idea -> post_author;
-				$recipients = array();
-				array_push( $recipients, get_the_author_meta( 'user_email', $author ) );
+//				array_push( $recipients, get_the_author_meta( 'user_email', $author ) );
+				global $rtWpIdeasSubscirber;
+				$recipients =$rtWpIdeasSubscirber->get_subscriber_email($idea_id,'comment_post','YES');
+				error_log( var_export(is_comment_posted_notification_enable(),true) ." : -> system", 3, "/var/tmp/my-errors.log");
 //				$temp = explode( ',', trim( get_option( 'wpideas_adminemails' ) ) );
-				$temp = get_notification_emails();
-				for ( $i = 0; $i < count( $temp ); $i ++  ) {
-					array_push( $recipients, $temp[ $i ] );
+				if (is_comment_posted_notification_enable()){
+					$temp = get_notification_emails();
+					for ( $i = 0; $i < count( $temp ); $i ++  ) {
+						array_push( $recipients, $temp[ $i ] );
+					}
 				}
+/*				function on_all_status_transitions( $new_status, $old_status, $post ) {
+					if ( $new_status != $old_status ) {
+						// A function to perform actions any time any post changes status.
+					}
+				}
+				add_action(  'transition_post_status',  'on_all_status_transitions', 10, 3 );*/
+				error_log( var_export($recipients,true) ." : -> system", 3, "/var/tmp/my-errors.log");
 				$message  = '';
 				$message .= '<h2> New Comment on <a href="'. $idea_link .'">' . $idea -> post_title . '</h2>';
 				$message .= '<label><b>Commentator:</b> '. $comment_author_url .'</label><br/>';

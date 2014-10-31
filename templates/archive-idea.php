@@ -34,7 +34,7 @@ get_header();
 					global $rtWpIdeasSubscirber;
 					$posts_id = $rtWpIdeasSubscirber->get_user_post(get_current_user_id());
 					global $wp_query;
-					$query = new WP_Query( array('post_type'=>'idea','post__in' => $posts_id, 'post_status' => 'any') );
+					$query = new WP_Query( array('post_type'=>RTBIZ_IDEAS_SLUG ,'post__in' => $posts_id, 'post_status' => 'any') );
 					?>
 					<div id="loop-common" class="idea-loop-common">
 						<?php

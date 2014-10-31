@@ -98,7 +98,12 @@
             <div class="rtwpIdeaMeta">
 				<?php
 				if ( is_user_logged_in() ) {
-					edit_post_link( 'Manage Idea', '<span>', '</span>' ); ?> &#124;
+					edit_post_link( 'Manage Idea', '<span>', '</span>' ); ?> &#124; <?php
+					global $rtWpIdeasSubscirber;
+					$subcribebuttonflag= $rtWpIdeasSubscirber->check_subscriber_exist(get_the_ID(),get_current_user_id());
+					$subcribebuttonvalue= $subcribebuttonflag?'Unsubscribe':'Subscribe';
+					$subcribebuttonclass= $subcribebuttonflag?'unsubscribe':'subscribe'; ?>
+	            <label>  <a id="subscriber-<?php the_ID(); ?>" class="subscribe_email_notification_button button-<?php echo $subcribebuttonclass; ?>" data-id="<?php the_ID(); ?>" > <?php echo $subcribebuttonvalue; ?></a> </label> &#124;
 				<?php } ?>
                 <a href="<?php the_permalink(); ?>#comments"
                    title="Comments for <?php the_title(); ?>"><?php comments_number( 'No Comments', '1 Comment', '% Comments' ); ?></a>
@@ -120,10 +125,7 @@
                 ?>
                 <span class="rtwpStyle-separator">&nbsp;·&nbsp;</span>
 				<?php
-					global $rtWpIdeasSubscirber;
-					$subcribebuttonflag= $rtWpIdeasSubscirber->check_subscriber_exist(get_the_ID(),get_current_user_id());
-					$subcribebuttonvalue= $subcribebuttonflag?'Unsubscribe':'Subscribe';
-					$subcribebuttonclass= $subcribebuttonflag?'unsubscribe':'subscribe';
+
 					$author = get_userdata( get_the_author_meta( 'ID' ) );
 					if( function_exists( 'bp_core_get_userlink' ) ){
 						echo bp_core_get_userlink( $author->ID );
@@ -131,7 +133,10 @@
 				?>
                 	<a href="<?php echo get_author_posts_url( $author->ID ); ?>" title="Author of <?php the_title(); ?>"><?php the_author(); ?> →</a>
 				<?php } ?>
-				<input type='button' id="subscriber-<?php the_ID(); ?>" class="subscribe_email_notification_button button-<?php echo $subcribebuttonclass; ?>" value=<?php echo $subcribebuttonvalue; ?> data-id="<?php the_ID(); ?>" >
+<!--				<input type='button' id="subscriber---><?php //the_ID(); ?><!--" class="subscribe_email_notification_button button---><?php //echo $subcribebuttonclass; ?><!--" value=--><?php //echo $subcribebuttonvalue; ?><!-- data-id="--><?php //the_ID(); ?><!--" >-->
+	            <?PHP
+//	            var_dump($rtWpIdeasSubscirber->get_subscriber_email(get_the_ID(),'status_change','YES'));
+	            ?>
 
             </div>
     </header>

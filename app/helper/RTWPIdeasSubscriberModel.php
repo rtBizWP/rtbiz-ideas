@@ -73,9 +73,9 @@ if ( ! class_exists( 'RTWPIdeasSubscriberModel' ) ) {
 			$this->delete_subscribers( array( 'post_id' => $post_id, 'user_id' => $user_id, ) );
 		}
 
-		function get_subscriber_email( $post_id ){
+		function get_subscriber_email( $post_id, $key, $value ){
 			global $wpdb;
-			$sql = $wpdb->prepare( 'SELECT user_id FROM '.$wpdb->prefix.'rt_wpideas_subscriber WHERE post_id = %s',$post_id );
+			$sql = $wpdb->prepare( 'SELECT user_id FROM '.$wpdb->prefix.'rt_wpideas_subscriber WHERE post_id = %s AND '.$key.' = %s',$post_id   , $value );
 			$result =$wpdb->get_results( $sql , ARRAY_A );
 			$emails = array();
 			foreach ( $result as $user_id ){
