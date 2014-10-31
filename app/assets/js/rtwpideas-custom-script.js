@@ -98,12 +98,13 @@ jQuery(document).ready(function ($) {
 		console.log(request);
 		jQuery.ajax( {
 			             type: "post", //context: this,
-			             dataType: "json", url: rt_wpideas_ajax_url,
+			             dataType: "json",
+			             url: rt_wpideas_ajax_url,
 			             data: request,
 			             success: function ( response ) {
-				             console.log( response );
 				             if ( response.status ) {
 					             jQuery( '#'+id ).attr('value',response.btntxt);
+					             jQuery( '#'+id  ).toggleClass("button-unsubscribe button-subscribe");
 				             }
 			             }
 		             } );

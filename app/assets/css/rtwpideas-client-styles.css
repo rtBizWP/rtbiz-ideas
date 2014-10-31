@@ -37,7 +37,7 @@ and open the template in the editor.
 	border: none;
 	color: #ffffff;
 	border-radius: 3px;
-	font-size:12px;
+	font-size:11px;
 }
 .btnVote:hover, .btnVote:focus, #btnOpenThickbox:hover, #btnOpenThickbox:focus{
 	background: #3e63a4;
@@ -138,6 +138,9 @@ and open the template in the editor.
 	font-weight: bold;
 	line-height: 1em;
 	margin-bottom: 10px;
+}
+.rtwpIdeaTitle a{
+	text-decoration: none;
 }
 
 .rtwpIdeaTitle a.link, .rtwpIdeaTitle a.visited{
@@ -252,7 +255,7 @@ figure {
     padding-bottom: 10px;
 }
 #btnNewThickbox{
-    height: 40px;
+    /*height: 40px;*/
     vertical-align: bottom;
     float: left;
     line-height: 20px;
@@ -318,4 +321,20 @@ figure {
 
 #myideas{
 	float: right;
+}
+
+.rtwpIdeaMeta .button-subscribe,
+.rtwpIdeaMeta .button-unsubscribe{
+	color: white;
+	border-radius: 4px;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+	font-size : 9px;
+}
+
+.rtwpIdeaMeta .button-subscribe{
+	background: rgb(28, 184, 65); /* this is a green */
+}
+
+.rtwpIdeaMeta .button-unsubscribe{
+	background: rgb(223, 117, 20); /* this is an orange */
 }
