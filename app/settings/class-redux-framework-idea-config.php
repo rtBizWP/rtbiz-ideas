@@ -147,38 +147,6 @@ if ( ! class_exists( 'Redux_Framework_Idea_Config' ) ) {
 					),
 				),
 				array(
-					'id'       => 'wpideas_emailenabled',
-					'type'     => 'switch',
-					'title'    => __( 'Notifications Emails' ),
-					'subtitle' => __( 'This feature' ),
-					'default'  => false,
-					'on'       => __( 'Enable' ),
-					'off'      => __( 'Disable' ),
-				),
-				array(
-					'id'       => 'wpideas_adminemails',
-					'title'    => __( 'Notification Emails' ),
-					'subtitle' => __( 'Email addresses to be notified on events' ),
-					'desc'     => __( 'These email addresses will be notified of the events that occurs in Idea systems. This is a global list. All the subscribers on idea will be notified along with this list.' ),
-					'type'     => 'multi_text',
-					'validate' => 'email',
-					'multi'    => true,
-				),
-				array(
-					'id'       => 'rt_idea_notification_events',
-					'title'    => __( 'Notification Events' ),
-					'subtitle' => __( 'Events to be notified to users' ),
-					'desc'     => __( 'These events will be notified to the Notification Emails whenever they occur.' ),
-					'type'     => 'checkbox',
-					'options' => array(
-//						'wpideas_status_changes'      => __( 'Receive status changes, admin responses.' ),
-//						'wpideas_comment_posted'       => __( 'Receive comment updates.' ),
-						'wpideas_idea_posted'       => __( 'New idea is posted' ),
-						'wpideas_comment_posted'       => __( 'New comment Added' ),
-						'wpideas_status_change'       => __( 'Idea status changed' ),
-					),
-				),
-				array(
 					'id'       => 'wpideas_editorenabled',
 					'type'     => 'switch',
 					'title'    => __( 'Enable WYSIWYG Editor' ),
@@ -187,57 +155,6 @@ if ( ! class_exists( 'Redux_Framework_Idea_Config' ) ) {
 					'on'       => __( 'Enable' ),
 					'off'      => __( 'Disable' ),
 				),
-				array(
-					'id'       => 'idea_new_idea_email_title',
-					'type'     => 'text',
-					'title'    => __( 'Title for new idea' ),
-					'subtitle' => __( 'This is title for new idea created' ),
-					'desc'     => __( 'You can use {idea_id} and {idea_title}' ),
-					'default'  => '[New Idea Created] idea #{idea_id} : {idea_title}',
-				),
-				array(
-					'id'       => 'idea_status_change_email_title',
-					'type'     => 'text',
-					'title'    => __( 'Title when idea status changed' ),
-					'subtitle' => __( 'This is title when idea status changed' ),
-					'desc'     => __( 'You can use {idea_id} and {idea_title}' ),
-					'default'  => '[Idea Status Change] idea #{idea_id} : {idea_title}',
-				),
-				array(
-					'id'       => 'idea_comment_add_email_title',
-					'type'     => 'text',
-					'title'    => __( 'Title when comment added' ),
-					'subtitle' => __( 'This is title when comment is added to an Idea' ),
-					'desc'     => __( 'You can use {idea_id} and {idea_title}' ),
-					'default'  => '[Idea Comment Added] idea #{idea_id} : {idea_title}',
-				),
-				array(
-					'id'       => 'idea_signature_enable',
-					'type'     => 'switch',
-					'title'    => __( 'Enable email signature ' ),
-					'subtitle' => __( 'Enable Append signature to each mail' ),
-					'default'  => false,
-					'on'       => __( 'Enable' ),
-					'off'      => __( 'Disable' ),
-				),
-				array(
-					'id'=>'idea_signature_text',
-					'type' => 'textarea',
-					'title' => __('Email Signature'),
-					'subtitle' => __('Add here Email Signature'),
-					'desc' => esc_attr("You can add email signature here that will be send with every email send with the Idea plugin, Allowed tags are <a> <br> <em> <strong>."),
-					'validate' => 'html_custom',
-					'default' => esc_attr('<br />Send via rtCamp Idea Plugin<br />'),
-					'allowed_html' => array(
-						'a' => array(
-							'href' => array(),
-							'title' => array()
-						),
-						'br' => array(),
-						'em' => array(),
-						'strong' => array()
-					),
-				),
 			);
 			$this->sections[] = array(
 				'icon'        => 'el-icon-cogs',
@@ -245,6 +162,93 @@ if ( ! class_exists( 'Redux_Framework_Idea_Config' ) ) {
 //				'permissions' => $admin_cap,
 				'fields'      => $general_fields,
 			);
+			$this->sections[] = array(
+				'icon'        => 'el-icon-envelope',
+				'title'       => __( 'Notification Emails ' ),
+				'fields'      => array(
+					array(
+						'id'       => 'wpideas_emailenabled',
+						'type'     => 'switch',
+						'title'    => __( 'Notifications Emails' ),
+						'subtitle' => __( 'This feature' ),
+						'default'  => false,
+						'on'       => __( 'Enable' ),
+						'off'      => __( 'Disable' ),
+					),
+					array(
+						'id'       => 'wpideas_adminemails',
+						'title'    => __( 'Notification Emails' ),
+						'subtitle' => __( 'Email addresses to be notified on events' ),
+						'desc'     => __( 'These email addresses will be notified of the events that occurs in Idea systems. This is a global list. All the subscribers on idea will be notified along with this list.' ),
+						'type'     => 'multi_text',
+						'validate' => 'email',
+						'multi'    => true,
+					),
+					array(
+						'id'       => 'rt_idea_notification_events',
+						'title'    => __( 'Notification Events' ),
+						'subtitle' => __( 'Events to be notified to users' ),
+						'desc'     => __( 'These events will be notified to the Notification Emails whenever they occur.' ),
+						'type'     => 'checkbox',
+						'options' => array(
+						'wpideas_idea_posted'       => __( 'New idea is posted' ),
+						'wpideas_comment_posted'       => __( 'New comment Added' ),
+						'wpideas_status_change'       => __( 'Idea status changed' ),
+												),
+					),
+					array(
+						'id'       => 'idea_new_idea_email_title',
+						'type'     => 'text',
+						'title'    => __( 'Title for new idea' ),
+						'subtitle' => __( 'This is title for new idea created' ),
+						'desc'     => __( 'You can use {idea_id} and {idea_title}' ),
+						'default'  => '[New Idea Created] idea #{idea_id} : {idea_title}',
+					),
+					array(
+						'id'       => 'idea_status_change_email_title',
+						'type'     => 'text',
+						'title'    => __( 'Title when idea status changed' ),
+						'subtitle' => __( 'This is title when idea status changed' ),
+						'desc'     => __( 'You can use {idea_id} and {idea_title}' ),
+						'default'  => '[Idea Status Change] idea #{idea_id} : {idea_title}',
+					),
+					array(
+						'id'       => 'idea_comment_add_email_title',
+						'type'     => 'text',
+						'title'    => __( 'Title when comment added' ),
+						'subtitle' => __( 'This is title when comment is added to an Idea' ),
+						'desc'     => __( 'You can use {idea_id} and {idea_title}' ),
+						'default'  => '[Idea Comment Added] idea #{idea_id} : {idea_title}',
+					),
+					array(
+						'id'       => 'idea_signature_enable',
+						'type'     => 'switch',
+						'title'    => __( 'Enable email signature ' ),
+						'subtitle' => __( 'Enable Append signature to each mail' ),
+						'default'  => false,
+						'on'       => __( 'Enable' ),
+						'off'      => __( 'Disable' ),
+					),
+					array(
+						'id'=>'idea_signature_text',
+						'type' => 'textarea',
+						'title' => __('Email Signature'),
+						'subtitle' => __('Add here Email Signature'),
+						'desc' => esc_attr("You can add email signature here that will be send with every email send with the Idea plugin, Allowed tags are <a> <br> <em> <strong>."),
+						'validate' => 'html_custom',
+						'default' => esc_attr('<br />Send via rtCamp Idea Plugin<br />'),
+						'allowed_html' => array(
+							'a' => array(
+								'href' => array(),
+								'title' => array()
+							),
+							'br' => array(),
+							'em' => array(),
+							'strong' => array()
+						),
+					),
+				));
+
 			return true;
 		}
 		/*
