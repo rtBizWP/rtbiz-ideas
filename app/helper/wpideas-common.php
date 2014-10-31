@@ -76,7 +76,8 @@ function wpideas_insert_new_idea() {
 			}
 			if (is_new_idea_posted_notification_enable()) {
 				$headers[] = 'From: WP Ideas <wpideas@rtcamp.net>';
-				$subject = __( 'New Idea', 'wp-ideas' );
+				//				$subject = __( 'New Idea', 'wp-ideas' );
+				$subject=create_new_idea_title('idea_new_idea_email_title',$idea_id);
 				$recipients = get_notification_emails();
 				$message = '';
 				$currentuser = wp_get_current_user();

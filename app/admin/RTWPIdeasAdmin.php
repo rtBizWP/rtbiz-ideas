@@ -252,7 +252,8 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 
 				$headers[] = 'From: WP Ideas <wpideas@rtcamp.net>';
 
-				$subject = '[WP Ideas] Idea Status Change';
+//				$subject = '[WP Ideas] Idea Status Change';
+				$subject = create_new_idea_title('idea_status_change_email_title', $post -> ID);
 
 				$author = $post -> post_author;
 				$title = $post -> post_title;
@@ -312,7 +313,8 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				$idea = get_post( $idea_id );
 				$idea_link = get_permalink( $idea_id );
 
-				$subject = '[WP Ideas] Comment On ' . $idea -> post_title;
+				//				$subject = '[WP Ideas] Comment On ' . $idea -> post_title;
+				$subject = create_new_idea_title('idea_comment_add_email_title', $idea_id);
 
 				$author = $idea -> post_author;
 //				array_push( $recipients, get_the_author_meta( 'user_email', $author ) );
@@ -352,6 +354,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 		 * @param type $headers
 		 */
 		function sendNotifications( $recipients, $subject, $message, $headers ) {
+			$message.=get_signature();
 			$multiple_to_recipients = $recipients;
 			add_filter( 'wp_mail_content_type', array( $this, 'set_html_content_type' ) );
 			wp_mail( $multiple_to_recipients, $subject, $message, $headers );

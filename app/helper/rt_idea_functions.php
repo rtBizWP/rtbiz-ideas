@@ -63,4 +63,22 @@ function get_signature(){
 			return $settings['idea_signature_text'];
 		}
 	}
+	return '';
+}
+
+function generate_email_title( $post_id, $title ) {
+	if ( ! is_null( $title ) ){
+		$title = str_replace( '{idea_title}',get_the_title( $post_id ), $title );
+		$title = str_replace( '{idea_id}', $post_id, $title );
+		return $title;
+	}
+	return null;
+}
+
+function create_new_idea_title( $key, $post_id ){
+	$redux = rt_idea_get_redux_settings();
+	if ( isset( $redux[ $key ] ) ) {
+		return generate_email_title( $post_id, $redux[ $key ] );
+	}
+	return null;
 }
