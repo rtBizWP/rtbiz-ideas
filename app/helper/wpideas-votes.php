@@ -33,12 +33,12 @@ function update_vote( $post, $vote_count ) {
 	$user = get_current_user_id();
 	$where = array( 'post_id' => $post, 'user_id' => $user, );
 	$data = array( 'vote_count' => $vote_count, );
-	if( $vote_count <= 0 ){
-		$rtWpIdeasSubscirber->delete_subscriber( $post ,$user );
-	}
-	else{
+//	if( $vote_count <= 0 ){
+//		$rtWpIdeasSubscirber->delete_subscriber( $post ,$user );
+//	}
+//	else{
 		$rtWpIdeasSubscirber->add_subscriber($post ,$user );
-	}
+//	}
 
 	return $rtWpideasVotes -> update_vote( $data, $where );
 }
