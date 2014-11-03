@@ -30,11 +30,13 @@ get_header();
 			<?php } ?>
             <label class="success" id="lblIdeaSuccess" style="display:none;">Idea submitted</label>
 			<?php if ( isset($_REQUEST['tab']) && is_user_logged_in() ){
-				if (    $_REQUEST['tab'] == 'home'){
+				if ( $_REQUEST['tab'] == 'home' ){
 					global $rtWpIdeasSubscirber;
 					$posts_id = $rtWpIdeasSubscirber->get_user_post(get_current_user_id());
 					global $wp_query;
-					$query = new WP_Query( array('post_type'=>RTBIZ_IDEAS_SLUG ,'post__in' => $posts_id, 'post_status' => 'any') );
+					$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+					$query = new WP_Query( array('post_type'=>RTBIZ_IDEAS_SLUG ,'post__in' => $posts_id, 'post_status' => 'any','paged' => $paged, /*'posts_per_page' => -1,*/) );
+//					var_dump($query);
 					?>
 					<div id="loop-common" class="idea-loop-common">
 						<?php
@@ -46,7 +48,7 @@ get_header();
 							?>
 							<div class="navigation">
 								<div class="alignleft"><?php previous_posts_link( '&laquo; Previous Page' ) ?></div>
-								<div class="alignright"><?php next_posts_link( 'Next Page &raquo;', '' ) ?></div>
+								<div class="alignright"><?php next_posts_link( 'Next Page &raquo;', $query->max_num_pages ) ?></div>
 							</div>
 							<?php
 							if ( $query->is_single() ) :
