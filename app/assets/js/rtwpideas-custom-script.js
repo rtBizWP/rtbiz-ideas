@@ -103,8 +103,13 @@ jQuery(document).ready(function ($) {
 			             data: request,
 			             success: function ( response ) {
 				             if ( response.status ) {
-					             jQuery( '#'+id ).text(response.btntxt);
-					             //jQuery( '#'+id  ).toggleClass("button-unsubscribe button-subscribe");
+					             if(jQuery('a[id='+id+']' ).length){
+						             jQuery( '#'+id ).text(response.btntxt);
+					             }
+					             else if(jQuery('input[id= '+id+'] ').length){
+						             jQuery( '#'+id ).attr('value',response.btntxt);
+						             jQuery( '#'+id  ).toggleClass("button-unsubscribe button-subscribe");
+					             }
 				             }
 			             }
 		             } );

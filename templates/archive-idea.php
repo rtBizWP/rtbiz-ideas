@@ -26,34 +26,48 @@ get_header();
 				</div>
             </header>
 	        <?php if (is_user_logged_in()){ ?>
-	        <label id="myideas"> <a href="<?php echo home_url().'/'.RTBIZ_IDEAS_SLUG ?>?tab=home"> My ideas </a>| <a href="<?php echo home_url().'/'.RTBIZ_IDEAS_SLUG ?>?tab=settings">My Settings</a></label>
+	        <div id="myideas"> <a href="<?php echo home_url().'/'.RTBIZ_IDEAS_SLUG ?>?tab=home"> My ideas </a>| <a href="<?php echo home_url().'/'.RTBIZ_IDEAS_SLUG ?>?tab=settings">My Settings</a></div>
 			<?php } ?>
             <label class="success" id="lblIdeaSuccess" style="display:none;">Idea submitted</label>
 			<?php if ( isset($_REQUEST['tab']) && is_user_logged_in() ){
 				if ( $_REQUEST['tab'] == 'home' ){
-					global $rtWpIdeasSubscirber;
-					$posts_id = $rtWpIdeasSubscirber->get_user_post(get_current_user_id());
-					global $wp_query;
-					$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
-					$query = new WP_Query( array('post_type'=>RTBIZ_IDEAS_SLUG ,'post__in' => $posts_id, 'post_status' => 'any','paged' => $paged, /*'posts_per_page' => -1,*/) );
-//					var_dump($query);
+//					global $rtWpIdeasSubscirber;
+//					$posts_id = $rtWpIdeasSubscirber->get_user_post(get_current_user_id());
+					global $wpdb;
+//					$current_user= get_current_user_id();
+					$pageposts= $wpdb->get_results($wpdb->prepare("SELECT $wpdb->posts.* FROM $wpdb->posts LEFT JOIN ".$wpdb->prefix."rt_wpideas_subscriber ON (".$wpdb->posts.".ID = ".$wpdb->prefix."rt_wpideas_subscriber.post_id) where (".$wpdb->prefix."rt_wpideas_subscriber.user_id = %d OR ".$wpdb->posts.".post_author = %d) AND ".$wpdb->posts.".post_type = '".RTBIZ_IDEAS_SLUG ."' AND ".$wpdb->posts.".post_status <> 'auto-draft' ORDER BY ".$wpdb->posts.".post_date DESC ", get_current_user_id(),get_current_user_id()));
+//					var_dump($pageposts);
+//					var_dump(printf("SELECT $wpdb->posts.* FROM $wpdb->posts LEFT OUTER JOIN ".$wpdb->prefix."rt_wpideas_subscriber ON (".$wpdb->posts.".ID = ".$wpdb->prefix."rt_wpideas_subscriber.post_id AND ".$wpdb->prefix."rt_wpideas_subscriber.user_id = %d) where ".$wpdb->posts.".post_type = '".RTBIZ_IDEAS_SLUG ."' AND  ".$wpdb->posts.".post_author = %d AND ".$wpdb->posts.".post_status <> 'auto-draft'", $current_user,$current_user));
+//					$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+//					$query = new WP_Query( array('post_type'=>RTBIZ_IDEAS_SLUG ,'post__in' => $posts_id, 'post_status' => 'any','posts_per_page' => -1,) );
+//					var_dump($query );
+
 					?>
 					<div id="loop-common" class="idea-loop-common">
 						<?php
-						if ( $query->have_posts() ) : ?>
-							<?php
-							while ( $query->have_posts() ) :$query->the_post();
-								rtideas_get_template( 'loop-common.php' );
-							endwhile;
+						if ( $pageposts ) :
+							global $post;
 							?>
-							<div class="navigation">
-								<div class="alignleft"><?php previous_posts_link( '&laquo; Previous Page' ) ?></div>
-								<div class="alignright"><?php next_posts_link( 'Next Page &raquo;', $query->max_num_pages ) ?></div>
-							</div>
+							<table class="myideasTable">
+								<th>Title</th>
+								<th>Author</th>
+								<th>Vote Counts</th>
+								<th>Action</th>
 							<?php
-							if ( $query->is_single() ) :
-								$query->comments_template();
-							endif;
+//							while ( $query->have_posts() ):$query->the_post();
+//								rtideas_get_template( 'table-common.php' );
+//							endwhile;
+							foreach ($pageposts as $post):
+								setup_postdata($post);
+								rtideas_get_template( 'table-common.php' );
+							endforeach;
+							?>
+							</table>
+<!--							<div class="navigation">-->
+<!--								<div class="alignleft">--><?php //previous_posts_link( '&laquo; Previous Page' ) ?><!--</div>-->
+<!--								<div class="alignright">--><?php //next_posts_link( 'Next Page &raquo;', $query->max_num_pages ) ?><!--</div>-->
+<!--							</div>-->
+							<?php
 						else :
 							if ( is_user_logged_in() ) {
 								echo 'Looks like we do not have any idea. <br /><br /> Be first one to suggest idea.&nbsp; <a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=wpideas-insert-idea" class="thickbox"> Click Here </a> &nbsp;  to suggest.';
@@ -64,7 +78,7 @@ get_header();
 
 						endif; ?>
 					</div> <?PHP
-
+					wp_reset_query();
 					}
 				else if ( $_REQUEST['tab'] =='settings') {
 					$comment_notification =get_user_meta( get_current_user_id(),'comment_notification',true );
