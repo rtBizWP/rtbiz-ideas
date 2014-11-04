@@ -347,7 +347,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				$message  = '';
 				$message .= '<h2> New Comment on <a href="'. $idea_link .'">' . $idea -> post_title . '</h2>';
 				$message .= '<label><b>Commentator:</b> '. $comment_author_url .'</label><br/>';
-				$message .= '<label><b>Content:</b> '.$comment_content.'</label><br/>';
+				$message .= '<label><b>Content:</b> '.stripslashes($comment_content).'</label><br/>';
                 $message .= '<label><b>Link:</b> <a href="'. get_comment_link( $comment_object ). '">Go to comment</a></label>';
 
 				$this -> sendNotifications( $recipients, $subject, $message, $headers );

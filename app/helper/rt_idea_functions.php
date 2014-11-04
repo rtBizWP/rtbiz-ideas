@@ -78,7 +78,7 @@ function generate_email_title( $post_id, $title ) {
 function create_new_idea_title( $key, $post_id ){
 	$redux = rt_idea_get_redux_settings();
 	if ( isset( $redux[ $key ] ) ) {
-		return generate_email_title( $post_id, $redux[ $key ] );
+		return html_entity_decode(generate_email_title( $post_id, $redux[ $key ] ));
 	}
 	return null;
 }
