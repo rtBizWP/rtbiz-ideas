@@ -326,7 +326,7 @@ function list_post_ideas( $atts ) {
 		?>
 		</div>
 			<?php
-			echo '<a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Suggest Idea for this product</a>';
+			echo '<a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Suggest Idea for this post</a>';
 	} else {
 		echo '<br/><a id="btnOpenThickbox" href="/wp-login.php">Login to Suggest Idea</a>';
 	}
