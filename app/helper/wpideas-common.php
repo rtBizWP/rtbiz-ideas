@@ -51,7 +51,7 @@ function wpideas_insert_new_idea() {
 				'post_title' => wp_strip_all_tags( $_POST[ 'txtIdeaTitle' ] ), 
 				'post_content' => $_POST[ 'txtIdeaContent' ], 
 				'post_type' => RTBIZ_IDEAS_SLUG,
-				'post_status' => 'new', 
+				'post_status' => 'idea-new',
 			);
 
 			$idea_id = wp_insert_post( $idea_information );
@@ -168,7 +168,7 @@ function list_all_idea_shortcode( $atts ) {
 		'posts_per_page' => get_option( 'posts_per_page' ),
 		'order'	=> 'DESC',
 		'orderby' => 'date',
-		'post_status' => 'new',
+		'post_status' => 'idea-new',
 		'post__not_in' => ''
 	);
 	$r = shortcode_atts( $default, $atts );

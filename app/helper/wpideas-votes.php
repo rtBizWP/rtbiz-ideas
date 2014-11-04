@@ -136,7 +136,7 @@ function vote_callback() {
 		$response[ 'err' ] = 'Please login to vote.';
 	} else {
 		$postid = intval( $_POST[ 'postid' ] );
-		if ( get_post_status( $postid ) == 'new' ) {
+		if ( get_post_status( $postid ) == 'idea-new' ) {
 			$is_voted = check_user_voted( $postid );
 //			global $rtWpIdeasSubscirber;
 //			$rtWpIdeasSubscirber->add_subscriber($postid,get_current_user_id());

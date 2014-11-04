@@ -15,7 +15,7 @@
         <div class="rtwpIdeaVoteButton">
             <input type="button" id="btnVote-<?php the_ID(); ?>" class="btnVote" data-id="<?php the_ID(); ?>"
                    value="<?php
-				   if( get_post_status( get_the_ID() ) != 'new' ){
+				   if( get_post_status( get_the_ID() ) != 'idea-new' ){
 						echo ucfirst( get_post_status( get_the_ID() ) );
 				   }else{
 						   if ( is_user_logged_in() ){
@@ -34,13 +34,13 @@
 						   }
 				   }
 
-                   ?>" <?php if( get_post_status( get_the_ID() ) != 'new' ){
+                   ?>" <?php if( get_post_status( get_the_ID() ) != 'idea-new' ){
 				echo ' disabled="disabled"';
-			} ?> <?php if( get_post_status( get_the_ID() ) == 'accepted' ){
+			} ?> <?php if( get_post_status( get_the_ID() ) == 'idea-accepted' ){
 				echo ' style="background-color:GREEN;"';
-			}else if( get_post_status( get_the_ID() ) == 'declined' ){
+			}else if( get_post_status( get_the_ID() ) == 'idea-declined' ){
 				echo ' style="background-color:RED;"';
-			}else if( get_post_status( get_the_ID() ) == 'completed' ){
+			}else if( get_post_status( get_the_ID() ) == 'idea-completed' ){
 				echo ' style="background-color:GREEN;"';
 			} ?> />
         </div>

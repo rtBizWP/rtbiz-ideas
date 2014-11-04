@@ -115,7 +115,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 		 * register custom post status
 		 */
 		function wpideas_custom_post_status() {
-			register_post_status( 'new', array(
+			register_post_status( 'idea-new', array(
 				'label' => _x( 'New', 'post' ),
 				'public' => true,
 				'exclude_from_search' => false,
@@ -123,7 +123,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				'show_in_admin_status_list' => true,
 				'label_count' => _n_noop( 'New <span class="count">(%s)</span>', 'New <span class="count">(%s)</span>' ),
 			) );
-			register_post_status( 'accepted', array(
+			register_post_status( 'idea-accepted', array(
 				'label' => _x( 'Accepted', 'post' ),
 				'public' => true,
 				'exclude_from_search' => false,
@@ -131,7 +131,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				'show_in_admin_status_list' => true,
 				'label_count' => _n_noop( 'Accepted <span class="count">(%s)</span>', 'Accepted <span class="count">(%s)</span>' ),
 			) );
-			register_post_status( 'declined', array(
+			register_post_status( 'idea-declined', array(
 				'label' => _x( 'Declined', 'post' ),
 				'public' => true,
 				'exclude_from_search' => false,
@@ -139,7 +139,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				'show_in_admin_status_list' => true,
 				'label_count' => _n_noop( 'Declined <span class="count">(%s)</span>', 'Declined <span class="count">(%s)</span>' ),
 			) );
-			register_post_status( 'completed', array(
+			register_post_status( 'idea-completed', array(
 				'label' => _x( 'Completed', 'post' ),
 				'public' => true,
 				'exclude_from_search' => false,
@@ -168,33 +168,33 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				$completeDeclined = '';
 				$completeCompleted = '';
 				$label = get_post_status();
-				if ( $post -> post_status == 'new' ) {
+				if ( $post -> post_status == 'idea-new' ) {
 					$completeNew = ' selected=\"selected\"';
 					$label = 'New';
 				}
-				if ( $post -> post_status == 'accepted' ) {
+				if ( $post -> post_status == 'idea-accepted' ) {
 					$completeAccepted = ' selected=\"selected\"';
 					$label = 'Accepted';
 				}
-				if ( $post -> post_status == 'declined' ) {
+				if ( $post -> post_status == 'idea-declined' ) {
 					$completeDeclined = ' selected=\"selected\"';
 					$label = 'Declined';
 				}
-				if ( $post -> post_status == 'completed' ) {
+				if ( $post -> post_status == 'idea-completed' ) {
 					$completeCompleted = ' selected=\"selected\"';
 					$label = 'Completed';
 				}
 				echo '
 				<script>
 				jQuery(document).ready(function($){
-					$("select#post_status").append("<option value=\"new\" ' . $completeNew . '>New</option>");
-					$("select#post_status").append("<option value=\"accepted\" ' . $completeAccepted . '>Accepted</option>");
-					$("select#post_status").append("<option value=\"declined\" ' . $completeDeclined . '>Declined</option>");
-					$("select#post_status").append("<option value=\"completed\" ' . $completeCompleted . '>Completed</option>");
-					$(".inline-edit-status select").append("<option value=\"new\" ' . $completeNew . '>New</option>");
-					$(".inline-edit-status select").append("<option value=\"accepted\" ' . $completeAccepted . '>Accepted</option>");
-					$(".inline-edit-status select").append("<option value=\"declined\" ' . $completeDeclined . '>Declined</option>");
-					$(".inline-edit-status select").append("<option value=\"completed\" ' . $completeCompleted . '>Completed</option>");
+					$("select#post_status").append("<option value=\"idea-new\" ' . $completeNew . '>New</option>");
+					$("select#post_status").append("<option value=\"idea-accepted\" ' . $completeAccepted . '>Accepted</option>");
+					$("select#post_status").append("<option value=\"idea-declined\" ' . $completeDeclined . '>Declined</option>");
+					$("select#post_status").append("<option value=\"idea-completed\" ' . $completeCompleted . '>Completed</option>");
+					$(".inline-edit-status select").append("<option value=\"idea-new\" ' . $completeNew . '>New</option>");
+					$(".inline-edit-status select").append("<option value=\"idea-accepted\" ' . $completeAccepted . '>Accepted</option>");
+					$(".inline-edit-status select").append("<option value=\"idea-declined\" ' . $completeDeclined . '>Declined</option>");
+					$(".inline-edit-status select").append("<option value=\"idea-completed\" ' . $completeCompleted . '>Completed</option>");
 					$("#post-status-display").html("' . $label . '");
 					$("#publishing-action").html("<span class=\"spinner\"><\/span><input name=\"original_publish\" type=\"hidden\" id=\"original_publish\" value=\"Update\"><input type=\"submit\" id=\"save-publish\" class=\"button button-primary button-large\" value=\"Update\" ><\/input>");
 					$(".save-post-status").click(function(){
