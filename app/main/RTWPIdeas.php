@@ -41,7 +41,7 @@ if ( ! class_exists( 'RTWPIdeas' ) ) {
 		}
 
 		function init_call_flush_rewrite_rules(){
-			add_action('init',array($this,'do_flush_rewrite_rules'));
+			add_action('init',array($this,'do_flush_rewrite_rules'),11);
 		}
 
 		/**
