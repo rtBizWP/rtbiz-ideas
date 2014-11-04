@@ -55,7 +55,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 //			global $rtWpIdeasSubscirber;
 			$has_voted= check_user_voted( $post_id );
 //			$rtWpIdeasSubscirber->add_subscriber($post_id,get_current_user_id());
-			if ( is_null( $has_voted ) ) {
+			if ( is_null( $has_voted ) || ! $has_voted ) {
 				add_vote( $post_id );
 				update_post_meta( $post_id, '_rt_wpideas_meta_votes', 1 );
 			}
