@@ -61,7 +61,7 @@ jQuery(document).ready(function ($) {
         var product_id = $('#idea_product_id').val();
         var nonce = jQuery('#ideaLoadMore').attr('data-nonce');
         var data = {
-            action: "list_woo_product_ideas_load_more",
+            action: "list_ideas_load_more",
             offset: offset,
             nonce: nonce,
             post_type: post_type,

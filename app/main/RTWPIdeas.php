@@ -78,7 +78,7 @@ if ( ! class_exists( 'RTWPIdeas' ) ) {
 		function woo_ideas_tab_content() {
 			global $post;
 			if ( isset( $post ) ) {
-				echo sanitize_html_class( do_shortcode( '[wpideas product_id = ' . $post -> ID . ' ]' ) );
+				echo sanitize_html_class( do_shortcode( '[wpideas post_id = ' . $post -> ID . ' ]' ) );
 			}
 		}
 

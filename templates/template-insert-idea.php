@@ -5,6 +5,10 @@
 ?>
 <script>
 	jQuery(document).ready(function($) {
+		var post_id;
+		if(! $('#rt_post_id').val()) {
+			jQuery('#product_id').parent().show();
+		}
 
 		jQuery('#insertIdeaFormCancel').click(function(){
 			jQuery('#TB_closeWindowButton').click();
@@ -15,7 +19,15 @@
 			data.append("action", 'wpideas_insert_new_idea');
 			data.append("txtIdeaTitle", $('#txtIdeaTitle').val());
 			data.append("txtIdeaContent", $('#txtIdeaContent').val());
-			data.append("product_id", $('#product_id').val());
+			if ($('#product_id').val()){
+				post_id=$('#product_id').val();
+				data.append("product_id", $('#product_id').val());
+			}
+			else if($('#rt_post_id').val()){
+				post_id=$('#rt_post_id').val();
+				data.append("product_id", $('#rt_post_id').val());
+			}
+//			data.append("product_id", $('#product_id').val());
 			data.append("product", $('#product_page').val());
 			// Get the selected files from the input.
 			var files = document.getElementById('file').files;
@@ -43,7 +55,7 @@
 				success: function(res) {
 					try {
 						var json = JSON.parse(res);
-
+						console.log(json);
 						if (json.title) {
 							$('#txtIdeaTitleError').html(json.title);
 							$('#txtIdeaTitleError').show();
@@ -67,7 +79,7 @@
 					{
 						tb_remove();
 						if (res === 'product') {
-							woo_list_ideas_product($('#product_id').val());
+							list_ideas_post(post_id);
 						}else {
                             search_idea();
                         }
@@ -89,16 +101,18 @@
 			});
 		});
 	});
-	function woo_list_ideas_product(product_id) {
+	function list_ideas_post(product_id) {
 		var data = {
-			action: 'list_woo_product_ideas_refresh',
+			action: 'list_ideas_refresh',
 			product_id: product_id,
 		}
 		jQuery.post(rt_wpideas_ajax_url, data, function(res) {
 			jQuery('#wpidea-content-wrapper').html(res);
-			jQuery("body, html").animate({
-				scrollTop: jQuery('#tab-ideas_tab').offset().top
-			}, 600);
+			if (jQuery('#tab-ideas_tab' ).val()) {
+				jQuery( "body, html" ).animate( {
+					                                scrollTop: jQuery( '#tab-ideas_tab' ).offset().top
+				                                }, 600 );
+			}
 		});
 	}
     function search_idea(){
@@ -171,7 +185,7 @@
 
         if( isset($rtargs) && !empty( $rtargs ) && have_posts() ){
 		?>
-		<div>
+		<div style="display: none">
 			<select class="required" id="product_id" name="product_id">
 				<option value=""> Select Product </option>
                 <?php

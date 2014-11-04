@@ -59,7 +59,8 @@ function wpideas_insert_new_idea() {
 			update_post_meta( $idea_id, '_rt_wpideas_meta_votes', 0 );
 
 			if ( isset( $_POST[ 'product_id' ] ) && $_POST[ 'product_id' ] != '' ) {
-				update_post_meta( $idea_id, '_rt_wpideas_product_id', $_POST[ 'product_id' ] );
+				update_post_meta( $idea_id, '_rt_wpideas_post_id', $_POST[ 'product_id' ] );
+				echo 'product';
 			}
 
 			if ( $_FILES ) {
@@ -87,9 +88,10 @@ function wpideas_insert_new_idea() {
 				$rtwpideasAdmin = new RTWPIdeasAdmin();
 				$rtwpideasAdmin->sendNotifications( $recipients, $subject, $message, $headers );
 			}
-			if ( isset( $_POST[ 'product' ] ) && $_POST[ 'product' ] == 'product_page' ) {
-				echo 'product';
-			}
+//			if ( isset( $_POST[ 'product' ] ) && $_POST[ 'product' ] == 'product_page' ) {
+//				echo 'product';
+//			}
+
 		} else {
 			echo json_encode( $ideaResponse );
 		}
@@ -206,10 +208,10 @@ function list_all_idea_shortcode( $atts ) {
 add_shortcode( 'ideas', 'list_all_idea_shortcode' );
 
 
-add_action( 'wp_ajax_list_woo_product_ideas_load_more', 'list_woo_product_ideas_load_more' ); // when logged in
-add_action( 'wp_ajax_nopriv_list_woo_product_ideas_load_more', 'list_woo_product_ideas_load_more' ); //when logged out
-add_action( 'wp_ajax_list_woo_product_ideas_refresh', 'list_woo_product_ideas_refresh' );
-add_action( 'wp_ajax_nopriv_list_woo_product_ideas_refresh', 'list_woo_product_ideas_refresh' );
+add_action( 'wp_ajax_list_ideas_load_more', 'list_ideas_load_more' ); // when logged in
+add_action( 'wp_ajax_nopriv_list_ideas_load_more', 'list_ideas_load_more' ); //when logged out
+add_action( 'wp_ajax_list_ideas_refresh', 'list_ideas_refresh' );
+add_action( 'wp_ajax_nopriv_list_ideas_refresh', 'list_ideas_refresh' );
 add_action( 'wp_ajax_subscribe_notification_setting', 'subscribe_notification_setting');
 add_action( 'wp_ajax_subscribe_button', 'subscribe_button');
 add_action( 'wp_ajax_nopriv_subscribe_notification_setting', 'subscribe_notification_setting');
@@ -264,16 +266,16 @@ function subscribe_notification_setting(){
 }
 
 /**
- * woocommerce product idea tab shortcode
+ * Post id display short code
  *
  * @global type $post
  *
  * @param type  $atts
  */
-function list_woo_product_ideas( $atts ) {
+function list_post_ideas( $atts ) {
 
 	global $post;
-	$default = array( 'type' => 'post', 'post_type' => RTBIZ_IDEAS_SLUG, 'product_id' => '', );
+	$default = array( 'type' => 'post', 'post_type' => RTBIZ_IDEAS_SLUG, 'post_id' => '', );
 	$r = shortcode_atts( $default, $atts );
 	extract( $r );
 
@@ -281,10 +283,12 @@ function list_woo_product_ideas( $atts ) {
 
 	add_thickbox();
 
-	$args = array( 'post_type' => $post_type, 'posts_per_page' => $posts_per_page, 'meta_query' => array( array( 'key' => '_rt_wpideas_product_id', 'value' => $product_id, ) ) );
-	$args_count = array( 'post_type' => $post_type, 'meta_query' => array( array( 'key' => '_rt_wpideas_product_id', 'value' => $product_id, ) ) );
+	$args = array( 'post_type' => $post_type, 'posts_per_page' => $posts_per_page, 'meta_query' => array( array( 'key' => '_rt_wpideas_post_id', 'value' => $post_id, ) ) );
+	$args_count = array( 'post_type' => $post_type, 'meta_query' => array( array( 'key' => '_rt_wpideas_post_id', 'value' => $post_id, ) ) );
 	echo '<br/>';
-
+	if ( isset($post_id) || ! is_null($post_id)){
+		echo "<input type='hidden' id='rt_post_id' value=".$post_id.">";
+	}
 	$posts = new WP_Query( $args );
 	$posts_count = new WP_Query( $args_count );
 	echo '<div id="wpidea-content-wrapper">';
@@ -301,7 +305,7 @@ function list_woo_product_ideas( $atts ) {
 		<div class="idea-loadmore">
 			<a href="javascript:;" data-nonce="<?php echo esc_attr( wp_create_nonce( 'load_ideas' ) ); ?>" id="ideaLoadMore" class="rtp-readmore button rtp-button-beta-light tiny aligncenter"><?php _e( 'Load More', 'wp-ideas' ); ?></a>
 			<img src="<?php echo RTBIZ_IDEAS_URL . 'app/assets/img/indicator.gif'; ?>" id="ideaLoading" class="aligncenter" style="display:none;height: 50px;" />
-			<input type="hidden" value="<?php echo esc_attr( $product_id ); ?>" id="idea_product_id"/><br/><br/>
+			<input type="hidden" value="<?php echo esc_attr( $post_id ); ?>" id="idea_product_id"/><br/><br/>
 		</div>
         <?php
 		}
@@ -328,9 +332,9 @@ function list_woo_product_ideas( $atts ) {
 	}
 }
 
-add_shortcode( 'wpideas', 'list_woo_product_ideas' );
+add_shortcode( 'wpideas', 'list_post_ideas' );
 
-function list_woo_product_ideas_refresh() {
+function list_ideas_refresh() {
 
 	$posts_per_page = 3;
 
@@ -339,7 +343,7 @@ function list_woo_product_ideas_refresh() {
         'posts_per_page' => $posts_per_page,
         'meta_query' => array(
             array(
-                'key' => '_rt_wpideas_product_id',
+                'key' => '_rt_wpideas_post_id',
                 'value' => $_POST[ 'product_id' ],
             )
         )
@@ -348,7 +352,7 @@ function list_woo_product_ideas_refresh() {
 		'post_type' => RTBIZ_IDEAS_SLUG,
 		'meta_query' => array(
 			array(
-				'key' => '_rt_wpideas_product_id',
+				'key' => '_rt_wpideas_post_id',
 				'value' => $_POST[ 'product_id' ],
 			)
 		)
@@ -380,7 +384,7 @@ function list_woo_product_ideas_refresh() {
 	die();
 }
 
-function list_woo_product_ideas_load_more() {
+function list_ideas_load_more() {
 
 	if ( ! wp_verify_nonce( $_REQUEST[ 'nonce' ], 'load_ideas' ) ) {
 		exit( 'No naughty business please' );
@@ -390,7 +394,7 @@ function list_woo_product_ideas_load_more() {
 	$post_type = isset( $_REQUEST[ 'post_type' ] ) ? $_REQUEST[ 'post_type' ] : 'idea';
 	$product_id = isset( $_REQUEST[ 'product_id' ] ) ? $_REQUEST[ 'product_id' ] : 0;
 
-	$args = array( 'post_type' => $post_type, 'offset' => $offset, 'posts_per_page' => 3, 'meta_query' => array( array( 'key' => '_rt_wpideas_product_id', 'value' => $product_id, ) ) );
+	$args = array( 'post_type' => $post_type, 'offset' => $offset, 'posts_per_page' => 3, 'meta_query' => array( array( 'key' => '_rt_wpideas_post_id', 'value' => $product_id, ) ) );
 
 	$posts_query = new WP_Query( $args );
 
