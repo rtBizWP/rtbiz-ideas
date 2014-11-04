@@ -56,7 +56,7 @@ function wpideas_insert_new_idea() {
 
 			$idea_id = wp_insert_post( $idea_information );
 
-			update_post_meta( $idea_id, '_rt_wpideas_meta_votes', 0 );
+			update_post_meta( $idea_id, '_rt_wpideas_meta_votes', 1 );
 
 			if ( isset( $_POST[ 'product_id' ] ) && $_POST[ 'product_id' ] != '' ) {
 				update_post_meta( $idea_id, '_rt_wpideas_post_id', $_POST[ 'product_id' ] );

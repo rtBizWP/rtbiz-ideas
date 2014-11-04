@@ -218,6 +218,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 		 */
 		function wpideas_ideas_table_head( $defaults ) {
 			$defaults[ 'wpideas_votes' ] = _x( 'Votes', 'wp-ideas' );
+			$defaults[ 'wpideas_posts' ] = _x( 'Idea for post', 'wp-ideas' );
 			return $defaults;
 		}
 
@@ -231,6 +232,16 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 			if ( $column_name == 'wpideas_votes' ) {
 				$votes = get_post_meta( $idea_id, '_rt_wpideas_meta_votes', true );
 				echo $votes;
+			}
+			if ( $column_name == 'wpideas_posts'){
+				$postid= get_post_meta( $idea_id, '_rt_wpideas_post_id', true );
+//				var_dump($postid);
+				if ( is_null($postid) || "" == $postid ){
+					echo "-";
+				}
+				else{
+					echo "<a href='".get_edit_post_link($postid)."'>#$postid: </a>".get_the_title($postid);
+				}
 			}
 		}
 
