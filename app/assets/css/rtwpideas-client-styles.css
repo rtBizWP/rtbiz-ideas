@@ -38,7 +38,8 @@ and open the template in the editor.
 	color: #ffffff;
 	border-radius: 3px;
 	font-size:11px;
-}
+	padding: 0px;
+ }
 .btnVote:hover, .btnVote:focus, #btnOpenThickbox:hover, #btnOpenThickbox:focus{
 	background: #3e63a4;
 }
@@ -77,6 +78,9 @@ and open the template in the editor.
 	-webkit-transition: -webkit-box-shadow 0.45s,border-color 0.45s ease-in-out;
 	-moz-transition: -moz-box-shadow 0.45s,border-color 0.45s ease-in-out;
 	transition: box-shadow 0.45s,border-color 0.45s ease-in-out;
+}
+#txtIdeaTitle{
+	width: 80%;
 }
 #insertIdeaForm input[type='text']:focus,#insertIdeaForm textarea:focus, #txtSearchIdea:focus{
 	-webkit-box-shadow: 0 0 5px #999;
@@ -266,9 +270,9 @@ figure {
     -moz-border-bottom-left-radius: 0px;
     -webkit-border-bottom-left-radius: 0px;
 }
-.idea-loop-common{clear: both;}
+.idea-loop-common{clear: both; margin-left: 10px;}
 
-#txtSearchIdea{width: 85%;
+#txtSearchIdea{width: 80%;
     float: left;
     height: 40px;
     border-radius:5px;
