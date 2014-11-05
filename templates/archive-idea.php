@@ -39,8 +39,9 @@ get_header();
 						$currentpage =(int)$_REQUEST['page'];
 					}
 					$offset= ($currentpage - 1)* $limit ;
-					$pageposts= $wpdb->get_results($wpdb->prepare("SELECT $wpdb->posts.* FROM $wpdb->posts LEFT JOIN ".$wpdb->prefix."rt_wpideas_subscriber ON (".$wpdb->posts.".ID = ".$wpdb->prefix."rt_wpideas_subscriber.post_id) where (".$wpdb->prefix."rt_wpideas_subscriber.user_id = %d OR ".$wpdb->posts.".post_author = %d) AND ".$wpdb->posts.".post_type = '".RTBIZ_IDEAS_SLUG ."' AND ".$wpdb->posts.".post_status <> 'auto-draft' ORDER BY ".$wpdb->posts.".post_date DESC LIMIT $offset, $limit", get_current_user_id(),get_current_user_id()));
-					?>
+					$pageposts= $wpdb->get_results($wpdb->prepare("SELECT DISTINCT $wpdb->posts.* FROM $wpdb->posts LEFT JOIN ".$wpdb->prefix."rt_wpideas_subscriber ON (".$wpdb->posts.".ID = ".$wpdb->prefix."rt_wpideas_subscriber.post_id) where (".$wpdb->prefix."rt_wpideas_subscriber.user_id = %d OR ".$wpdb->posts.".post_author = %d) AND ".$wpdb->posts.".post_type = '".RTBIZ_IDEAS_SLUG ."' AND ".$wpdb->posts.".post_status <> 'auto-draft' ORDER BY ".$wpdb->posts.".post_date DESC LIMIT $offset, $limit", get_current_user_id(),get_current_user_id()));
+//					var_dump(printf("SELECT DISTINCT $wpdb->posts.* FROM $wpdb->posts LEFT JOIN ".$wpdb->prefix."rt_wpideas_subscriber ON (".$wpdb->posts.".ID = ".$wpdb->prefix."rt_wpideas_subscriber.post_id) where (".$wpdb->prefix."rt_wpideas_subscriber.user_id = %d OR ".$wpdb->posts.".post_author = %d) AND ".$wpdb->posts.".post_type = '".RTBIZ_IDEAS_SLUG ."' AND ".$wpdb->posts.".post_status <> 'auto-draft' ORDER BY ".$wpdb->posts.".post_date DESC LIMIT $offset, $limit", get_current_user_id(),get_current_user_id()));
+			?>
 					<div id="loop-common" class="idea-loop-common">
 						<?php
 						if ( $pageposts ) :
