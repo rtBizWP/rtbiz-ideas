@@ -112,6 +112,11 @@ and open the template in the editor.
 #btninsertIdeaFormSubmit:hover, #btninsertIdeaFormSubmit:focus{
 	background: #3e63a4;
 }
+
+#idea-user-settings{
+	font-weight: bold;
+	font-size: 20px;
+}
 .rtwpIdeaVoteCount{
 	background-color: #FCFDFF;
 	border: 1px solid #CFD7E6;

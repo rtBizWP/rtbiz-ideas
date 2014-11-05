@@ -94,7 +94,7 @@ get_header();
 					}
 					?>
 <div id="email-notification-setting">
-					<h3> Email Notification Setting</h3>
+					<h3 id="idea-user-settings"> Email Notification Setting</h3>
 					<div>
 						<div id='Notificationstatus' class="highlight" style="display: none;">Setting Saved!</div>
 					</div>
