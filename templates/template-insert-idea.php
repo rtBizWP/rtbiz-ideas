@@ -84,6 +84,7 @@
                             search_idea();
                         }
                         $('#lblIdeaSuccess').show();
+                        $('#lblIdeaSuccess').fadeOut(2000);
 						$('#txtIdeaTitleError').hide();
 						$('#txtIdeaContentError').hide();
 						$('#txtIdeaProductError').hide();
