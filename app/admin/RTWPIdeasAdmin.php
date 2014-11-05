@@ -346,7 +346,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				add_action(  'transition_post_status',  'on_all_status_transitions', 10, 3 );*/
 				$message  = '';
 				$message .= '<h2> New Comment on <a href="'. $idea_link .'">' . $idea -> post_title . '</h2>';
-				$message .= '<label><b>Commentator:</b> '. $comment_author_url .'</label><br/>';
+				$message .= '<label><b>Commenter:</b> '. $comment_author_url .'</label><br/>';
 				$message .= '<label><b>Content:</b> '.stripslashes($comment_content).'</label><br/>';
                 $message .= '<label><b>Link:</b> <a href="'. get_comment_link( $comment_object ). '">Go to comment</a></label>';
 

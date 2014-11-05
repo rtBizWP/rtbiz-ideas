@@ -93,7 +93,7 @@ and open the template in the editor.
 #insertIdeaFormCancel{
 	margin-left:15px;
 }
-#btninsertIdeaFormSubmit{
+#btninsertIdeaFormSubmit, #user_notification_save{
 	padding: 0;
 	margin: 0;
 	width: 140px;
@@ -103,6 +103,11 @@ and open the template in the editor.
 	color: #ffffff;
 	border-radius: 3px;
 	font-size:16px;
+}
+
+#user_notification_save{
+	width: 100px;
+	height: 35px;
 }
 #btninsertIdeaFormSubmit:hover, #btninsertIdeaFormSubmit:focus{
 	background: #3e63a4;
@@ -476,4 +481,12 @@ figure {
 
 .rtwpIdeaVoteButton .button-unsubscribe{
 	background: rgb(223, 117, 20);
+}
+
+#email-notification-setting{
+	margin-left: 10px;
+}
+
+.idea-setting-checkbox{
+	margin-left: 10px;
 }

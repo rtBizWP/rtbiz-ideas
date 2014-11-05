@@ -93,21 +93,22 @@ get_header();
 						$status_changeflag = 'checked';
 					}
 					?>
-
+<div id="email-notification-setting">
 					<h3> Email Notification Setting</h3>
 					<div>
 						<div id='Notificationstatus' class="highlight" style="display: none;">Setting Saved!</div>
 					</div>
 	        <div>
-					<div>
+					<div class="idea-setting-checkbox">
 					<input id="status_change_notification" type="checkbox" <?php echo $status_changeflag ?>> <label> Idea Status Change</label>
 					</div>
-					<div>
+					<div class="idea-setting-checkbox">
 					<input id="comment_notification" type="checkbox" <?php echo $comment_notificationflag ?>> <label> Idea Comments notification</label>
 					</div>
 		        <div>
 			        <input id='user_notification_save' type="button" value="Save">
 		        </div>
+					</div>
 					</div>
 					<?php
 				}
