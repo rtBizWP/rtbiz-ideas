@@ -5,7 +5,7 @@ and open the template in the editor.
 */
 /* 
     Created on : 17 Feb, 2014, 3:36:20 PM
-    Author     : kaklo
+    Author     : kaklo, utkarsh
 */
 
 .highlight {
@@ -68,7 +68,6 @@ and open the template in the editor.
 	box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
 	color: rgba(0,0,0,0.75);
 	display: block;
-	/*font-size: 0.875rem;*/
 	font-size: 16px;
 	margin: 0 0 1rem 0;
 	padding: 0.5rem;
@@ -152,7 +151,6 @@ and open the template in the editor.
 	font-size: 18px;
 	font-weight: bold;
 	line-height: 1em;
-	/*margin-bottom: 10px;*/
 	margin: 0 0 10px 0;
 }
 .rtwpIdeaTitle a{
@@ -268,15 +266,10 @@ figure {
 }
 .searchidea{
     display: block;
-    /*padding-bottom: 10px;*/
-	/*margin: 0 auto;*/
 	margin-left: 10px;
 	max-width: 80%;
 }
 #btnNewThickbox{
-    /*height: 40px;*/
-    /*vertical-align: bottom;*/
-    /*float: left;*/
 	margin-left: -5px;
 	display: inline-block;
     line-height: 20px;
@@ -366,9 +359,6 @@ figure {
 .myideasTable .btnVote:hover, .btnVote:focus, #btnOpenThickbox:hover, #btnOpenThickbox:focus{
 	background: #3e63a4;
 }
-.myideasTable .rtwpIdeaVoteCount{
-
-}
 .myideasTable .rtwpIdeaVoteBadge {
 	width:80px;
 	position : relative;
@@ -396,7 +386,6 @@ figure {
 	font-size:12px;
 	text-shadow: 1px 1px 0px #fff;
 	background:#eaebec;
-	/*margin:20px;*/
 	border:#ccc 1px solid;
 
 	-moz-border-radius:3px;
