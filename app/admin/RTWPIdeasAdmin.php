@@ -344,6 +344,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 					}
 				}
 				add_action(  'transition_post_status',  'on_all_status_transitions', 10, 3 );*/
+				$comment_content = apply_filters ("the_content", $comment_content);
 				$message  = '';
 				$message .= '<h2> New Comment on <a href="'. $idea_link .'">' . $idea -> post_title . '</h2>';
 				$message .= '<label><b>Commenter:</b> '. $comment_author_url .'</label><br/>';

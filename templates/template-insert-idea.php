@@ -152,12 +152,10 @@
 				} else {
 					$content = '';
 				}
-			
 				$editor_id = 'txtIdeaContent';
-				$settings = array( 'media_buttons' => false, 'editor_class' => 'required', 'textarea_rows' => 100 );
+				$settings = array( 'media_buttons' => false, 'editor_class' => 'required');
 				
 				wp_editor( $content, $editor_id, $settings );
-		
 		} else {
 		?>
 		<textarea name="txtIdeaContent" id="txtIdeaContent" style="height:250px;" class="required"><?php

@@ -81,10 +81,11 @@ function wpideas_insert_new_idea() {
 				$subject = (create_new_idea_title('idea_new_idea_email_title',$idea_id));
 				$recipients = get_notification_emails();
 				$message = '';
+				$post_content = apply_filters ("the_content", $_POST['txtIdeaContent']);
 				$currentuser = wp_get_current_user();
 				$message .= '<h3>' . $currentuser ->display_name . ' posted a new idea</h3>';
 				$message .= '<h2>' . stripslashes($_POST['txtIdeaTitle']) . '</h2>';
-				$message .= '<p>' . stripslashes($_POST['txtIdeaContent']) . '</p>';
+				$message .= '<p>' . stripslashes($post_content) . '</p>';
 				$rtwpideasAdmin = new RTWPIdeasAdmin();
 				$rtwpideasAdmin->sendNotifications( $recipients, $subject, $message, $headers );
 			}
