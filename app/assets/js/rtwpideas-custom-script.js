@@ -8,6 +8,9 @@ jQuery(document).ready(function ($) {
 	var ideastatus= jQuery('#status_change_notification').is(':checked');
 	var commentstatus= jQuery('#comment_notification').is(':checked');
 
+	jQuery('a[href="#Idea-new"]' ).click(function (){
+		jQuery('#wpideas-insert-idea' ).slideToggle('slow');
+	});
 	jQuery('.btnVote').live('click', function () {
         $(this).attr('disabled', 'disabled');
         var data = {

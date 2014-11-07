@@ -11,14 +11,23 @@
 		}
 
 		jQuery('#insertIdeaFormCancel').click(function(){
-			jQuery('#TB_closeWindowButton').click();
+//			jQuery('#TB_closeWindowButton').click();
+			jQuery('#wpideas-insert-idea' ).slideToggle('slow');
+
 		});
 		jQuery('#btninsertIdeaFormSubmit').click(function(e) {
 			e.preventDefault();
 			data = new FormData();
 			data.append("action", 'wpideas_insert_new_idea');
 			data.append("txtIdeaTitle", $('#txtIdeaTitle').val());
-			data.append("txtIdeaContent", $('#txtIdeaContent').val());
+			var editor = tinyMCE.get('txtIdeaContent');
+			var content='';
+			if (editor){
+				content = editor.getContent();
+			} else {
+				content = $('#txtIdeaContent').val();
+			}
+			data.append("txtIdeaContent", content);
 			if ($('#product_id').val()){
 				post_id=$('#product_id').val();
 				data.append("product_id", $('#product_id').val());
@@ -55,7 +64,6 @@
 				success: function(res) {
 					try {
 						var json = JSON.parse(res);
-						console.log(json);
 						if (json.title) {
 							$('#txtIdeaTitleError').html(json.title);
 							$('#txtIdeaTitleError').show();
@@ -83,13 +91,19 @@
 						}else {
                             search_idea();
                         }
-                        $('#lblIdeaSuccess').show();
+						$('#wpideas-insert-idea' ).slideToggle('slow');
+						$('#lblIdeaSuccess').show();
                         $('#lblIdeaSuccess').fadeOut(2000);
 						$('#txtIdeaTitleError').hide();
 						$('#txtIdeaContentError').hide();
 						$('#txtIdeaProductError').hide();
 						$('#txtIdeaTitle').val("");
-						$('#txtIdeaContent').val("");
+						var editor = tinyMCE.get('txtIdeaContent');
+						if (editor){
+							editor.setContent('');
+						}else{
+							$('#txtIdeaContent').val("");
+						}
 						$('#file').val("");
 					}
 

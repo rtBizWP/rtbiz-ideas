@@ -16,19 +16,29 @@ get_header();
 				<div class="searchidea">
                 <input type="text" placeholder="Search Ideas Here" id="txtSearchIdea" name="txtSearchIdea"/>
 				<?php
-					if ( is_user_logged_in() ) {
-						$href = '#TB_inline?width=600&height=550&inlineId=wpideas-insert-idea';
-					}else{
-						$href = wp_login_url( home_url('/').RTBIZ_IDEAS_SLUG );
-					}
+				$href= "#Idea-new";
+//					if ( is_user_logged_in() ) {
+//						$href = '#TB_inline?width=600&height=550&inlineId=wpideas-insert-idea';
+//					}else{
+//						$href = wp_login_url( home_url('/').RTBIZ_IDEAS_SLUG );
+//					}
+				if (! is_user_logged_in()){
+					$href = wp_login_url( home_url('/').RTBIZ_IDEAS_SLUG );
+				}
 				?>
-				<a id="btnNewThickbox" href="<?php echo $href; ?>" class="thickbox"> New Idea </a>
+<!--				<a id="btnNewThickbox" href="--><?php //echo $href; ?><!--" class="thickbox"> New Idea </a>-->
+				<a id="btnNewThickbox" href="<?php echo $href; ?>" <?php if ($href != "#Idea-new"){ echo 'class="thickbox"'; } ?> > New Idea </a>
 				</div>
             </header>
 	        <?php if (is_user_logged_in()){ ?>
 	        <div id="myideas"> <a href="<?php echo home_url().'/'.RTBIZ_IDEAS_SLUG ?>?tab=home"> My ideas </a>| <a href="<?php echo home_url().'/'.RTBIZ_IDEAS_SLUG ?>?tab=settings">My Settings</a></div>
 			<?php } ?>
             <div class="success" id="lblIdeaSuccess" style="display:none;">Idea submitted</div>
+	        <div id="wpideas-insert-idea" style="display:none;">
+		        <?php
+		        rtideas_get_template( 'template-insert-idea.php' );
+		        ?>
+	        </div>
 			<?php if ( isset($_REQUEST['tab']) && is_user_logged_in() ){
 				if ( $_REQUEST['tab'] == 'home' ){
 					global $wpdb;
@@ -145,11 +155,7 @@ get_header();
 		            </div>  <?php } ?>
 		        </div>
 
-		<div id="wpideas-insert-idea" style="display:none;">
-			<?php
-			rtideas_get_template( 'template-insert-idea.php' );
-			?>
-		</div>
+
         <!-- #content -->
     </div><!-- #primary -->
 <?php
