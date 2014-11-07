@@ -235,7 +235,6 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 			}
 			if ( $column_name == 'wpideas_posts'){
 				$postid= get_post_meta( $idea_id, '_rt_wpideas_post_id', true );
-//				var_dump($postid);
 				if ( is_null($postid) || "" == $postid ){
 					echo "-";
 				}
@@ -284,8 +283,8 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 					}
 				}
 				$message = '';
-				$message .= '<h2>Idea status changed to '.$new_status.' for [ <a href="'.$post_link.'"> ' . $title . '</a> ] </h2>';
-				$message .= '<h3>[' . $new_status . '] ' . $title . '</h3>';
+				$message .= '<h2>Idea status changed to '.preg_replace('/^idea-/', '', $new_status).' for [ <a href="'.$post_link.'"> ' . $title . '</a> ] </h2>';
+				$message .= '<h3>[' . preg_replace('/^idea-/', '', $new_status) . '] ' . $title . '</h3>';
 				$message .= '<label><b>Status updated by: </b><a href="' . get_author_posts_url( $user_info->ID ) . '"> ' . $status_changer . '</a></label><br/>';
 				$message .= '<label><b>Author:</b> <a href="' . get_author_posts_url( $author ) . '">' . $author_info->first_name .' '. $author_info->last_name .'('. $author_info->user_login .')</a></label><br/>';
 				if( get_post_meta( $post -> ID, '_rt_wpideas_meta_votes', true ) != 0 ){

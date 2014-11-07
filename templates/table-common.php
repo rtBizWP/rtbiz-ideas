@@ -19,7 +19,7 @@
 			<input type="button" id="btnVote-<?php the_ID(); ?>" class="btnVote" data-id="<?php the_ID(); ?>"
 			       value="<?php
 			       if( get_post_status( get_the_ID() ) != 'idea-new' ){
-				       echo ucfirst( get_post_status( get_the_ID() ) );
+				       echo ucfirst( preg_replace('/^idea-/', '', get_post_status( get_the_ID() ) ) );
 			       }else{
 				       if ( is_user_logged_in() ){
 					       $is_voted = check_user_voted( get_the_ID() );
