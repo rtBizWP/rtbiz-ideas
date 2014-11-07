@@ -221,15 +221,15 @@ add_action( 'wp_ajax_nopriv_subscribe_button', 'subscribe_button');
 function subscribe_button(){
 	$response = array();
 	$response['status']=false;
-	global $rtWpIdeasSubscirber;
+	global $rtWpIdeasSubscriber;
 	if (isset($_POST['post_id'])){
-		$subcribebuttonflag= $rtWpIdeasSubscirber->check_subscriber_exist($_POST['post_id'],get_current_user_id());
+		$subcribebuttonflag= $rtWpIdeasSubscriber->check_subscriber_exist($_POST['post_id'],get_current_user_id());
 		if ($subcribebuttonflag){
-			$rtWpIdeasSubscirber->delete_subscriber($_POST['post_id'],get_current_user_id());
+			$rtWpIdeasSubscriber->delete_subscriber($_POST['post_id'],get_current_user_id());
 			$response['btntxt']='Subscribe';
 		}
 		else{
-			$rtWpIdeasSubscirber->add_subscriber($_POST['post_id'],get_current_user_id());
+			$rtWpIdeasSubscriber->add_subscriber($_POST['post_id'],get_current_user_id());
 			$response['btntxt']='Unsubscribe';
 		}
 		$response['status']=true;
@@ -241,24 +241,24 @@ function subscribe_button(){
 function subscribe_notification_setting(){
 	$response = array();
 	$response['status']=false;
-	global $rtWpIdeasSubscirber;
+	global $rtWpIdeasSubscriber;
 	if ( isset($_POST['comment_notification'] ) ) {
 		if ( $_POST['comment_notification'] == 'NO' ) {
 			update_user_meta( get_current_user_id(), 'comment_notification', 'NO' );
-			$rtWpIdeasSubscirber->update_user_from_comment( get_current_user_id(),'NO' );
+			$rtWpIdeasSubscriber->update_user_from_comment( get_current_user_id(),'NO' );
 		} else {
 			update_user_meta( get_current_user_id(), 'comment_notification', 'YES' );
-			$rtWpIdeasSubscirber->update_user_from_comment( get_current_user_id(),'YES' );
+			$rtWpIdeasSubscriber->update_user_from_comment( get_current_user_id(),'YES' );
 		}
 		$response['status']=true;
 	}
 	if(isset($_POST['status_change_notification']) ) {
 		if ( $_POST['status_change_notification'] == 'NO') {
 			update_user_meta( get_current_user_id(), 'status_change_notification', 'NO' );
-			$rtWpIdeasSubscirber->update_user_from_status_change( get_current_user_id(), 'NO');
+			$rtWpIdeasSubscriber->update_user_from_status_change( get_current_user_id(), 'NO');
 		} else {
 			update_user_meta( get_current_user_id(), 'status_change_notification', 'YES' );
-			$rtWpIdeasSubscirber->update_user_from_status_change( get_current_user_id(), 'YES');
+			$rtWpIdeasSubscriber->update_user_from_status_change( get_current_user_id(), 'YES');
 		}
 		$response['status']=true;
 	}

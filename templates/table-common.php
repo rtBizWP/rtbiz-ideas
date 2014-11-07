@@ -48,8 +48,8 @@
 			} ?> />
 
 			<?php
-			global $rtWpIdeasSubscirber;
-			$subcribebuttonflag= $rtWpIdeasSubscirber->check_subscriber_exist(get_the_ID(),get_current_user_id());
+			global $rtWpIdeasSubscriber;
+			$subcribebuttonflag= $rtWpIdeasSubscriber->check_subscriber_exist(get_the_ID(),get_current_user_id());
 			$subcribebuttonvalue= $subcribebuttonflag?'Unsubscribe':'Subscribe';
 			$subcribebuttonclass= $subcribebuttonflag?'unsubscribe':'subscribe';
 			?>

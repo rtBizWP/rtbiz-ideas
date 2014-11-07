@@ -99,8 +99,8 @@
 				<?php
 				if ( is_user_logged_in() ) {
 					edit_post_link( 'Manage Idea', '<span>', '</span>' ); ?> &#124; <?php
-					global $rtWpIdeasSubscirber;
-					$subcribebuttonflag= $rtWpIdeasSubscirber->check_subscriber_exist(get_the_ID(),get_current_user_id());
+					global $rtWpIdeasSubscriber;
+					$subcribebuttonflag= $rtWpIdeasSubscriber->check_subscriber_exist(get_the_ID(),get_current_user_id());
 					$subcribebuttonvalue= $subcribebuttonflag?'Unsubscribe':'Subscribe';
 					$subcribebuttonclass= $subcribebuttonflag?'unsubscribe':'subscribe'; ?>
 	            <label>  <a id="subscriber-<?php the_ID(); ?>" class="subscribe_email_notification_button button-<?php echo $subcribebuttonclass; ?>" data-id="<?php the_ID(); ?>" > <?php echo $subcribebuttonvalue; ?></a> </label> &#124;

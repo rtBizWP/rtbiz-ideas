@@ -8,7 +8,6 @@ if ( ! class_exists( 'RTWPIdeasSubscriberModel' ) ) {
 	class RTWPIdeasSubscriberModel extends RT_DB_Model {
 		public function __construct() {
 			parent::__construct( 'wpideas_subscriber' );
-
 		}
 
 
@@ -37,7 +36,7 @@ if ( ! class_exists( 'RTWPIdeasSubscriberModel' ) ) {
 
 		function check_subscriber_exist($post_id, $user_id ){
 			global $wpdb;
-			$result = $wpdb->get_var( $wpdb->prepare( 'SELECT count(*) FROM wp_rt_wpideas_subscriber WHERE post_id = %s and user_id = %s',$post_id,$user_id ) );
+			$result = $wpdb->get_var( $wpdb->prepare( 'SELECT count(*) FROM '.$this->table_name.' WHERE post_id = %s and user_id = %s',$post_id,$user_id ) );
 			if ( 1 == $result){
 				return true;
 			}
@@ -75,7 +74,7 @@ if ( ! class_exists( 'RTWPIdeasSubscriberModel' ) ) {
 
 		function get_subscriber_email( $post_id, $key, $value ){
 			global $wpdb;
-			$sql = $wpdb->prepare( 'SELECT user_id FROM '.$wpdb->prefix.'rt_wpideas_subscriber WHERE post_id = %s AND '.$key.' = %s',$post_id   , $value );
+			$sql = $wpdb->prepare( 'SELECT user_id FROM '.$this->table_name.' WHERE post_id = %s AND '.$key.' = %s',$post_id   , $value );
 			$result =$wpdb->get_results( $sql , ARRAY_A );
 			$emails = array();
 			foreach ( $result as $user_id ){
@@ -87,7 +86,7 @@ if ( ! class_exists( 'RTWPIdeasSubscriberModel' ) ) {
 
 		function get_user_post( $userid ){
 			global $wpdb;
-			$sql = $wpdb->prepare( 'SELECT post_id FROM wp_rt_wpideas_subscriber WHERE user_id = %s',$userid );
+			$sql = $wpdb->prepare( 'SELECT post_id FROM '.$this->table_name.' WHERE user_id = %s',$userid );
 			$result=$wpdb->get_results( $sql , ARRAY_A );
 			$key='post_id';
 			$output = array_map(function($item) use ($key) {

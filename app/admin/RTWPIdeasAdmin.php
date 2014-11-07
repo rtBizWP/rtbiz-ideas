@@ -271,8 +271,8 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 
 				$author_info = get_userdata( $author );
 
-				global $rtWpIdeasSubscirber;
-				$recipients =$rtWpIdeasSubscirber->get_subscriber_email($post->ID ,'status_change','YES');
+				global $rtWpIdeasSubscriber;
+				$recipients =$rtWpIdeasSubscriber->get_subscriber_email($post->ID ,'status_change','YES');
 				//				$recipients = array();
 				//				array_push( $recipients, get_the_author_meta( 'user_email', $author ) );
 				//				$temp = explode( ',', trim( get_option( 'wpideas_adminemails' ) ) );
@@ -308,13 +308,13 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 //			error_log("$comment_object->comment_post_ID : -> ID ".$comment_object->comment_author .' : author', 3, "/var/tmp/my-errors.log");
 
 			if ( $comment_object -> comment_approved > 0 && get_post_type() == RTBIZ_IDEAS_SLUG ) {
-				global $rtWpIdeasSubscirber;
+				global $rtWpIdeasSubscriber;
 				$headers[] = 'From: WP Ideas <wpideas@rtcamp.net>';
 				//$headers[] = 'Cc: John Q Codex <jqc@wordpress.org>';
 				//$headers[] = 'Cc: iluvwp@wordpress.org';
 //				error_log("$comment_object->comment_post_ID : -> ID ".$comment_object->comment_author .' : author', 3, "/var/tmp/my-errors.log");
 //				error_log(var_export($comment_object,true), 3, "/var/tmp/my-errors.log");
-				$rtWpIdeasSubscirber->add_subscriber($comment_object->comment_post_ID, $comment_object->user_id);
+				$rtWpIdeasSubscriber->add_subscriber($comment_object->comment_post_ID, $comment_object->user_id);
 
 				$comment_content = $comment_object->comment_content;
 				$comment_author = $comment_object->comment_author;
@@ -328,8 +328,8 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 
 				$author = $idea -> post_author;
 //				array_push( $recipients, get_the_author_meta( 'user_email', $author ) );
-				global $rtWpIdeasSubscirber;
-				$recipients =$rtWpIdeasSubscirber->get_subscriber_email($idea_id,'comment_post','YES');
+				global $rtWpIdeasSubscriber;
+				$recipients =$rtWpIdeasSubscriber->get_subscriber_email($idea_id,'comment_post','YES');
 //				$temp = explode( ',', trim( get_option( 'wpideas_adminemails' ) ) );
 				if (is_comment_posted_notification_enable()){
 					$temp = get_notification_emails();
