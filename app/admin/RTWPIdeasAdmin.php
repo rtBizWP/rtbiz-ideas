@@ -25,7 +25,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 //			add_action( 'admin_menu', array( $this, 'wpideas_settings_menu' ) );
 //			add_action( 'admin_init', array( $this, 'register_ideas_settings' ) );
 //			if ( get_option( 'wpideas_emailenabled' ) == 'true' && get_option( 'wpideas_status_changes' ) == '1' ){
-				add_action( 'transition_post_status', array( $this, 'wpideas_idea_status_changed' ), 10, 3 );
+//				add_action( 'transition_post_status', array( $this, 'wpideas_idea_status_changed' ), 10, 3 );
 //			}
 			if ( is_status_change_notification_enable() ){
 				add_action( 'transition_post_status', array( $this, 'wpideas_idea_status_changed' ), 10, 3 );
