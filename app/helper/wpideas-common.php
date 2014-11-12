@@ -144,7 +144,8 @@ function wpideas_search_callback() {
 		wp_reset_postdata();
 	else :
 	if ( is_user_logged_in() ) {
-            echo 'Looks like we do not have your idea. <br /><br /> Have you got better one? &nbsp; <a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=wpideas-insert-idea" class="thickbox"> Click Here </a> &nbsp;  to suggest.';
+            echo 'Looks like we do not have your idea. <br /><br /> Have you got better one? &nbsp; <a id="btnOpenThickbox" href="#Idea-new" > click here</a>
+ &nbsp;  to suggest.';
 	} else {
 		echo '<br/><a id="btnOpenThickbox" href="/wp-login.php">Login to Suggest Idea</a>';
 	}
@@ -321,13 +322,18 @@ function list_post_ideas( $atts ) {
 	if ( is_user_logged_in() ) {
 		?>
 		<br/>
-		<div id="my-content-id" style="display:none;">
+		<div id="wpideas-insert-idea" style="display:none;">
 		<?php
-		include RTBIZ_IDEAS_PATH . 'templates/template-insert-idea.php';
+//		include RTBIZ_IDEAS_PATH . 'templates/template-insert-idea.php';
+		rtideas_get_template( 'template-insert-idea.php' )
 		?>
 		</div>
 			<?php
-			echo '<a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Suggest Idea for this post</a>';
+//			echo '<a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=my-content-id" class="thickbox"> Suggest Idea for this post</a>';
+?>
+		<a id="btnOpenThickbox" href="#Idea-new" > Suggest Idea for this post</a>
+
+	<?php
 	} else {
 		echo '<br/><a id="btnOpenThickbox" href="/wp-login.php">Login to Suggest Idea</a>';
 	}

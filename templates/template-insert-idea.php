@@ -20,7 +20,10 @@
 			data = new FormData();
 			data.append("action", 'wpideas_insert_new_idea');
 			data.append("txtIdeaTitle", $('#txtIdeaTitle').val());
-			var editor = tinyMCE.get('txtIdeaContent');
+			var editor = null;
+			if(tinyMCE.get('txtIdeaContent')){
+				editor= tinyMCE.get('txtIdeaContent');
+			}
 			var content='';
 			if (editor){
 				content = editor.getContent();
@@ -98,7 +101,10 @@
 						$('#txtIdeaContentError').hide();
 						$('#txtIdeaProductError').hide();
 						$('#txtIdeaTitle').val("");
-						var editor = tinyMCE.get('txtIdeaContent');
+						var editor = null;
+						if(tinyMCE.get('txtIdeaContent')){
+							editor= tinyMCE.get('txtIdeaContent');
+						}
 						if (editor){
 							editor.setContent('');
 						}else{
