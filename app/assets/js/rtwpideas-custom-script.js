@@ -98,7 +98,6 @@ jQuery(document).ready(function ($) {
 		var id = jQuery(this ).attr('id');
 		request['action']='subscribe_button';
 		request['post_id']=jQuery(this ).data().id;
-		console.log(request);
 		jQuery.ajax( {
 			             type: "post", //context: this,
 			             dataType: "json",
@@ -146,7 +145,6 @@ jQuery(document).ready(function ($) {
 				             dataType: "json", url: rt_wpideas_ajax_url,
 				             data: request,
 				             success: function ( response ) {
-									console.log( response );
 									if ( response.status ) {
 										jQuery( '#Notificationstatus' ).show();
 									}

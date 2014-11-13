@@ -134,7 +134,8 @@ add_action( 'wp_ajax_nopriv_wpideas_search', 'wpideas_search_callback' );
  */
 function wpideas_search_callback() {
 	$txtSearch = $_POST[ 'searchtext' ];
-	$args = array( 's' => $txtSearch, 'post_type' => RTBIZ_IDEAS_SLUG, );
+	$status=  getIdeaStatus();
+	$args = array( 's' => $txtSearch, 'post_type' => RTBIZ_IDEAS_SLUG, 'post_status' => $status  );
 
 	$ideas = new WP_Query( $args );
 	if ( $ideas -> have_posts() ):
@@ -151,6 +152,22 @@ function wpideas_search_callback() {
 	}
 	endif;
 	die(); // this is required to return a proper result
+}
+
+function getIdeaStatus(){
+	$status = get_post_stati();
+	$filter_status= array();
+	foreach ($status as $key => $value){
+		if (startsWith($value,'idea')){
+			array_push( $filter_status , $value );
+		}
+	}
+	return $filter_status;
+}
+
+function startsWith($haystack, $needle)
+{
+	return $needle === "" || strpos($haystack, $needle) === 0;
 }
 
 /**
@@ -335,7 +352,8 @@ function list_post_ideas( $atts ) {
 
 	<?php
 	} else {
-		echo '<br/><a id="btnOpenThickbox" href="/wp-login.php">Login to Suggest Idea</a>';
+		$href = wp_login_url( get_permalink($post_id) );
+		echo '<br/><a id="btnOpenThickbox" href="'.$href.'" class="thickbox">Login to Suggest Idea</a>';
 	}
 }
 
