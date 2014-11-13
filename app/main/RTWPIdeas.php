@@ -26,22 +26,11 @@ if ( ! class_exists( 'RTWPIdeas' ) ) {
 		public function __construct() {
 			// DB Upgrade
 			$updateDB = new RT_DB_Update(  RTBIZ_IDEAS_PATH . 'index.php', RTBIZ_IDEAS_PATH . 'app/schema/',false );
-			add_action( 'rt_db_update_finished_' . str_replace( '-', '_', sanitize_title( $updateDB->rt_plugin_info->name ) ), array( $this,
-			                                                                                                                          'init_call_flush_rewrite_rules'
-				) );
 			$updateDB->do_upgrade();
 			$this -> init_attributes();
 			add_filter( 'template_include', array( $this, 'rtwpideas_template' ) );
 			add_filter( 'woocommerce_product_tabs', array( $this, 'woo_ideas_tab' ), 999,1 );
 			$this->templateURL = apply_filters( 'rt_wp_ideas_template_url', 'rt_ideas' );
-		}
-
-		function do_flush_rewrite_rules(){
-			flush_rewrite_rules(false);
-		}
-
-		function init_call_flush_rewrite_rules(){
-			add_action('init',array($this,'do_flush_rewrite_rules'),11);
 		}
 
 		/**

@@ -177,10 +177,24 @@ function rtbiz_idea_loader(){
 	$reduxFrameworkIdeaConfig = new Redux_Framework_Idea_Config();
 	$rtWpIdeas = new RTWPIdeas();
 	$rtWpIdeasAttributes = new RTWPIdeasAttributes();
+	add_action( 'init', 'do_flush_rewrite_rules_idea' ,20 );
+}
 
+function do_flush_rewrite_rules_idea(){
+	if ( is_admin() && 'true' == get_option( 'rt_idea_call_rewrite' ) ) {
+		flush_rewrite_rules();
+		delete_option( 'rt_idea_call_rewrite' );
+	}
+}
+
+function init_call_flush_rewrite_rules_idea(){
+	add_option( 'rt_idea_call_rewrite', 'true' );
 }
 
 add_action( 'plugins_loaded', 'rtbiz_idea_loader', 10 );
+
+register_activation_hook( __FILE__, 'init_call_flush_rewrite_rules_idea' );
+
 /*
  * Look Ma! Very few includes! Next File: /app/main/RTWPIdeas.php
  */
