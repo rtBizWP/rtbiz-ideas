@@ -21,7 +21,13 @@
 			data.append("action", 'wpideas_insert_new_idea');
 			data.append("txtIdeaTitle", $('#txtIdeaTitle').val());
 			var editor = null;
-			if(tinyMCE.get('txtIdeaContent')){
+			is_tinyMCE_active = false;
+			if (typeof(tinyMCE) != "undefined") {
+				if (tinyMCE.activeEditor == null || tinyMCE.activeEditor.isHidden() != false) {
+					is_tinyMCE_active = true;
+				}
+			}
+			if(is_tinyMCE_active){
 				editor= tinyMCE.get('txtIdeaContent');
 			}
 			var content='';
@@ -102,7 +108,13 @@
 						$('#txtIdeaProductError').hide();
 						$('#txtIdeaTitle').val("");
 						var editor = null;
-						if(tinyMCE.get('txtIdeaContent')){
+						is_tinyMCE_active = false;
+						if (typeof(tinyMCE) != "undefined") {
+							if (tinyMCE.activeEditor == null || tinyMCE.activeEditor.isHidden() != false) {
+								is_tinyMCE_active = true;
+							}
+						}
+						if(is_tinyMCE_active){
 							editor= tinyMCE.get('txtIdeaContent');
 						}
 						if (editor){
