@@ -353,7 +353,7 @@ function list_post_ideas( $atts ) {
 	<?php
 	} else {
 		$href = wp_login_url( get_permalink($post_id) );
-		echo '<br/><a id="btnOpenThickbox" href="'.$href.'" class="thickbox">Login to Suggest Idea</a>';
+		echo '<br/><a id="btnOpenThickbox" href="'.$href.'">Login to Suggest Idea</a>';
 	}
 }
 

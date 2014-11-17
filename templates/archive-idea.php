@@ -17,17 +17,11 @@ get_header();
                 <input type="text" placeholder="Search Ideas Here" id="txtSearchIdea" name="txtSearchIdea"/>
 				<?php
 				$href= "#Idea-new";
-//					if ( is_user_logged_in() ) {
-//						$href = '#TB_inline?width=600&height=550&inlineId=wpideas-insert-idea';
-//					}else{
-//						$href = wp_login_url( home_url('/').RTBIZ_IDEAS_SLUG );
-//					}
 				if (! is_user_logged_in()){
 					$href = wp_login_url( home_url('/').RTBIZ_IDEAS_SLUG );
 				}
 				?>
-<!--				<a id="btnNewThickbox" href="--><?php //echo $href; ?><!--" class="thickbox"> New Idea </a>-->
-				<a id="btnNewThickbox" href="<?php echo $href; ?>" <?php if ($href != "#Idea-new"){ echo 'class="thickbox"'; } ?> > New Idea </a>
+				<a id="btnNewThickbox" href="<?php echo $href; ?>"> New Idea </a>
 				</div>
             </header>
 	        <?php if (is_user_logged_in()){ ?>
@@ -81,11 +75,13 @@ get_header();
 							</div>
 							<?php
 						else :
+							$href= "#Idea-new";
 							if ( is_user_logged_in() ) {
-								echo 'Looks like we do not have any idea. <br /><br /> Be first one to suggest idea.&nbsp; <a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=wpideas-insert-idea" class="thickbox"> Click Here </a> &nbsp;  to suggest.';
+								echo 'Looks like we do not have any idea. <br /><br /> Be first one to suggest idea.&nbsp; <a id="btnOpenThickbox" href="'.$href.'" > Click Here </a> &nbsp;  to suggest.';
 
 							} else {
-								echo '<br/><a id="btnOpenThickbox" href="/wp-login.php">Login to Suggest Idea</a>';
+								$href = wp_login_url( home_url('/').RTBIZ_IDEAS_SLUG );
+								echo '<br/><a id="btnOpenThickbox" href="'.$href .'">Login to Suggest Idea</a>';
 							}
 
 						endif; ?>
@@ -144,13 +140,13 @@ get_header();
 		                            comments_template();
 		                        endif;
 		                    else :
-		                        if ( is_user_logged_in() ) {
-		                                echo 'Looks like we do not have any idea. <br /><br /> Be first one to suggest idea.&nbsp; <a id="btnOpenThickbox" href="#TB_inline?width=600&height=550&inlineId=wpideas-insert-idea" class="thickbox"> Click Here </a> &nbsp;  to suggest.';
-
-		                        } else {
-		                            echo '<br/><a id="btnOpenThickbox" href="/wp-login.php">Login to Suggest Idea</a>';
-		                        }
-
+			                    $href= "#Idea-new";
+			                    if ( is_user_logged_in() ) {
+				                    echo 'Looks like we do not have any idea. <br /><br /> Be first one to suggest idea.&nbsp; <a id="btnOpenThickbox" href="'.$href.'" > Click Here </a> &nbsp;  to suggest.';
+			                    } else {
+				                    $href = wp_login_url( home_url('/').RTBIZ_IDEAS_SLUG );
+				                    echo '<br/><a id="btnOpenThickbox" href="'.$href .'">Login to Suggest Idea</a>';
+			                    }
 		                    endif; ?>
 		            </div>  <?php } ?>
 		        </div>
