@@ -5,8 +5,7 @@
  * The WordPress-Plugin-Readme-Parser project is too heavy and has too many dependencies for what we need (we don't need conversion to HTML)
  * @link https://github.com/markjaquith/WordPress-Plugin-Readme-Parser Alternative to WordPress-Plugin-Readme-Parser
  * @version 1.1.1
- * @author Weston Ruter <weston@x-team.com> (@westonruter)
- * @copyright Copyright (c) 2013, X-Team <http://x-team.com/wordpress/>
+ * @author Udit Desai <desaiuditd@gmail.com> (@desaiuditd)
  * @license GPLv2+
  */
 class WordPress_Readme_Parser {
@@ -138,7 +137,7 @@ class WordPress_Readme_Parser {
 												}, $this->metadata['Tags'] ) );
 		$formatted_metadata['License']      = sprintf( '[%s](%s)', $formatted_metadata['License'], $formatted_metadata['License URI'] );
 		unset( $formatted_metadata['License URI'] );
-		if ( $this->metadata['Stable tag'] === 'trunk' ) {
+		if ( 'trunk' === $this->metadata['Stable tag'] ) {
 			$formatted_metadata['Stable tag'] .= ' (master)';
 		}
 
