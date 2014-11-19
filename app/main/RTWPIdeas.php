@@ -24,10 +24,14 @@ if ( ! class_exists( 'RTWPIdeas' ) ) {
 		 *  Constructor
 		 */
 		public function __construct() {
+            include_once RTBIZ_IDEAS_PATH_ADMIN.'class-rt-idea-acl.php';
+
+            global $rtIdeaACL;
 			// DB Upgrade
 			$updateDB = new RT_DB_Update(  RTBIZ_IDEAS_PATH . 'index.php', RTBIZ_IDEAS_PATH . 'app/schema/',false );
 			$updateDB->do_upgrade();
-			$this -> init_attributes();
+            $rtIdeaACL = new Rt_Idea_ACL();
+            $this -> init_attributes();
 			add_filter( 'template_include', array( $this, 'rtwpideas_template' ) );
 			add_filter( 'woocommerce_product_tabs', array( $this, 'woo_ideas_tab' ), 999,1 );
 			$this->templateURL = apply_filters( 'rt_wp_ideas_template_url', 'rt_ideas' );

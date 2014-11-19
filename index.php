@@ -24,6 +24,14 @@ if ( ! defined( 'RTBIZ_IDEAS_PATH' ) ) {
 }
 
 
+if ( ! defined( 'RT_IDEA_TEXT_DOMAIN' ) ) {
+    /**
+     * The server file system path to the plugin directory
+     */
+    define( 'RT_IDEA_TEXT_DOMAIN', 'rtbiz-ideas' );
+}
+
+
 if ( ! defined( 'RTBIZ_IDEAS_URL' ) ) {
 
     /**
@@ -162,14 +170,6 @@ function rtbiz_idea_loader(){
 	include_once 'app/helper/rt_idea_functions.php';
 	require_once RTBIZ_IDEAS_PATH_VENDOR . 'redux/ReduxCore/framework.php';
 
-//	global $rt_idea_autoload;
-//
-//	$rt_idea_autoload  = new RT_WP_Autoload( RTBIZ_IDEAS_PATH_LIB . 'rtdbmodel/' );
-//	$rt_idea_autoload =	new RT_WP_Autoload( RTBIZ_IDEAS_PATH_ADMIN );
-//	$rt_idea_autoload = new RT_WP_Autoload( RTBIZ_IDEAS_PATH_HELPER );
-//	$rt_idea_autoload = new RT_WP_Autoload( RTBIZ_IDEAS_PATH_MAIN );
-//	$rt_idea_autoload = new RT_WP_Autoload( RTBIZ_IDEAS_PATH_SETTINGS );
-
 	/**
 	 * Instantiate the RTWPIdeas class.
 	 */
@@ -190,8 +190,8 @@ function do_flush_rewrite_rules_idea(){
 function init_call_flush_rewrite_rules_idea(){
 	add_option( 'rt_idea_call_rewrite', 'true' );
 }
-
-add_action( 'plugins_loaded', 'rtbiz_idea_loader', 10 );
+add_action( 'rt_biz_init', 'rtbiz_idea_loader', 1 );
+//add_action( 'plugins_loaded', 'rtbiz_idea_loader', 10 );
 
 register_activation_hook( __FILE__, 'init_call_flush_rewrite_rules_idea' );
 
