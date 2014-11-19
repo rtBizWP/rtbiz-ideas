@@ -59,7 +59,7 @@ function wpideas_insert_new_idea() {
 //			update_post_meta( $idea_id, '_rt_wpideas_meta_votes', 1 );
 
 			if ( isset( $_POST[ 'product_id' ] ) && $_POST[ 'product_id' ] != '' ) {
-				update_post_meta( $idea_id, '_rt_wpideas_post_id', $_POST[ 'product_id' ] );
+				update_post_meta( $idea_id, '_rt_wpideas_post_id', ','.$_POST[ 'product_id' ].',' );
 				echo 'product';
 			}
 
@@ -302,8 +302,8 @@ function list_post_ideas( $atts ) {
 
 	add_thickbox();
 
-	$args = array( 'post_type' => $post_type, 'posts_per_page' => $posts_per_page, 'meta_query' => array( array( 'key' => '_rt_wpideas_post_id', 'value' => $post_id, ) ) );
-	$args_count = array( 'post_type' => $post_type, 'meta_query' => array( array( 'key' => '_rt_wpideas_post_id', 'value' => $post_id, ) ) );
+	$args = array( 'post_type' => $post_type, 'posts_per_page' => $posts_per_page, 'meta_query' => array( array( 'key' => '_rt_wpideas_post_id', 'value' => ','.$post_id.',', 'compare'=>'LIKE' ) ) );
+	$args_count = array( 'post_type' => $post_type, 'meta_query' => array( array( 'key' => '_rt_wpideas_post_id', 'value' => ','.$post_id.',', 'compare'=>'LIKE' ) ) );
 	echo '<br/>';
 	if ( isset($post_id) || ! is_null($post_id)){
 		echo "<input type='hidden' id='rt_post_id' value=".$post_id.">";
@@ -369,7 +369,8 @@ function list_ideas_refresh() {
         'meta_query' => array(
             array(
                 'key' => '_rt_wpideas_post_id',
-                'value' => $_POST[ 'product_id' ],
+                'value' => ','.$_POST[ 'product_id' ].',',
+                'compare'=>'LIKE',
             )
         )
     );
@@ -378,7 +379,8 @@ function list_ideas_refresh() {
 		'meta_query' => array(
 			array(
 				'key' => '_rt_wpideas_post_id',
-				'value' => $_POST[ 'product_id' ],
+                'value' => ','.$_POST[ 'product_id' ].',',
+                'compare'=>'LIKE',
 			)
 		)
 	);
@@ -419,7 +421,7 @@ function list_ideas_load_more() {
 	$post_type = isset( $_REQUEST[ 'post_type' ] ) ? $_REQUEST[ 'post_type' ] : 'idea';
 	$product_id = isset( $_REQUEST[ 'product_id' ] ) ? $_REQUEST[ 'product_id' ] : 0;
 
-	$args = array( 'post_type' => $post_type, 'offset' => $offset, 'posts_per_page' => 3, 'meta_query' => array( array( 'key' => '_rt_wpideas_post_id', 'value' => $product_id, ) ) );
+	$args = array( 'post_type' => $post_type, 'offset' => $offset, 'posts_per_page' => 3, 'meta_query' => array( array( 'key' => '_rt_wpideas_post_id',  'value' => ','.$product_id.',', 'compare'=>'LIKE', ) ) );
 
 	$posts_query = new WP_Query( $args );
 

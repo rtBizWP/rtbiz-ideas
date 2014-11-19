@@ -22,8 +22,6 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 			add_action( 'wp_before_admin_bar_render', array( $this, 'wpideas_append_post_status_list' ), 11 );
 			add_filter( 'manage_idea_posts_columns', array( $this, 'wpideas_ideas_table_head' ) );
 			add_action( 'manage_idea_posts_custom_column', array( $this, 'wpideas_ideas_table_columns' ), 10, 2 );
-//			add_action( 'admin_menu', array( $this, 'wpideas_settings_menu' ) );
-//			add_action( 'admin_init', array( $this, 'register_ideas_settings' ) );
 //			if ( get_option( 'wpideas_emailenabled' ) == 'true' && get_option( 'wpideas_status_changes' ) == '1' ){
 //				add_action( 'transition_post_status', array( $this, 'wpideas_idea_status_changed' ), 10, 3 );
 //			}
@@ -52,9 +50,21 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 			if ( wp_is_post_revision( $post_id ) || RTBIZ_IDEAS_SLUG != get_post_type( $post_id ) ) {
 				return;
 			}
-//			global $rtWpIdeasSubscirber;
+            $key    = '_product_id';
+			if(!empty($_POST['tax_input']) && !empty($_POST['tax_input']['rt_product'])){
+                $idea_post_id_map=array();
+				foreach($_POST['tax_input']['rt_product'] as $Termid){
+					if(!empty($Termid) && $Termid!='0'){
+                        $productid=	Rt_Lib_Taxonomy_Metadata\get_term_meta($Termid,$key,true);
+						array_push($idea_post_id_map,$productid);
+					}
+				}
+			}
+			if( !empty( $idea_post_id_map ) && is_array( $idea_post_id_map ) ){
+				$post_meta_value_idea = implode(",", $idea_post_id_map );
+                update_post_meta( $post_id, '_rt_wpideas_post_id', ','.$post_meta_value_idea.',' );
+            }
 			$has_voted= check_user_voted( $post_id );
-//			$rtWpIdeasSubscirber->add_subscriber($post_id,get_current_user_id());
 			if ( is_null( $has_voted ) || ! $has_voted ) {
 				add_vote( $post_id );
 				update_post_meta( $post_id, '_rt_wpideas_meta_votes', 1 );
@@ -239,7 +249,10 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 					echo "-";
 				}
 				else{
-					echo "<a href='".get_edit_post_link($postid)."'>#$postid: </a>".get_the_title($postid);
+                    $ids= explode(',',substr($postid, 1, -1));
+                    foreach ($ids as $id) {
+                        echo "<a href='" . get_edit_post_link($id) . "'>#$id: </a> " . get_the_title($id)." <br/>   ";
+                    }
 				}
 			}
 		}
@@ -305,15 +318,12 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 		 * @param type $comment_object
 		 */
 		function wpideas_idea_comment_posted( $comment_id, $comment_object ) {
-//			error_log("$comment_object->comment_post_ID : -> ID ".$comment_object->comment_author .' : author', 3, "/var/tmp/my-errors.log");
 
 			if ( $comment_object -> comment_approved > 0 && get_post_type() == RTBIZ_IDEAS_SLUG ) {
 				global $rtWpIdeasSubscriber;
 				$headers[] = 'From: WP Ideas <wpideas@rtcamp.net>';
 				//$headers[] = 'Cc: John Q Codex <jqc@wordpress.org>';
 				//$headers[] = 'Cc: iluvwp@wordpress.org';
-//				error_log("$comment_object->comment_post_ID : -> ID ".$comment_object->comment_author .' : author', 3, "/var/tmp/my-errors.log");
-//				error_log(var_export($comment_object,true), 3, "/var/tmp/my-errors.log");
 				$rtWpIdeasSubscriber->add_subscriber($comment_object->comment_post_ID, $comment_object->user_id);
 
 				$comment_content = $comment_object->comment_content;
@@ -373,101 +383,6 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 
 		function set_html_content_type() {
 			return 'text/html';
-		}
-
-		/**
-		 * register the options settings
-		 */
-		function register_ideas_settings() {
-			register_setting( 'ideas-settings-group', 'wpideas_emailenabled', '' );
-			register_setting( 'ideas-settings-group', 'wpideas_adminemails' );
-			register_setting( 'ideas-settings-group', 'wpideas_status_changes', '' );
-			register_setting( 'ideas-settings-group', 'wpideas_comment_posted', '' );
-			register_setting( 'ideas-settings-group', 'wpideas_editorenabled', '' );
-//			register_setting( 'ideas-settings-group', 'wpideas_auto_product_synchronizationenabled', '' );
-//			register_setting( 'ideas-settings-group', 'wpideas_old_product_synchronizationenabled', '' );
-		}
-
-		/**
-		 * add setings sub menu
-		 */
-		function wpideas_settings_menu() {
-			add_submenu_page( 'edit.php?post_type=idea', 'Ideas Settings', 'Settings', 'edit_posts', basename( __FILE__ ), array( $this, 'wpideas_settings' ) );
-		}
-
-		/**
-		 * settings callback function
-		 */
-		function wpideas_settings() {
-			?><h2>Ideas Settings</h2>
-			<form method="post" action="options.php">
-				<?php
-				settings_fields( 'ideas-settings-group' );
-				do_settings_sections( 'ideas-settings-group' );
-				?>
-				<table class="form-table">
-					<tbody>
-						<tr>
-							<th scope="row">Email Notifications</th>
-							<td>
-								<fieldset><legend class="screen-reader-text"><span>Email Notifications</span></legend>
-									<?php
-									$wpideas_emailenabled = get_option( 'wpideas_emailenabled' );
-									if ( empty( $wpideas_emailenabled ) ) {
-										$wpideas_emailenabled = 'false';
-									}
-									?>
-									<label><input type="radio" id="wpideas_emailenabled1" name="wpideas_emailenabled" value="true" <?php
-										if ( $wpideas_emailenabled == 'true' ) {
-											echo 'checked="checked"';
-										}
-										?>> <span>Enable</span></label><br>
-									<label><input type="radio" id="wpideas_emailenabled2" name="wpideas_emailenabled" value="false" <?php
-										if ( $wpideas_emailenabled == 'false' ) {
-											echo 'checked="checked"';
-										}
-										?>> <span>Disable</span></label><br>
-								</fieldset>
-							</td>
-						</tr>
-						<tr valign="top">
-							<th scope="row"><label for="adminemails">Email Addresses</label></th>
-							<td>
-								<input name="wpideas_adminemails" type="text" id="wpideas_adminemails" value="<?php echo get_option( 'wpideas_adminemails' ); ?>" class="regular-text" />
-								<p class="description">Admin &AMP; other emails separated by comma (,)</p>
-							</td>
-						</tr>
-						<tr valign="top">
-							<th scope="row">Notifications</th>
-							<td> <fieldset><legend class="screen-reader-text"><span>Notifications</span></legend><label>
-										<input name="wpideas_status_changes" type="checkbox" id="wpideas_status_changes" value="1" <?php checked( '1', get_option( 'wpideas_status_changes' ) ); ?> >
-										Status Changes
-										<input name="wpideas_comment_posted" type="checkbox" id="wpideas_comment_posted" value="1" <?php checked( '1', get_option( 'wpideas_comment_posted' ) ); ?> >
-										Comment Posted</label>
-								</fieldset></td>
-						</tr>
-						<tr valign="top">
-							<th scope="row">Enable WYSIWYG Editor</th>
-							<td> <fieldset><legend class="screen-reader-text"><span>Enable WYSIWYG Editor</span></legend><label>
-										<input name="wpideas_editorenabled" type="checkbox" id="wpideas_editorenabled" value="1" <?php checked( '1', get_option( 'wpideas_editorenabled' ) ); ?> >
-										Enable Editor
-								</fieldset></td>
-						</tr>
-<!--						<tr valign="top">-->
-<!--							<th scope="row">Enable Auto Product Synchronization</th>-->
-<!--							<td> <fieldset><legend class="screen-reader-text"><span>Enable Auto Product Synchronization</span></legend><label>-->
-<!--										<input name="wpideas_auto_product_synchronizationenabled" type="checkbox" id="wpideas_auto_product_synchronizationenabled" value="1" --><?php //checked( '1', get_option( 'wpideas_auto_product_synchronizationenabled' ) ); ?><!-- >-->
-<!--										Enable Auto Product Synchronization-->
-<!--								</fieldset></td>-->
-<!--							<td> <fieldset><legend class="screen-reader-text"><span>Enable Old Product Synchronization</span></legend><label>-->
-<!--										<input name="wpideas_old_product_synchronizationenabled" type="checkbox" id="wpideas_old_product_synchronizationenabled" value="1" --><?php //checked( '1', get_option( 'wpideas_old_product_synchronizationenabled' ) ); ?><!-- >-->
-<!--										Enable Old Product Synchronization-->
-<!--								</fieldset></td>-->
-<!--						</tr>-->
-					</tbody></table>
-				<?php submit_button(); ?>
-			</form>
-			<?php
 		}
 
 		/**
