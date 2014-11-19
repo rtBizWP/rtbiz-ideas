@@ -203,30 +203,20 @@
 		<label class="error" id="txtIdeaContentError" style="display:none;"></label>
 	</div>
 	<?php
-    if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
-        if ( get_post_type() != 'product' ){
-            $rtargs = array(
-                'post_type' => 'product',
-                'posts_per_page' => -1,
-            );
-            query_posts( $rtargs );
-        }
-    }
-
-
-        if( isset($rtargs) && !empty( $rtargs ) && have_posts() ){
+	$terms = get_terms('rt_product');
+if (!empty($terms) && is_array($terms)){
 		?>
 		<div style="display: none">
 			<select class="required" id="product_id" name="product_id">
 				<option value=""> Select Product </option>
                 <?php
-                global $post;
-
-				while ( have_posts() ){
-                    the_post();
-                    echo '<option value="' . get_the_ID() . '" >' . get_the_title() . '</option>';
+				$key    = '_product_id';
+				foreach ($terms as $term){
+					$productid=	Rt_Lib_Taxonomy_Metadata\get_term_meta($term->term_id,$key,true);
+					if (!empty($productid)) {
+						echo '<option value="' . $productid . '" >' . $term->name . '</option>';
+					}
                 }
-                wp_reset_query();
 				?>
 			</select>
 			<label class="error" id="txtIdeaProductError" style="display:none;"></label>
