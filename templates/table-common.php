@@ -40,7 +40,7 @@
 			       ?>" <?php if( get_post_status( get_the_ID() ) != 'idea-new' ){
 				echo ' disabled="disabled"';
 			} ?> <?php if( get_post_status( get_the_ID() ) == 'idea-accepted' ){
-				echo ' style="background-color:GREEN;"';
+				echo ' style="background-color:ORANGE;"';
 			}else if( get_post_status( get_the_ID() ) == 'idea-declined' ){
 				echo ' style="background-color:RED;"';
 			}else if( get_post_status( get_the_ID() ) == 'idea-completed' ){
