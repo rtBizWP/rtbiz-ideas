@@ -96,6 +96,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 					'slug' => RTBIZ_IDEAS_SLUG,
 					'with_front' => false,
 				),
+				'capability_type' => RTBIZ_IDEAS_SLUG,
 				'has_archive' => true,
 				'hierarchical' => false,
 				'menu_position' => 35,
