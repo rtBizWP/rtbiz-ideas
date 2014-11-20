@@ -282,6 +282,7 @@ if ( ! class_exists( 'Redux_Framework_Idea_Config' ) ) {
 		public function set_arguments() {
 
 			//$theme = wp_get_theme(); // For use with some settings. Not necessary.
+			$admin_cap = rt_biz_get_access_role_cap( RT_IDEA_TEXT_DOMAIN, 'admin' );
 			$this->args = array(
 				// TYPICAL -> Change these values as you need/desire
 				'opt_name'           => 'redux_idea_settings',
@@ -319,7 +320,7 @@ if ( ! class_exists( 'Redux_Framework_Idea_Config' ) ) {
 //				'page_parent'        => 'edit.php?post_type=' . esc_attr( RTBIZ_IDEAS_SLUG ),
 				'page_parent'        => 'edit.php?post_type=idea',
 				// For a full list of options, visit: http://codex.wordpress.org/Function_Reference/add_submenu_page#Parameters
-//				'page_permissions'   => $author_cap,
+				'page_permissions'   => $admin_cap,
 				// Permissions needed to access the options panel.
 				//'menu_icon' => '', // Specify a custom URL to an icon
 				//'last_tab' => '', // Force your panel to always open to a specific tab (by id)
