@@ -63,12 +63,19 @@ jQuery(document).ready(function ($) {
         var offset = $('#wpidea-content article').length;
         var product_id = $('#idea_product_id').val();
         var nonce = jQuery('#ideaLoadMore').attr('data-nonce');
+        var postparpage= jQuery('#idea_post_per_page').val();
+        var idea_order = jQuery('#idea_order').val();
+        var idea_orderby = jQuery('#idea_order_by').val();
+
         var data = {
             action: "list_ideas_load_more",
             offset: offset,
             nonce: nonce,
             post_type: post_type,
             product_id: product_id,
+            postparpage: postparpage,
+            idea_order:idea_order,
+            idea_orderby:idea_orderby,
             processData: false,
             contentType: false,
         }

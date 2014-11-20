@@ -93,13 +93,3 @@ function is_edit_page($new_edit = null){
 	else //check for either new or edit
 		return in_array( $pagenow, array( 'post.php', 'post-new.php' ) );
 }
-
-function check_postid_term_exist( $post_id ){
-    global $wpdb;
-    $querystr = 'SELECT taxonomy_id FROM '.$wpdb->prefix.'taxonomymeta WHERE meta_value = '.$post_id.' limit 1';
-    $result = $wpdb -> get_results( $querystr );
-    if ( isset( $result[0]->taxonomy_id ) ) {
-        return $result[0]->taxonomy_id;
-    }
-    return false;
-}

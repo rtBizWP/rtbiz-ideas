@@ -173,63 +173,6 @@ function startsWith($haystack, $needle)
 	return $needle === "" || strpos($haystack, $needle) === 0;
 }
 
-/**
- * Shortcode for list of idea
- *
- * @global type $post
- *
- * @param type  $atts
- *
- * @return string
- */
-function list_all_idea_shortcode( $atts ) {
-	global $post;
-	$default = array( 
-		'type' => 'post',
-		'post_type' => RTBIZ_IDEAS_SLUG,
-		'posts_per_page' => get_option( 'posts_per_page' ),
-		'order'	=> 'DESC',
-		'orderby' => 'date',
-		'post_status' => 'idea-new',
-		'post__not_in' => ''
-	);
-	$r = shortcode_atts( $default, $atts );
-	extract( $r );
-
-	if ( empty( $post_type ) )
-		$post_type = $type;
-
-	$post_type_ob = get_post_type_object( $post_type );
-	if ( ! $post_type_ob )
-		return '<div class="warning"><p>No such post type <em>' . $post_type . '</em> found.</p></div>';
-
-	$return = '<h3>' . $post_type_ob -> name . '</h3>';
-	
-	$post__not_in = explode(",", $post__not_in); // explode values
-
-	$args = array( 
-		'post_type' => $post_type,
-		'posts_per_page' => $posts_per_page,
-		'order'	=> $order,
-		'orderby' => $orderby,
-		'post_status' => $post_status,
-		'post__not_in' => $post__not_in
-	);
-
-	$posts = new WP_Query( $args );
-	if ( $posts -> have_posts() ):
-		while ( $posts -> have_posts() ) : $posts -> the_post();
-			rtideas_get_template( 'loop-common.php' );
-		endwhile;
-		wp_reset_postdata();
-	else :
-		?><p>No ideas found</p><?php
-	endif;
-}
-
-add_shortcode( 'ideas', 'list_all_idea_shortcode' );
-
-
 add_action( 'wp_ajax_list_ideas_load_more', 'list_ideas_load_more' ); // when logged in
 add_action( 'wp_ajax_nopriv_list_ideas_load_more', 'list_ideas_load_more' ); //when logged out
 add_action( 'wp_ajax_list_ideas_refresh', 'list_ideas_refresh' );
@@ -297,25 +240,43 @@ function subscribe_notification_setting(){
 function list_post_ideas( $atts ) {
 
 	global $post;
-	$default = array( 'type' => 'post', 'post_type' => RTBIZ_IDEAS_SLUG, 'product_id' => '', );
+	$default = array( 'type' => 'post', 'posts_per_page' => 3,'order'	=> 'DESC', 'orderby' => 'date', 'post_type' => RTBIZ_IDEAS_SLUG, 'product_id' => '', );
 	$r = shortcode_atts( $default, $atts );
 	extract( $r );
+    $post_type_ob = get_post_type_object( $post_type );
+    if ( ! $post_type_ob )
+        return '<div class="warning"><p>No such post type <em>' . $post_type . '</em> found.</p></div>';
 
-	$posts_per_page = 3;
-
-	add_thickbox();
-    $text_slug = 'rt_product';
-    $termid=   check_postid_term_exist($product_id);
-
-	$args = array( 'post_type' => $post_type, 'posts_per_page' => $posts_per_page, 'tax_query' => array( array( 'taxonomy' => $text_slug, 'terms' => $termid )  ) );
-    if (empty($termid)){
-        return ;
+    if( isset( $product_id ) && !empty( $product_id ) ) {
+        $text_slug = 'rt_product';
+        global $rtbiz_product_sync;
+        $termid = $rtbiz_product_sync->check_postid_term_exist($product_id);
+        if (empty($termid)) {
+            return "Invalid Product. Please check sync settings.";
+        }
+        $args = array('post_type' => $post_type, 'posts_per_page' => $posts_per_page, 'tax_query' => array(array('taxonomy' => $text_slug, 'terms' => $termid)));
+        $args_count = array('post_type' => $post_type, 'tax_query' => array(array('taxonomy' => $text_slug, 'terms' => $termid)));
+        echo '<br/>';
+        if (isset($termid) || !is_null($termid)) {
+            echo "<input type='hidden' id='rt_product_id' value=" . $termid . ">";
+        }
     }
-	$args_count = array( 'post_type' => $post_type, 'tax_query' => array( array( 'taxonomy' => $text_slug, 'terms' => $termid ) ) );
-	echo '<br/>';
-	if ( isset($termid) || ! is_null($termid)){
-		echo "<input type='hidden' id='rt_product_id' value=".$termid.">";
-	}
+    else{
+        $args = array(
+            'post_type' => $post_type,
+            'posts_per_page' => $posts_per_page,
+            'order'	=> $order,
+            'orderby' => $orderby,
+            'post_status' => 'idea-new',
+        );
+        $args_count= array(
+            'post_type' => $post_type,
+            'order'	=> $order,
+            'orderby' => $orderby,
+            'post_status' => 'idea-new',
+        );
+
+    }
 	$posts = new WP_Query( $args );
 	$posts_count = new WP_Query( $args_count );
 	echo '<div id="wpidea-content-wrapper">';
@@ -328,17 +289,34 @@ function list_post_ideas( $atts ) {
 		endwhile;
         ?>
         </div>
-        <?php if($posts_count->post_count > 3 ){ ?>
-		<div class="idea-loadmore">
-			<a href="javascript:;" data-nonce="<?php echo esc_attr( wp_create_nonce( 'load_ideas' ) ); ?>" id="ideaLoadMore" class="rtp-readmore button rtp-button-beta-light tiny aligncenter"><?php _e( 'Load More', 'wp-ideas' ); ?></a>
-			<img src="<?php echo RTBIZ_IDEAS_URL . 'app/assets/img/indicator.gif'; ?>" id="ideaLoading" class="aligncenter" style="display:none;height: 50px;" />
-			<input type="hidden" value="<?php echo esc_attr( $product_id ); ?>" id="idea_product_id"/><br/><br/>
-		</div>
         <?php
-		}
+//        if( isset( $product_id ) && !empty( $product_id ) ) {
+            if ($posts_count->post_count > $posts_per_page) {
+                ?>
+                <div class="idea-loadmore">
+                    <a href="javascript:;" data-nonce="<?php echo esc_attr(wp_create_nonce('load_ideas')); ?>"
+                       id="ideaLoadMore"
+                       class="rtp-readmore button rtp-button-beta-light tiny aligncenter"><?php _e('Load More', 'wp-ideas'); ?></a>
+                    <img src="<?php echo RTBIZ_IDEAS_URL . 'app/assets/img/indicator.gif'; ?>" id="ideaLoading"
+                         class="aligncenter" style="display:none;height: 50px;"/>
+                    <?php if (isset($termid) && !empty($termid)){ ?>
+                    <input type="hidden" value="<?php echo esc_attr($termid); ?>" id="idea_product_id"/><br/><br/>
+                    <?php } ?>
+                    <input type="hidden" value="<?php echo esc_attr($posts_per_page); ?>" id="idea_post_per_page"/><br/><br/>
+                    <input type="hidden" value="<?php echo esc_attr($order); ?>" id="idea_order"/><br/><br/>
+                    <input type="hidden" value="<?php echo esc_attr($orderby); ?>" id="idea_order_by"/><br/><br/>
+                </div>
+            <?php
+//            }
+        }
 		wp_reset_postdata();
 	else :
-		?><p>No idea for this product.</p><?php
+        if( isset( $product_id ) && !empty( $product_id ) ) {
+            ?><p>No ideas found for this product.</p><?php
+        }
+        else{
+            ?><p>No ideas found.</p><?php
+        }
 	endif;
 	echo '</div>';
 	?>
@@ -425,10 +403,17 @@ function list_ideas_load_more() {
 	$offset = isset( $_REQUEST[ 'offset' ] ) ? intval( $_REQUEST[ 'offset' ] ) : 3;
 	$post_type = isset( $_REQUEST[ 'post_type' ] ) ? $_REQUEST[ 'post_type' ] : 'idea';
 	$product_id = isset( $_REQUEST[ 'product_id' ] ) ? $_REQUEST[ 'product_id' ] : 0;
+	$postparpage = isset( $_REQUEST[ 'postparpage' ] ) ? $_REQUEST[ 'postparpage' ] : 3;
+    $order=   isset( $_REQUEST[ 'idea_order' ] ) ? $_REQUEST[ 'idea_order' ] : 'DESC';
+    $orderby=   isset( $_REQUEST[ 'idea_orderby' ] ) ? $_REQUEST[ 'idea_orderby' ] : 'date';
     $text_slug = 'rt_product';
 //    $termid=   check_postid_term_exist($_POST[ 'product_id' ]);
-
-	$args = array( 'post_type' => $post_type, 'offset' => $offset, 'posts_per_page' => 3, 'tax_query' => array( array( 'taxonomy' => $text_slug, 'terms' => $_POST[ 'product_id' ] ) ) );
+    if(isset($_REQUEST[ 'product_id' ]) && !empty($_REQUEST[ 'product_id' ])) {
+        $args = array('post_type' => $post_type, 'offset' => $offset, 'posts_per_page' => $postparpage, 'tax_query' => array(array('taxonomy' => $text_slug, 'terms' => $_POST['product_id'])));
+    }
+    else{
+        $args = array('post_type' => $post_type, 'offset' => $offset, 'posts_per_page' => $postparpage,  'order'	=> $order,  'orderby' => $orderby, 'post_status' => 'idea-new',);
+    }
 
 	$posts_query = new WP_Query( $args );
 
