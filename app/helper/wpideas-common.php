@@ -297,7 +297,7 @@ function subscribe_notification_setting(){
 function list_post_ideas( $atts ) {
 
 	global $post;
-	$default = array( 'type' => 'post', 'post_type' => RTBIZ_IDEAS_SLUG, 'post_id' => '', );
+	$default = array( 'type' => 'post', 'post_type' => RTBIZ_IDEAS_SLUG, 'product_id' => '', );
 	$r = shortcode_atts( $default, $atts );
 	extract( $r );
 
@@ -305,7 +305,7 @@ function list_post_ideas( $atts ) {
 
 	add_thickbox();
     $text_slug = 'rt_product';
-    $termid=   check_postid_term_exist($post_id);
+    $termid=   check_postid_term_exist($product_id);
 
 	$args = array( 'post_type' => $post_type, 'posts_per_page' => $posts_per_page, 'tax_query' => array( array( 'taxonomy' => $text_slug, 'terms' => $termid )  ) );
     if (empty($termid)){
@@ -313,8 +313,8 @@ function list_post_ideas( $atts ) {
     }
 	$args_count = array( 'post_type' => $post_type, 'tax_query' => array( array( 'taxonomy' => $text_slug, 'terms' => $termid ) ) );
 	echo '<br/>';
-	if ( isset($post_id) || ! is_null($post_id)){
-		echo "<input type='hidden' id='rt_post_id' value=".$post_id.">";
+	if ( isset($termid) || ! is_null($termid)){
+		echo "<input type='hidden' id='rt_product_id' value=".$termid.">";
 	}
 	$posts = new WP_Query( $args );
 	$posts_count = new WP_Query( $args_count );
@@ -332,7 +332,7 @@ function list_post_ideas( $atts ) {
 		<div class="idea-loadmore">
 			<a href="javascript:;" data-nonce="<?php echo esc_attr( wp_create_nonce( 'load_ideas' ) ); ?>" id="ideaLoadMore" class="rtp-readmore button rtp-button-beta-light tiny aligncenter"><?php _e( 'Load More', 'wp-ideas' ); ?></a>
 			<img src="<?php echo RTBIZ_IDEAS_URL . 'app/assets/img/indicator.gif'; ?>" id="ideaLoading" class="aligncenter" style="display:none;height: 50px;" />
-			<input type="hidden" value="<?php echo esc_attr( $post_id ); ?>" id="idea_product_id"/><br/><br/>
+			<input type="hidden" value="<?php echo esc_attr( $product_id ); ?>" id="idea_product_id"/><br/><br/>
 		</div>
         <?php
 		}
@@ -360,7 +360,7 @@ function list_post_ideas( $atts ) {
 
 	<?php
 	} else {
-		$href = wp_login_url( get_permalink($post_id) );
+		$href = wp_login_url( get_permalink($product_id) );
 		echo '<br/><a id="btnOpenThickbox" href="'.$href.'">Login to Suggest Idea</a>';
 	}
 }
@@ -371,12 +371,12 @@ function list_ideas_refresh() {
 
 	$posts_per_page = 3;
     $text_slug = 'rt_product';
-    $termid=   check_postid_term_exist($_POST[ 'product_id' ]);
+    //    $termid=   check_postid_term_exist($_POST[ 'product_id' ]);
 
 	$args = array(
         'post_type' => RTBIZ_IDEAS_SLUG,
         'posts_per_page' => $posts_per_page,
-        'tax_query' => array( array( 'taxonomy' => $text_slug, 'terms' => $termid )  )
+        'tax_query' => array( array( 'taxonomy' => $text_slug, 'terms' => $_POST[ 'product_id' ] )  )
        /* 'meta_query' => array(
             array(
                 'key' => '_rt_wpideas_post_id',
@@ -387,7 +387,7 @@ function list_ideas_refresh() {
     );
 	$args_count = array(
 		'post_type' => RTBIZ_IDEAS_SLUG,
-        'tax_query' => array( array( 'taxonomy' => $text_slug, 'terms' => $termid )  )
+        'tax_query' => array( array( 'taxonomy' => $text_slug, 'terms' => $_POST[ 'product_id' ] )  )
     );
 
 	$posts = new WP_Query( $args );
@@ -426,9 +426,9 @@ function list_ideas_load_more() {
 	$post_type = isset( $_REQUEST[ 'post_type' ] ) ? $_REQUEST[ 'post_type' ] : 'idea';
 	$product_id = isset( $_REQUEST[ 'product_id' ] ) ? $_REQUEST[ 'product_id' ] : 0;
     $text_slug = 'rt_product';
-    $termid=   check_postid_term_exist($_POST[ 'product_id' ]);
+//    $termid=   check_postid_term_exist($_POST[ 'product_id' ]);
 
-	$args = array( 'post_type' => $post_type, 'offset' => $offset, 'posts_per_page' => 3, 'tax_query' => array( array( 'taxonomy' => $text_slug, 'terms' => $termid ) ) );
+	$args = array( 'post_type' => $post_type, 'offset' => $offset, 'posts_per_page' => 3, 'tax_query' => array( array( 'taxonomy' => $text_slug, 'terms' => $_POST[ 'product_id' ] ) ) );
 
 	$posts_query = new WP_Query( $args );
 

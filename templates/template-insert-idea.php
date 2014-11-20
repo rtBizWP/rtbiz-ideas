@@ -6,7 +6,7 @@
 <script>
 	jQuery(document).ready(function($) {
 		var post_id;
-		if(! $('#rt_post_id').val()) {
+		if(! $('#rt_product_id').val()) {
 			jQuery('#product_id').parent().show();
 		}
 
@@ -41,9 +41,9 @@
 				post_id=$('#product_id').val();
 				data.append("product_id", $('#product_id').val());
 			}
-			else if($('#rt_post_id').val()){
-				post_id=$('#rt_post_id').val();
-				data.append("product_id", $('#rt_post_id').val());
+			else if($('#rt_product_id').val()){
+				post_id=$('#rt_product_id').val();
+				data.append("product_id", $('#rt_product_id').val());
 			}
 //			data.append("product_id", $('#product_id').val());
 			data.append("product", $('#product_page').val());
