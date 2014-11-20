@@ -300,11 +300,11 @@ function list_post_ideas( $atts ) {
                     <img src="<?php echo RTBIZ_IDEAS_URL . 'app/assets/img/indicator.gif'; ?>" id="ideaLoading"
                          class="aligncenter" style="display:none;height: 50px;"/>
                     <?php if (isset($termid) && !empty($termid)){ ?>
-                    <input type="hidden" value="<?php echo esc_attr($termid); ?>" id="idea_product_id"/><br/><br/>
+                    <input type="hidden" value="<?php echo esc_attr($termid); ?>" id="idea_product_id"/>
                     <?php } ?>
-                    <input type="hidden" value="<?php echo esc_attr($posts_per_page); ?>" id="idea_post_per_page"/><br/><br/>
-                    <input type="hidden" value="<?php echo esc_attr($order); ?>" id="idea_order"/><br/><br/>
-                    <input type="hidden" value="<?php echo esc_attr($orderby); ?>" id="idea_order_by"/><br/><br/>
+                    <input type="hidden" value="<?php echo esc_attr($posts_per_page); ?>" id="idea_post_per_page"/>
+                    <input type="hidden" value="<?php echo esc_attr($order); ?>" id="idea_order"/>
+                    <input type="hidden" value="<?php echo esc_attr($orderby); ?>" id="idea_order_by"/>
                 </div>
             <?php
 //            }
