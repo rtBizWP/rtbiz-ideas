@@ -135,7 +135,6 @@
 				<?php } ?>
 <!--				<input type='button' id="subscriber---><?php //the_ID(); ?><!--" class="subscribe_email_notification_button button---><?php //echo $subcribebuttonclass; ?><!--" value=--><?php //echo $subcribebuttonvalue; ?><!-- data-id="--><?php //the_ID(); ?><!--" >-->
 	            <?PHP
-//	            var_dump($rtWpIdeasSubscirber->get_subscriber_email(get_the_ID(),'status_change','YES'));
 	            ?>
 
             </div>

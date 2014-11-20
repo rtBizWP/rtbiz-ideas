@@ -59,7 +59,10 @@ function wpideas_insert_new_idea() {
 //			update_post_meta( $idea_id, '_rt_wpideas_meta_votes', 1 );
 
 			if ( isset( $_POST[ 'product_id' ] ) && $_POST[ 'product_id' ] != '' ) {
-				update_post_meta( $idea_id, '_rt_wpideas_post_id', ','.$_POST[ 'product_id' ].',' );
+                $product_slug = 'rt_product';
+
+//				update_post_meta( $idea_id, '_rt_wpideas_post_id', ','.$_POST[ 'product_id' ].',' );
+                wp_set_post_terms($idea_id,$_POST[ 'product_id' ],$product_slug);
 				echo 'product';
 			}
 
@@ -301,9 +304,14 @@ function list_post_ideas( $atts ) {
 	$posts_per_page = 3;
 
 	add_thickbox();
+    $text_slug = 'rt_product';
+    $termid=   check_postid_term_exist($post_id);
 
-	$args = array( 'post_type' => $post_type, 'posts_per_page' => $posts_per_page, 'meta_query' => array( array( 'key' => '_rt_wpideas_post_id', 'value' => ','.$post_id.',', 'compare'=>'LIKE' ) ) );
-	$args_count = array( 'post_type' => $post_type, 'meta_query' => array( array( 'key' => '_rt_wpideas_post_id', 'value' => ','.$post_id.',', 'compare'=>'LIKE' ) ) );
+	$args = array( 'post_type' => $post_type, 'posts_per_page' => $posts_per_page, 'tax_query' => array( array( 'taxonomy' => $text_slug, 'terms' => $termid )  ) );
+    if (empty($termid)){
+        return ;
+    }
+	$args_count = array( 'post_type' => $post_type, 'tax_query' => array( array( 'taxonomy' => $text_slug, 'terms' => $termid ) ) );
 	echo '<br/>';
 	if ( isset($post_id) || ! is_null($post_id)){
 		echo "<input type='hidden' id='rt_post_id' value=".$post_id.">";
@@ -362,28 +370,25 @@ add_shortcode( 'wpideas', 'list_post_ideas' );
 function list_ideas_refresh() {
 
 	$posts_per_page = 3;
+    $text_slug = 'rt_product';
+    $termid=   check_postid_term_exist($_POST[ 'product_id' ]);
 
 	$args = array(
         'post_type' => RTBIZ_IDEAS_SLUG,
         'posts_per_page' => $posts_per_page,
-        'meta_query' => array(
+        'tax_query' => array( array( 'taxonomy' => $text_slug, 'terms' => $termid )  )
+       /* 'meta_query' => array(
             array(
                 'key' => '_rt_wpideas_post_id',
                 'value' => ','.$_POST[ 'product_id' ].',',
                 'compare'=>'LIKE',
             )
-        )
+        )*/
     );
 	$args_count = array(
 		'post_type' => RTBIZ_IDEAS_SLUG,
-		'meta_query' => array(
-			array(
-				'key' => '_rt_wpideas_post_id',
-                'value' => ','.$_POST[ 'product_id' ].',',
-                'compare'=>'LIKE',
-			)
-		)
-	);
+        'tax_query' => array( array( 'taxonomy' => $text_slug, 'terms' => $termid )  )
+    );
 
 	$posts = new WP_Query( $args );
 	$posts_count = new WP_Query( $args_count );
@@ -420,8 +425,10 @@ function list_ideas_load_more() {
 	$offset = isset( $_REQUEST[ 'offset' ] ) ? intval( $_REQUEST[ 'offset' ] ) : 3;
 	$post_type = isset( $_REQUEST[ 'post_type' ] ) ? $_REQUEST[ 'post_type' ] : 'idea';
 	$product_id = isset( $_REQUEST[ 'product_id' ] ) ? $_REQUEST[ 'product_id' ] : 0;
+    $text_slug = 'rt_product';
+    $termid=   check_postid_term_exist($_POST[ 'product_id' ]);
 
-	$args = array( 'post_type' => $post_type, 'offset' => $offset, 'posts_per_page' => 3, 'meta_query' => array( array( 'key' => '_rt_wpideas_post_id',  'value' => ','.$product_id.',', 'compare'=>'LIKE', ) ) );
+	$args = array( 'post_type' => $post_type, 'offset' => $offset, 'posts_per_page' => 3, 'tax_query' => array( array( 'taxonomy' => $text_slug, 'terms' => $termid ) ) );
 
 	$posts_query = new WP_Query( $args );
 

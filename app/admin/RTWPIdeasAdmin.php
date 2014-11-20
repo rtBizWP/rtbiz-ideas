@@ -50,20 +50,6 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 			if ( wp_is_post_revision( $post_id ) || RTBIZ_IDEAS_SLUG != get_post_type( $post_id ) ) {
 				return;
 			}
-            $key    = '_product_id';
-			if(!empty($_POST['tax_input']) && !empty($_POST['tax_input']['rt_product'])){
-                $idea_post_id_map=array();
-				foreach($_POST['tax_input']['rt_product'] as $Termid){
-					if(!empty($Termid) && $Termid!='0'){
-                        $productid=	Rt_Lib_Taxonomy_Metadata\get_term_meta($Termid,$key,true);
-						array_push($idea_post_id_map,$productid);
-					}
-				}
-			}
-			if( !empty( $idea_post_id_map ) && is_array( $idea_post_id_map ) ){
-				$post_meta_value_idea = implode(",", $idea_post_id_map );
-                update_post_meta( $post_id, '_rt_wpideas_post_id', ','.$post_meta_value_idea.',' );
-            }
 			$has_voted= check_user_voted( $post_id );
 			if ( is_null( $has_voted ) || ! $has_voted ) {
 				add_vote( $post_id );
@@ -228,7 +214,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 		 */
 		function wpideas_ideas_table_head( $defaults ) {
 			$defaults[ 'wpideas_votes' ] = _x( 'Votes', 'wp-ideas' );
-			$defaults[ 'wpideas_posts' ] = _x( 'Idea for post', 'wp-ideas' );
+//			$defaults[ 'wpideas_posts' ] = _x( 'Idea for post', 'wp-ideas' );
 			return $defaults;
 		}
 
@@ -243,7 +229,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
 				$votes = get_post_meta( $idea_id, '_rt_wpideas_meta_votes', true );
 				echo $votes;
 			}
-			if ( $column_name == 'wpideas_posts'){
+			/*if ( $column_name == 'wpideas_posts'){
 				$postid= get_post_meta( $idea_id, '_rt_wpideas_post_id', true );
 				if ( is_null($postid) || "" == $postid ){
 					echo "-";
@@ -254,7 +240,7 @@ if ( ! class_exists( 'RTWPIdeasAdmin' ) ) {
                         echo "<a href='" . get_edit_post_link($id) . "'>#$id: </a> " . get_the_title($id)." <br/>   ";
                     }
 				}
-			}
+			}*/
 		}
 
 		/**

@@ -210,12 +210,8 @@ if (!empty($terms) && is_array($terms)){
 			<select class="required" id="product_id" name="product_id">
 				<option value=""> Select Product </option>
                 <?php
-				$key    = '_product_id';
 				foreach ($terms as $term){
-					$productid=	Rt_Lib_Taxonomy_Metadata\get_term_meta($term->term_id,$key,true);
-					if (!empty($productid)) {
-						echo '<option value="' . $productid . '" >' . $term->name . '</option>';
-					}
+						echo '<option value="' . $term->term_id . '" >' . $term->name . '</option>';
                 }
 				?>
 			</select>
