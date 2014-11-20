@@ -29,14 +29,15 @@ if( ! class_exists( 'RTWPIdeasAttributes' ) ){
 			global $wp_ideas_rt_attributes,$wp_ideas_attributes_model, $wp_ideas_attributes_relationship_model;
 			$wp_ideas_rt_attributes = new RT_Attributes( 'wp-ideas' );
 
-			$admin_cap = 'administrator';
+			$admin_cap  = rt_biz_get_access_role_cap( RT_IDEA_TEXT_DOMAIN, 'admin' );
+			$editor_cap = rt_biz_get_access_role_cap( RT_IDEA_TEXT_DOMAIN, 'editor' );
 			$post_type = 'idea';
 
 			$terms_caps = array(
-				'manage_terms' => 'manage_options',
-				'edit_terms'   => 'manage_options',
-				'delete_terms' => 'manage_options',
-				'assign_terms' => 'manage_options',
+				'manage_terms' => $editor_cap,
+				'edit_terms'   => $editor_cap,
+				'delete_terms' => $editor_cap,
+				'assign_terms' => $editor_cap,
 			);
 
 			$wp_ideas_rt_attributes->add_attributes_page( $this->attributes_page_slug, 'edit.php?post_type='.$post_type, $post_type, $admin_cap, $terms_caps );
