@@ -24,6 +24,11 @@ if ( ! class_exists( 'RTWPIdeas' ) ) {
 		 *  Constructor
 		 */
 		public function __construct() {
+
+			if ( ! rt_idea_check_plugin_dependecy() ) {
+				return false;
+			}
+
             include_once RTBIZ_IDEAS_PATH_ADMIN.'class-rt-idea-acl.php';
 
             global $rtIdeaACL;
