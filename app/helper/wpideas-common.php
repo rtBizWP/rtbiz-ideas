@@ -249,8 +249,8 @@ function list_post_ideas( $atts ) {
 
     if( isset( $product_id ) && !empty( $product_id ) ) {
         $text_slug = 'rt_product';
-        global $rtbiz_product_sync;
-        $termid = $rtbiz_product_sync->check_postid_term_exist($product_id);
+        global $rtbiz_offerings;
+        $termid = $rtbiz_offerings->check_postid_term_exist($product_id);
         if (empty($termid)) {
             return "Invalid Product. Please check sync settings.";
         }
