@@ -134,7 +134,7 @@ function rt_idea_plugin_check_enque_js() {
 function rt_idea_admin_notice_dependency_not_installed() {
 	if ( ! rt_idea_is_plugin_installed( 'rtbiz' ) ) { ?>
 		<div class="error rt-idea-not-installed-error">
-			<p><b><?php _e( 'rtBiz Idea:' ) ?></b> <?php _e( rthd_get_path_for_plugin( 'rtbiz' ) . ' plugin is not found on this site. Please install & activate it in order to use this plugin.', RT_IDEA_TEXT_DOMAIN ); ?></p>
+			<p><b><?php _e( 'rtBiz Idea:' ) ?></b> <?php _e( rt_idea_get_path_for_plugin( 'rtbiz' ) . ' plugin is not found on this site. Please install & activate it in order to use this plugin.', RT_IDEA_TEXT_DOMAIN ); ?></p>
 		</div>
 	<?php } else {
 		if ( rt_idea_is_plugin_installed( 'rtbiz' ) && ! rt_idea_is_plugin_active( 'rtbiz' ) ) {
