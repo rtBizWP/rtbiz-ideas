@@ -59,7 +59,7 @@ function wpideas_insert_new_idea() {
 //			update_post_meta( $idea_id, '_rt_wpideas_meta_votes', 1 );
 
 			if ( isset( $_POST[ 'product_id' ] ) && $_POST[ 'product_id' ] != '' ) {
-                $product_slug = 'rt_product';
+                $product_slug = Rt_Offerings::$offering_slug;
 
 //				update_post_meta( $idea_id, '_rt_wpideas_post_id', ','.$_POST[ 'product_id' ].',' );
                 wp_set_post_terms($idea_id,$_POST[ 'product_id' ],$product_slug);
@@ -248,7 +248,7 @@ function list_post_ideas( $atts ) {
         return '<div class="warning"><p>No such post type <em>' . $post_type . '</em> found.</p></div>';
 
     if( isset( $product_id ) && !empty( $product_id ) ) {
-        $text_slug = 'rt_product';
+        $text_slug = Rt_Offerings::$offering_slug;
         global $rtbiz_offerings;
         $termid = $rtbiz_offerings->check_postid_term_exist($product_id);
         if (empty($termid)) {
@@ -348,7 +348,7 @@ add_shortcode( 'wpideas', 'list_post_ideas' );
 function list_ideas_refresh() {
 
 	$posts_per_page = 3;
-    $text_slug = 'rt_product';
+    $text_slug = Rt_Offerings::$offering_slug;
     //    $termid=   check_postid_term_exist($_POST[ 'product_id' ]);
 
 	$args = array(
@@ -406,7 +406,7 @@ function list_ideas_load_more() {
 	$postparpage = isset( $_REQUEST[ 'postparpage' ] ) ? $_REQUEST[ 'postparpage' ] : 3;
     $order=   isset( $_REQUEST[ 'idea_order' ] ) ? $_REQUEST[ 'idea_order' ] : 'DESC';
     $orderby=   isset( $_REQUEST[ 'idea_orderby' ] ) ? $_REQUEST[ 'idea_orderby' ] : 'date';
-    $text_slug = 'rt_product';
+    $text_slug = Rt_Offerings::$offering_slug;
 //    $termid=   check_postid_term_exist($_POST[ 'product_id' ]);
     if(isset($_REQUEST[ 'product_id' ]) && !empty($_REQUEST[ 'product_id' ])) {
         $args = array('post_type' => $post_type, 'offset' => $offset, 'posts_per_page' => $postparpage, 'tax_query' => array(array('taxonomy' => $text_slug, 'terms' => $_POST['product_id'])));

@@ -203,7 +203,7 @@
 		<label class="error" id="txtIdeaContentError" style="display:none;"></label>
 	</div>
 	<?php
-	$terms = get_terms('rt_product');
+	$terms = get_terms(Rt_Offerings::$offering_slug);
 if (!empty($terms) && is_array($terms)){
 		?>
 		<div style="display: none">
