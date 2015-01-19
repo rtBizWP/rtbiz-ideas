@@ -38,7 +38,7 @@ if ( ! class_exists( 'Rt_Idea_ACL' ) ) {
                 'label'      => isset( $settings['rt_idea_menu_label'] ) ? $settings['rt_idea_menu_label'] : 'Idea',
                 'post_types' => array( RTBIZ_IDEAS_SLUG ),
                 'require_user_groups' => false,
-                'require_product_sync' => true,
+                'offering_support' => array( RTBIZ_IDEAS_SLUG ),
             );
 
             return $modules;
