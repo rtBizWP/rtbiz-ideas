@@ -115,6 +115,8 @@ function rt_idea_check_plugin_dependecy() {
 		add_action( 'admin_enqueue_scripts', 'rt_idea_plugin_check_enque_js' );
 		add_action( 'wp_ajax_rt_idea_activate_plugin',  'rt_idea_activate_plugin_ajax' );
 		add_action( 'admin_notices', 'rt_idea_admin_notice_dependency_not_installed'  );
+		add_action( 'wp_ajax_rt_idea_install_plugin', 'rt_idea_install_plugin_ajax' );
+
 	}
 
 	return $flag;
@@ -134,7 +136,11 @@ function rt_idea_plugin_check_enque_js() {
 function rt_idea_admin_notice_dependency_not_installed() {
 	if ( ! rt_idea_is_plugin_installed( 'rtbiz' ) ) { ?>
 		<div class="error rt-idea-not-installed-error">
-			<p><b><?php _e( 'rtBiz Idea:' ) ?></b> <?php _e( rt_idea_get_path_for_plugin( 'rtbiz' ) . ' plugin is not found on this site. Please install & activate it in order to use this plugin.', RT_IDEA_TEXT_DOMAIN ); ?></p>
+			<?php			$nonce = wp_create_nonce( 'rt_idea_install_plugin_rtbiz' ); ?>
+
+			<p><b><?php _e( 'rtBiz Idea:' ) ?></b> <?php _e( 'Click' ) ?> <a href="#"
+			                                                                     onclick="install_rt_idea_plugin('rtbiz','rt_idea_install_plugin','<?php echo $nonce ?>')">here</a> <?php _e( 'to install rtBiz.', RT_IDEA_TEXT_DOMAIN ) ?>
+			</p>
 		</div>
 	<?php } else {
 		if ( rt_idea_is_plugin_installed( 'rtbiz' ) && ! rt_idea_is_plugin_active( 'rtbiz' ) ) {
@@ -149,6 +155,64 @@ function rt_idea_admin_notice_dependency_not_installed() {
 		<?php }
 	}
 }
+
+function rt_idea_install_plugin_ajax(){
+	if ( empty( $_POST['plugin_slug'] ) ) {
+		die( __( 'ERROR: No slug was passed to the AJAX callback.', RT_IDEA_TEXT_DOMAIN ) );
+	}
+	check_ajax_referer( 'rt_idea_install_plugin_rtbiz');
+
+	if ( ! current_user_can( 'install_plugins' ) || ! current_user_can( 'activate_plugins' ) ) {
+		die( __( 'ERROR: You lack permissions to install and/or activate plugins.', RT_IDEA_TEXT_DOMAIN ) );
+	}
+	rt_idea_install_plugin( $_POST['plugin_slug'] );
+
+	echo 'true';
+	die();
+}
+
+function rt_idea_install_plugin( $plugin_slug ){
+	include_once( ABSPATH . 'wp-admin/includes/plugin-install.php' );
+
+	$api = plugins_api( 'plugin_information', array( 'slug' => $plugin_slug, 'fields' => array( 'sections' => false ) ) );
+
+	if ( is_wp_error( $api ) ) {
+		die( sprintf( __( 'ERROR: Error fetching plugin information: %s', RT_IDEA_TEXT_DOMAIN ), $api->get_error_message() ) );
+	}
+
+	if ( ! class_exists( 'Plugin_Upgrader' ) ) {
+		require_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
+	}
+
+	if ( ! class_exists( 'Rt_Idea_Plugin_Upgrader_Skin' ) ) {
+		require_once( RTBIZ_IDEAS_PATH . 'app/admin/class-rt-idea-plugin-upgrader-skin.php' );
+	}
+
+	$upgrader = new Plugin_Upgrader( new Rt_Idea_Plugin_Upgrader_Skin( array(
+		                                                                 'nonce'  => 'install-plugin_' . $plugin_slug,
+		                                                                 'plugin' => $plugin_slug,
+		                                                                 'api'    => $api,
+	                                                                 ) ) );
+
+	$install_result = $upgrader->install( $api->download_link );
+
+	if ( ! $install_result || is_wp_error( $install_result ) ) {
+		// $install_result can be false if the file system isn't writeable.
+		$error_message = __( 'Please ensure the file system is writeable', RT_IDEA_TEXT_DOMAIN );
+
+		if ( is_wp_error( $install_result ) ) {
+			$error_message = $install_result->get_error_message();
+		}
+
+		die( sprintf( __( 'ERROR: Failed to install plugin: %s', RT_IDEA_TEXT_DOMAIN ), $error_message ) );
+	}
+
+	$activate_result = activate_plugin( rt_idea_get_path_for_plugin( $plugin_slug ) );
+	if ( is_wp_error( $activate_result ) ) {
+		die( sprintf( __( 'ERROR: Failed to activate plugin: %s', RT_IDEA_TEXT_DOMAIN ), $activate_result->get_error_message() ) );
+	}
+}
+
 
 function rt_idea_get_path_for_plugin( $slug ) {
 	global $rt_idea_plugin_check;
