@@ -164,8 +164,6 @@ function rtbiz_idea_loader(){
 	include_once 'app/helper/wpideas-votes.php';
 	include_once 'app/helper/wpideas-common.php';
 	include_once 'app/settings/class-redux-framework-idea-config.php';
-	require_once RTBIZ_IDEAS_PATH_VENDOR . 'redux/ReduxCore/framework.php';
-
 	/**
 	 * Instantiate the RTWPIdeas class.
 	 */
