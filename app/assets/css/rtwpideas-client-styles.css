@@ -30,8 +30,6 @@ and open the template in the editor.
   color: rgba(0, 0, 0, 0.75);
   display: block;
   font-size: 16px;
-  margin: 0 0 1rem 0;
-  padding: 0.5rem;
   height: 2.3125rem;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -228,7 +226,7 @@ and open the template in the editor.
   font-size: 18px;
   font-weight: bold;
   line-height: 1em;
-  margin: 0 0 10px 0;
+  margin: 0 0 10px 0 !important;
 }
 /* line 286, ../scss/rtwpideas-client-styles.scss */
 .rtwpIdeaTitle a {
@@ -600,5 +598,3 @@ figure {
   padding-bottom: 0;
   padding-top: 20px;
 }
-
-/*# sourceMappingURL=rtwpideas-client-styles.css.map */

@@ -190,7 +190,7 @@
 				wp_editor( $content, $editor_id, $settings );
 		} else {
 		?>
-		<textarea name="txtIdeaContent" id="txtIdeaContent" style="height:250px;" class="required"><?php
+		<textarea name="txtIdeaContent" id="txtIdeaContent" class="required"><?php
 			if ( isset( $_POST[ 'txtIdeaContent' ] ) ) {
 				if ( function_exists( 'stripslashes' ) ) {
 					echo stripslashes( $_POST[ 'txtIdeaContent' ] );

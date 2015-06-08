@@ -98,7 +98,7 @@
             <div class="rtwpIdeaMeta">
 				<?php
 				if ( is_user_logged_in() ) {
-					edit_post_link( 'Manage Idea', '<span>', '</span>' ); ?> &#124; <?php
+					edit_post_link( 'Manage Idea', '<span>', ' </span> &#124; ' ); ?> <?php
 					global $rtWpIdeasSubscriber;
 					$subcribebuttonflag= $rtWpIdeasSubscriber->check_subscriber_exist(get_the_ID(),get_current_user_id());
 					$subcribebuttonvalue= $subcribebuttonflag?'Unsubscribe':'Subscribe';
