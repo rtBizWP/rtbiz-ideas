@@ -184,7 +184,7 @@ function do_flush_rewrite_rules_idea(){
 function init_call_flush_rewrite_rules_idea(){
 	add_option( 'rt_idea_call_rewrite', 'true' );
 }
-add_action( 'rt_biz_init', 'rtbiz_idea_loader', 1 );
+add_action( 'rtbiz_init', 'rtbiz_idea_loader', 1 );
 
 register_activation_hook( __FILE__, 'init_call_flush_rewrite_rules_idea' );
 

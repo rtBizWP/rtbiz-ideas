@@ -29,8 +29,8 @@ if( ! class_exists( 'RTWPIdeasAttributes' ) ){
 			global $wp_ideas_rt_attributes,$wp_ideas_attributes_model, $wp_ideas_attributes_relationship_model;
 			$wp_ideas_rt_attributes = new RT_Attributes( 'wp-ideas' );
 
-			$admin_cap  = rt_biz_get_access_role_cap( RT_IDEA_TEXT_DOMAIN, 'admin' );
-			$editor_cap = rt_biz_get_access_role_cap( RT_IDEA_TEXT_DOMAIN, 'editor' );
+			$admin_cap  = rtbiz_get_access_role_cap( RT_IDEA_TEXT_DOMAIN, 'admin' );
+			$editor_cap = rtbiz_get_access_role_cap( RT_IDEA_TEXT_DOMAIN, 'editor' );
 			$post_type = 'idea';
 
 			$terms_caps = array(

@@ -282,7 +282,7 @@ if ( ! class_exists( 'Redux_Framework_Idea_Config' ) ) {
 		public function set_arguments() {
 
 			//$theme = wp_get_theme(); // For use with some settings. Not necessary.
-			$admin_cap = rt_biz_get_access_role_cap( RT_IDEA_TEXT_DOMAIN, 'admin' );
+			$admin_cap = rtbiz_get_access_role_cap( RT_IDEA_TEXT_DOMAIN, 'admin' );
 			$this->args = array(
 				// TYPICAL -> Change these values as you need/desire
 				'opt_name'           => 'redux_idea_settings',

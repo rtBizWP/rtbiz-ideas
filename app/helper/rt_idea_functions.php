@@ -99,15 +99,15 @@ function rt_idea_check_plugin_dependecy() {
 	$rt_idea_plugin_check = array(
 		'rtbiz' => array(
 			'project_type' => 'all',
-			'name' => esc_html__( 'WordPress for Business.', 'rt_biz' ),
-			'active' => class_exists( 'Rt_Biz' ),
-			'filename' => 'index.php',
+			'name' => esc_html__( 'WordPress for Business.', 'Rtbiz' ),
+			'active' => class_exists( 'Rtbiz' ),
+			'filename' => 'rtbiz.php',
 		),
 	);
 
 	$flag = true;
 
-	if ( ! class_exists( 'Rt_Biz' ) || ! did_action( 'rt_biz_init' ) ) {
+	if ( ! class_exists( 'Rtbiz' ) || ! did_action( 'rtbiz_init' ) ) {
 		$flag = false;
 	}
 

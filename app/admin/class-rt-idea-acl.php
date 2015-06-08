@@ -19,7 +19,7 @@ if ( ! class_exists( 'Rt_Idea_ACL' ) ) {
          * @since 0.1
          */
         public function __construct() {
-            add_filter( 'rt_biz_modules', array( $this, 'register_rt_idea_module' ) );
+            add_filter( 'rtbiz_modules', array( $this, 'register_rt_idea_module' ) );
         }
 
         /**
@@ -33,7 +33,7 @@ if ( ! class_exists( 'Rt_Idea_ACL' ) ) {
          */
         function register_rt_idea_module( $modules ) {
             $settings               = rt_idea_get_redux_settings();
-            $module_key             = rt_biz_sanitize_module_key( RT_IDEA_TEXT_DOMAIN );
+            $module_key             = rtbiz_sanitize_module_key( RT_IDEA_TEXT_DOMAIN );
             $modules[ $module_key ] = array(
                 'label'      => isset( $settings['rt_idea_menu_label'] ) ? $settings['rt_idea_menu_label'] : 'Idea',
                 'post_types' => array( RTBIZ_IDEAS_SLUG ),
