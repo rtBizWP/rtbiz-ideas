@@ -385,7 +385,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Common' ) ) {
 				$text_slug = Rt_Products::$product_slug;
 				global $rtbiz_products;
 				$product_termid = $rtbiz_products->check_postid_term_exist( $product_id );
-				if ( empty( $termid ) ) {
+				if ( empty( $product_termid ) ) {
 					return 'Invalid Product. Please check sync settings.';
 				}
 				$args       = array(
@@ -459,7 +459,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Common' ) ) {
 					<?php //		include RTBIZ_IDEAS_PATH . 'templates/template-insert-idea.php';
 					rtbiz_ideas_get_template( 'template-insert-idea.php' ) ?>
 				</div>
-				<a id="btnOpenThickbox" href="#Idea-new"> Suggest Idea for this post</a> <?php
+				<a id="btnOpenThickbox" href="#Idea-new"> Suggest Idea </a> <?php
 			} else {
 				$href = wp_login_url( get_permalink( $product_id ) );
 				echo '<br/><a id="btnOpenThickbox" href="' . $href . '">Login to Suggest Idea</a>';
