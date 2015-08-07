@@ -1,12 +1,20 @@
-require 'compass/import-once/activate'
-# Require any additional compass plugins here.
-
 # Set this to the root of your project when deployed:
 http_path = "/"
-css_dir = "../css/"
-sass_dir = ""
-images_dir = "images"
-javascripts_dir = "javascripts"
+css_dir = "public/css"
+sass_dir = "public/css/sass"
+images_dir = "public/img"
+javascripts_dir = "public/js"
+
+output_style = :compressed
+
+relative_assets = true
+
+line_comments = false
+color_output = false
+
+#environment = :production
+
+#Symbol	The environment mode. Defaults to :production, can also be :development
 
 # You can select your preferred output style here (can be overridden via the command line):
 # output_style = :expanded or :nested or :compact or :compressed
@@ -15,7 +23,7 @@ javascripts_dir = "javascripts"
 # relative_assets = true
 
 # To disable debugging comments that display the original location of your selectors. Uncomment:
-#line_comments = false
+# line_comments = false
 
 
 # If you prefer the indented syntax, you might want to regenerate this
@@ -23,3 +31,5 @@ javascripts_dir = "javascripts"
 # preferred_syntax = :sass
 # and then run:
 # sass-convert -R --from scss --to sass sass scss && rm -rf sass && mv scss sass
+
+# More Information about Configuration: http://compass-style.org/help/tutorials/configuration-reference/

@@ -1,6 +1,11 @@
+*.log
 *.DS_Store
 *.swp
 *.bak
-/nbproject/private/
+*.sass-cache
 */.sass-cache/
 .idea
+_book
+node_modules
+npm-debug.log
+/nbproject/private/
