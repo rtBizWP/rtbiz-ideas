@@ -9,7 +9,7 @@
     <div class="rtwpIdeaVoteBadge">
         <div class="rtwpIdeaVoteCount">
             <strong
-                id="rtwpIdeaVoteCount-<?php the_ID(); ?>"><?php echo sanitize_text_field( get_votes_by_post( get_the_ID() ) ); ?></strong>
+                id="rtwpIdeaVoteCount-<?php the_ID(); ?>"><?php echo sanitize_text_field( rtbiz_ideas_get_votes_by_post( get_the_ID() ) ); ?></strong>
             <span>votes</span>
         </div>
         <div class="rtwpIdeaVoteButton">
@@ -19,7 +19,7 @@
 						echo ucfirst( preg_replace('/^idea-/', '', get_post_status( get_the_ID() ) ) );
 				   }else{
 						   if ( is_user_logged_in() ){
-							   $is_voted = check_user_voted( get_the_ID() );
+							   $is_voted = rtbiz_ideas_check_user_voted( get_the_ID() );
 							   if ( isset( $is_voted ) && $is_voted ){
 								   echo 'Vote Down';
 							   } else {
@@ -99,8 +99,8 @@
 				<?php
 				if ( is_user_logged_in() ) {
 					edit_post_link( 'Manage Idea', '<span>', ' </span> &#124; ' ); ?> <?php
-					global $rtWpIdeasSubscriber;
-					$subcribebuttonflag= $rtWpIdeasSubscriber->check_subscriber_exist(get_the_ID(),get_current_user_id());
+					global $rtbiz_ideas_subscriber_model;
+					$subcribebuttonflag= $rtbiz_ideas_subscriber_model->check_subscriber_exist(get_the_ID(), get_current_user_id() );
 					$subcribebuttonvalue= $subcribebuttonflag?'Unsubscribe':'Subscribe';
 					$subcribebuttonclass= $subcribebuttonflag?'unsubscribe':'subscribe'; ?>
 	            <label>  <a id="subscriber-<?php the_ID(); ?>" class="subscribe_email_notification_button button-<?php echo $subcribebuttonclass; ?>" data-id="<?php the_ID(); ?>" > <?php echo $subcribebuttonvalue; ?></a> </label> &#124;

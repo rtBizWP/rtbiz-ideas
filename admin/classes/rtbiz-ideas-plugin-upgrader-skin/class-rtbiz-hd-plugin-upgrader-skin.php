@@ -9,10 +9,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Description of class-rt-biz
  *
- * @author udit
+ * @author Dipesh
  */
 
-if ( ! class_exists( 'Rt_Idea_Plugin_Upgrader_Skin' ) ) {
+if ( ! class_exists( 'Rtbiz_Idea_Plugin_Upgrader_Skin' ) ) {
 
 	if ( ! class_exists( 'Plugin_Upgrader' ) ) {
 		require_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
@@ -21,10 +21,10 @@ if ( ! class_exists( 'Rt_Idea_Plugin_Upgrader_Skin' ) ) {
 
 
 	/**
-	 * Class Rt_Idea_Plugin_Upgrader_Skin
+	 * Class Rtbiz_Idea_Plugin_Upgrader_Skin
 	 * this class is used to upgrade or download plugins check function rtBiz_install_plugin in class-rt-biz
 	 */
-	class Rt_Idea_Plugin_Upgrader_Skin extends WP_Upgrader_Skin {
+	class Rtbiz_Idea_Plugin_Upgrader_Skin extends WP_Upgrader_Skin {
 
 		function __construct( $args = array() ) {
 			$defaults = array( 'type' => 'web', 'url' => '', 'plugin' => '', 'nonce' => '', 'title' => '' );
