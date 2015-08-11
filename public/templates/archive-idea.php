@@ -6,7 +6,7 @@
 
 get_header(); ?>
 
-	<div id="primary" class="<?php echo apply_filters( 'rtbiz_idea_content_class', 'site-content'); ?>">
+	<div id="primary" class="<?php echo apply_filters( 'rtbiz_idea_content_class', 'site-content' ); ?>"> <!-- comment-meta -->
 		<div id="content" class="rtbiz-ideas-archive" role="main">
 
 			<header class="rtbiz-ideas-header">
@@ -42,9 +42,10 @@ get_header(); ?>
 			} else { ?>
 				<div id="loop-common" class="rtbiz-ideas-loop-common"><?php
 				if ( have_posts() ) {
-					while ( have_posts() ) : the_post();
+					while ( have_posts() ) {
+						the_post();
 						rtbiz_ideas_get_template( 'loop-common.php' );
-					endwhile; ?>
+					} ?>
 					<div class="rtbiz-ideas-navigation">
 						<div class="alignleft"><?php previous_posts_link( '&laquo; Previous Page' ) ?></div>
 						<div class="alignright"><?php next_posts_link( 'Next Page &raquo;', '' ) ?></div>

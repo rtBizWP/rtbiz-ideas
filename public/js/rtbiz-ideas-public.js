@@ -39,6 +39,8 @@
 				rtbizIdeasPublic.loadMoreIdeas();
 				rtbizIdeasPublic.subscribeIdeas();
 				rtbizIdeasPublic.saveIdeasEmailNotification();
+				rtbizIdeasPublic.cancelNewIdeas();
+				rtbizIdeasPublic.addNewIdeas();
 			},
 			toggleIdeasForm: function(){
 				$('a[href="#Idea-new"]' ).click(function (){
@@ -88,8 +90,8 @@
 
 							// highlight the new term
 							if ( requestArray.searchtext ) {
-								$('.rtwpIdeaTitle').highlight( requestArray.searchtext );
-								$('.rtwpIdeaDescription').highlight( requestArray.searchtext );
+								$('.rtbiz-idea-title').highlight( requestArray.searchtext );
+								$('.rtbiz-idea-description').highlight( requestArray.searchtext );
 							}
 						},
 						error: function (xhr, textStatus, errorThrown) {
@@ -123,7 +125,7 @@
 						success: function ( data ) {
 							if ( data.have_posts ) {
 								var $newElems = $( data.html.replace(/(\r\n|\n|\r)/gm, '') );
-								$('#wpidea-content').append( $newElems );
+								$('#loop-common').append( $newElems );
 								jQuery('#ideaLoadMore').show();
 							} else {
 								$('#ideaLoadMore').hide();
@@ -201,6 +203,160 @@
 
 							}
 						});
+					}
+				});
+			},
+			cancelNewIdeas: function(){
+				$('#insertIdeaFormCancel').click(function(){
+					$('#wpideas-insert-idea' ).slideToggle('slow');
+				});
+			},
+			addNewIdeas: function(){
+				$('#btninsertIdeaFormSubmit').click(function(e) {
+					e.preventDefault();
+					var requestArray = new FormData();
+
+					requestArray.append("action", 'rtbiz_ideas_insert_new_idea');
+					requestArray.append( "txtIdeaTitle", $('#txtIdeaTitle').val() );
+
+					var editor = '';
+					if ( rtbizIdeasPublic.isTinyMCEActive() ){
+						editor= tinyMCE.get('txtIdeaContent');
+					}
+					var content= ( editor ) ? editor.getContent() : $('#txtIdeaContent').val() ;
+					requestArray.append( "txtIdeaContent", content );
+
+
+					var product_id = $('#product_id').val();
+					if ( product_id ){
+						requestArray.append( "product_id", product_id );
+					}
+
+					requestArray.append( "product", $('#product_page').val() );
+
+					var files = document.getElementById('file').files;
+					for (var i = 0; i < files.length; i++) {
+						var file = files[i];
+						// Add the file to the request.
+						requestArray.append('upload[]', file, file.name);
+					}
+
+					$.ajax({
+						url: ajaxurl,
+						type: 'POST',
+						data: requestArray,
+						processData: false,
+						contentType: false,
+						beforeSend: function(xhr) {
+							$('#txtIdeaTitle').attr('disable', 'disable');
+							$('#txtIdeaContent').attr('disable', 'disable');
+							$('#txtIdeaProduct').attr('disable', 'disable');
+							$('#file').attr('disable', 'disable');
+							$('#ideaLoading').show();
+						},
+						success: function ( data ) {
+							try {
+								var data = JSON.parse(data);
+								if (data.title) {
+									$('#txtIdeaTitleError').html(data.title);
+									$('#txtIdeaTitleError').show();
+								} else {
+									$('#txtIdeaTitleError').hide();
+								}
+								if (data.content) {
+									$('#txtIdeaContentError').html(data.content);
+									$('#txtIdeaContentError').show();
+								} else {
+									$('#txtIdeaContentError').hide();
+								}
+								if (data.product) {
+									$('#txtIdeaProductError').html(data.product);
+									$('#txtIdeaProductError').show();
+								} else {
+									$('#txtIdeaProductError').hide();
+								}
+							} catch (e) {
+								if ( data == 'product' ) {
+									rtbizIdeasPublic.listIdeasPost( product_id);
+								} else {
+									rtbizIdeasPublic.searchIdeaCallback()
+								}
+
+								$('#wpideas-insert-idea' ).slideToggle('slow');
+
+								$('#lblIdeaSuccess').show();
+								$('#lblIdeaSuccess').fadeOut(2000);
+
+								$('#txtIdeaTitleError').hide();
+								$('#txtIdeaContentError').hide();
+								$('#txtIdeaProductError').hide();
+
+								$('#txtIdeaTitle').val("");
+								if ( editor ){
+									editor.setContent('');
+								}else{
+									$('#txtIdeaContent').val("");
+								}
+								$('#file').val("");
+							}
+
+							$('#txtIdeaTitle').removeAttr('disabled');
+							$('#txtIdeaContent').removeAttr('disabled');
+							$('#txtIdeaProduct').removeAttr('disabled');
+							$('#file').removeAttr('disabled');
+
+							$('#ideaLoading').hide();
+						},
+						error: function (xhr, textStatus, errorThrown) {
+
+						}
+					});
+				});
+			},
+			isTinyMCEActive: function(){
+				if (typeof(tinyMCE) != "undefined") {
+					if (tinyMCE.activeEditor !== null && tinyMCE.activeEditor.isHidden() === false) {
+						return true;
+					}
+				}
+				return false;
+			},
+			listIdeasPost: function( product_id ) {
+				var requestArray = {};
+				requestArray.action = 'rtbiz_ideas_list_refresh';
+				requestArray.product_id = product_id;
+				$.ajax({
+					url: ajaxurl,
+					type: 'POST',
+					dataType: 'text',
+					data: requestArray,
+					success: function ( data ) {
+						$('#wpidea-content-wrapper').html(data);
+						if ( $('#tab-ideas_tab' ).val() ) {
+							$( "body, html" ).animate( {
+								scrollTop: jQuery( '#tab-ideas_tab' ).offset().top
+							}, 600 );
+						}
+					},
+					error: function (xhr, textStatus, errorThrown) {
+
+					}
+				});
+			},
+			searchIdeaCallback: function(){
+				var requestArray = {};
+				requestArray.action = 'rtbiz_ideas_search';
+				requestArray.searchtext = '';
+				$.ajax({
+					url: ajaxurl,
+					type: 'POST',
+					dataType: 'text',
+					data: requestArray,
+					success: function ( data ) {
+						jQuery('#loop-common').html(data);
+					},
+					error: function (xhr, textStatus, errorThrown) {
+
 					}
 				});
 			}

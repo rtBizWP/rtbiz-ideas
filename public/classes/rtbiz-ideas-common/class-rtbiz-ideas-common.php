@@ -33,8 +33,8 @@ if ( ! class_exists( 'Rtbiz_Ideas_Common' ) ) {
 			Rtbiz_Ideas::$loader->add_action( 'wp_ajax_rtbiz_ideas_load_more', $this, 'ideas_load_more' );
 			Rtbiz_Ideas::$loader->add_action( 'wp_ajax_nopriv_rtbiz_ideas_load_more', $this, 'ideas_load_more' );
 
-			Rtbiz_Ideas::$loader->add_action( 'wp_ajax_list_rtbiz_ideas_refresh', $this, 'list_ideas_refresh' );
-			Rtbiz_Ideas::$loader->add_action( 'wp_ajax_nopriv_list_rtbiz_ideas_refresh', $this, 'list_ideas_refresh' );
+			Rtbiz_Ideas::$loader->add_action( 'wp_ajax_rtbiz_ideas_list_refresh', $this, 'list_ideas_refresh' );
+			Rtbiz_Ideas::$loader->add_action( 'wp_ajax_nopriv_rtbiz_ideas_list_refresh', $this, 'list_ideas_refresh' );
 
 			Rtbiz_Ideas::$loader->add_action( 'wp_ajax_rtbiz_ideas_subscribe_notification_setting', $this, 'subscribe_notification_setting' );
 			Rtbiz_Ideas::$loader->add_action( 'wp_ajax_nopriv_rtbiz_ideas_)subscribe_notification_setting', $this, 'subscribe_notification_setting' );
@@ -76,7 +76,6 @@ if ( ! class_exists( 'Rtbiz_Ideas_Common' ) ) {
 
 					if ( isset( $_POST['product_id'] ) && '' != $_POST['product_id'] ) {
 						$product_slug = Rt_Products::$product_slug;
-
 						wp_set_post_terms( $idea_id, $_POST['product_id'], $product_slug );
 						echo 'product';
 					}
@@ -266,12 +265,12 @@ if ( ! class_exists( 'Rtbiz_Ideas_Common' ) ) {
 			$text_slug      = Rt_Products::$product_slug;
 
 			$args       = array(
-				'post_type'      => RTBIZ_IDEAS_SLUG,
+				'post_type'      => Rtbiz_Ideas_Module::$post_type,
 				'posts_per_page' => $posts_per_page,
 				'tax_query'      => array( array( 'taxonomy' => $text_slug, 'terms' => $_POST['product_id'] ) )
 			);
 			$args_count = array(
-				'post_type' => RTBIZ_IDEAS_SLUG,
+				'post_type' => Rtbiz_Ideas_Module::$post_type,
 				'tax_query' => array( array( 'taxonomy' => $text_slug, 'terms' => $_POST['product_id'] ) )
 			);
 
@@ -374,8 +373,9 @@ if ( ! class_exists( 'Rtbiz_Ideas_Common' ) ) {
 				'post_type'      => Rtbiz_Ideas_Module::$post_type,
 				'product_id'     => '',
 			);
-			$r       = shortcode_atts( $default, $atts );
+			$r = shortcode_atts( $default, $atts );
 			extract( $r );
+
 			$post_type_ob = get_post_type_object( $post_type );
 			if ( ! $post_type_ob ) {
 				return '<div class="warning"><p>No such post type <em>' . $post_type . '</em> found.</p></div>';
@@ -383,73 +383,68 @@ if ( ! class_exists( 'Rtbiz_Ideas_Common' ) ) {
 
 			if ( isset( $product_id ) && ! empty( $product_id ) ) {
 				$text_slug = Rt_Products::$product_slug;
-				global $rtbiz_products;
-				$product_termid = $rtbiz_products->check_postid_term_exist( $product_id );
+				$product_termid = rtbiz_ideas_get_product_taxonomy_id( $product_id );
 				if ( empty( $product_termid ) ) {
 					return 'Invalid Product. Please check sync settings.';
 				}
 				$args       = array(
 					'post_type'      => $post_type,
 					'posts_per_page' => $posts_per_page,
+					'order'          => $order,
+					'orderby'        => $orderby,
 					'tax_query'      => array( array( 'taxonomy' => $text_slug, 'terms' => $product_termid ) )
 				);
 				$args_count = array(
 					'post_type' => $post_type,
+					'order'          => $order,
+					'orderby'        => $orderby,
 					'tax_query' => array( array( 'taxonomy' => $text_slug, 'terms' => $product_termid ) )
 				);
-				echo '<br/>';
-				if ( isset( $product_termid ) || ! is_null( $product_termid ) ) {
-					echo "<input type='hidden' id='rt_product_id' value=" . $product_termid . '>';
-				}
 			} else {
 				$args       = array(
 					'post_type'      => $post_type,
 					'posts_per_page' => $posts_per_page,
 					'order'          => $order,
 					'orderby'        => $orderby,
-					'post_status'    => 'idea-new',
 				);
 				$args_count = array(
 					'post_type'   => $post_type,
 					'order'       => $order,
 					'orderby'     => $orderby,
-					'post_status' => 'idea-new',
 				);
 
 			}
 			$posts       = new WP_Query( $args );
 			$posts_count = new WP_Query( $args_count ); ?>
 
-			<div id="wpidea-content-wrapper"><?php
-			if ( $posts->have_posts() ) { ?>
-				<div id="wpidea-content"><?php
+			<div id="loop-common" class="rtbiz-ideas-loop-common"><?php
+			if ( $posts->have_posts() ) {
 				while ( $posts->have_posts() ) {
 					$posts->the_post();
 					rtbiz_ideas_get_template( 'loop-common.php' );
-				} ?>
-				</div><?php
-				if ( $posts_count->post_count > $posts_per_page ) { ?>
-					<div class="idea-loadmore">
-						<a href="javascript:;" data-nonce="<?php echo esc_attr( wp_create_nonce( 'load_ideas' ) ); ?>"
-						   id="ideaLoadMore"
-						   class="rtp-readmore button rtp-button-beta-light tiny aligncenter"><?php _e( 'Load More', 'wp-ideas' ); ?></a>
-						<img src="<?php echo RTBIZ_IDEAS_URL . 'public/img/indicator.gif'; ?>" id="ideaLoading"
-						     class="aligncenter" style="display:none;height: 50px;"/>
-						<?php if ( isset( $termid ) && ! empty( $termid ) ) { ?>
-							<input type="hidden" value="<?php echo esc_attr( $termid ); ?>" id="idea_product_id"/>
-						<?php } ?>
-						<input type="hidden" value="<?php echo esc_attr( $posts_per_page ); ?>"
-						       id="idea_post_per_page"/>
-						<input type="hidden" value="<?php echo esc_attr( $order ); ?>" id="idea_order"/>
-						<input type="hidden" value="<?php echo esc_attr( $orderby ); ?>" id="idea_order_by"/>
-					</div><?php
 				}
+			}
+			if ( $posts_count->post_count > $posts_per_page ) { ?>
+				<div class="rtbiz-ideas-loadmore">
+					<a href="javascript:;" id="ideaLoadMore" data-nonce="<?php echo esc_attr( wp_create_nonce( 'load_ideas' ) ); ?>"
+					   class=""><?php _e( 'Load More', 'wp-ideas' ); ?>
+					</a>
+					<img src="<?php echo RTBIZ_IDEAS_URL . 'public/img/indicator.gif'; ?>" id="ideaLoading" class="aligncenter" style="display:none;height: 50px;"/>
+
+					<?php if ( ! empty( $product_termid ) ) { ?>
+						<input type="hidden" value="<?php echo esc_attr( $product_termid ); ?>" id="idea_product_id"/>
+					<?php } ?>
+
+					<input type="hidden" value="<?php echo esc_attr( $posts_per_page ); ?>" id="idea_post_per_page"/>
+					<input type="hidden" value="<?php echo esc_attr( $order ); ?>" id="idea_order"/>
+					<input type="hidden" value="<?php echo esc_attr( $orderby ); ?>" id="idea_order_by"/>
+				</div><?php
 				wp_reset_postdata();
 			} else {
 				if ( isset( $product_id ) && ! empty( $product_id ) ) {
-					?><p>No ideas found for this product.</p><?php
+					?><p><?php _e( 'No ideas found for this product.', RTBIZ_IDEAS_TEXT_DOMAIN ) ?></p><?php
 				} else {
-					?><p>No ideas found.</p><?php
+					?><p><?php _e( 'No ideas found..', RTBIZ_IDEAS_TEXT_DOMAIN ) ?></p><?php
 				}
 			}?>
 			</div><?php

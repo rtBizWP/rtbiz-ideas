@@ -3,241 +3,68 @@
  * Insert idea
  */
 ?>
-<script>
-	jQuery(document).ready(function($) {
-		var post_id;
-		if(! $('#rt_product_id').val()) {
-			jQuery('#product_id').parent().show();
-		}
+<form id="insertIdeaForm" class="rtbiz-ideas-new-idea" method="post" enctype="multipart/form-data" action="">
+	<h2 class="rtbiz-idea-title"><?php
+		_e( 'Suggest New Idea', RTBIZ_IDEAS_TEXT_DOMAIN ); ?>
+	</h2>
 
-		jQuery('#insertIdeaFormCancel').click(function(){
-//			jQuery('#TB_closeWindowButton').click();
-			jQuery('#wpideas-insert-idea' ).slideToggle('slow');
-
-		});
-		jQuery('#btninsertIdeaFormSubmit').click(function(e) {
-			e.preventDefault();
-			data = new FormData();
-			data.append("action", 'wpideas_insert_new_idea');
-			data.append("txtIdeaTitle", $('#txtIdeaTitle').val());
-			var editor = null;
-			is_tinyMCE_active = false;
-			if (typeof(tinyMCE) != "undefined") {
-				if (tinyMCE.activeEditor == null || tinyMCE.activeEditor.isHidden() != false) {
-					is_tinyMCE_active = true;
-				}
-			}
-			if(is_tinyMCE_active){
-				editor= tinyMCE.get('txtIdeaContent');
-			}
-			var content='';
-			if (editor){
-				content = editor.getContent();
-			} else {
-				content = $('#txtIdeaContent').val();
-			}
-			data.append("txtIdeaContent", content);
-			if ($('#product_id').val()){
-				post_id=$('#product_id').val();
-				data.append("product_id", $('#product_id').val());
-			}
-			else if($('#rt_product_id').val()){
-				post_id=$('#rt_product_id').val();
-				data.append("product_id", $('#rt_product_id').val());
-			}
-//			data.append("product_id", $('#product_id').val());
-			data.append("product", $('#product_page').val());
-			// Get the selected files from the input.
-			var files = document.getElementById('file').files;
-			// Loop through each of the selected files.
-			for (var i = 0; i < files.length; i++) {
-				var file = files[i];
-
-				// Add the file to the request.
-				data.append('upload[]', file, file.name);
-			}
-			//data.append("upload", $('#file').get(0).files[0]);
-			$.ajax({
-				url: rt_wpideas_ajax_url,
-				type: 'POST',
-				data: data,
-				processData: false,
-				contentType: false,
-				beforeSend: function(xhr) {
-					$('#txtIdeaTitle').attr('disable', 'disable');
-					$('#txtIdeaContent').attr('disable', 'disable');
-					$('#txtIdeaProduct').attr('disable', 'disable');
-					$('#file').attr('disable', 'disable');
-					$('#ideaLoading').show();
-				},
-				success: function(res) {
-					try {
-						var json = JSON.parse(res);
-						if (json.title) {
-							$('#txtIdeaTitleError').html(json.title);
-							$('#txtIdeaTitleError').show();
-						} else {
-							$('#txtIdeaTitleError').hide();
-						}
-						if (json.content) {
-							$('#txtIdeaContentError').html(json.content);
-							$('#txtIdeaContentError').show();
-						} else {
-							$('#txtIdeaContentError').hide();
-						}
-						if (json.product) {
-							$('#txtIdeaProductError').html(json.product);
-							$('#txtIdeaProductError').show();
-						} else {
-							$('#txtIdeaProductError').hide();
-						}
-					}
-					catch (e)
-					{
-						tb_remove();
-						if (res === 'product') {
-							list_ideas_post(post_id);
-						}else {
-                            search_idea();
-                        }
-						$('#wpideas-insert-idea' ).slideToggle('slow');
-						$('#lblIdeaSuccess').show();
-                        $('#lblIdeaSuccess').fadeOut(2000);
-						$('#txtIdeaTitleError').hide();
-						$('#txtIdeaContentError').hide();
-						$('#txtIdeaProductError').hide();
-						$('#txtIdeaTitle').val("");
-						var editor = null;
-						is_tinyMCE_active = false;
-						if (typeof(tinyMCE) != "undefined") {
-							if (tinyMCE.activeEditor == null || tinyMCE.activeEditor.isHidden() != false) {
-								is_tinyMCE_active = true;
-							}
-						}
-						if(is_tinyMCE_active){
-							editor= tinyMCE.get('txtIdeaContent');
-						}
-						if (editor){
-							editor.setContent('');
-						}else{
-							$('#txtIdeaContent').val("");
-						}
-						$('#file').val("");
-					}
-
-					$('#txtIdeaTitle').removeAttr('disabled');
-					$('#txtIdeaContent').removeAttr('disabled');
-					$('#txtIdeaProduct').removeAttr('disabled');
-					$('#file').removeAttr('disabled');
-					$('#ideaLoading').hide();
-				}
-			});
-		});
-	});
-	function list_ideas_post(product_id) {
-		var data = {
-			action: 'list_ideas_refresh',
-			product_id: product_id,
-		}
-		jQuery.post(rt_wpideas_ajax_url, data, function(res) {
-			jQuery('#wpidea-content-wrapper').html(res);
-			if (jQuery('#tab-ideas_tab' ).val()) {
-				jQuery( "body, html" ).animate( {
-					                                scrollTop: jQuery( '#tab-ideas_tab' ).offset().top
-				                                }, 600 );
-			}
-		});
-	}
-    function search_idea(){
-        var data = {
-            action: 'wpideas_search',
-            searchtext: ''
-        };
-
-        jQuery.post(rt_wpideas_ajax_url, data, function (response) {
-            jQuery('#loop-common').html(response);
-        });
-    }
-
-</script>
-<form id="insertIdeaForm" method="post" enctype="multipart/form-data" action="">
-	<h2>Suggest New Idea</h2>
-	<div>
-		<label for="txtIdeaTitle"><?php _e( 'Title:', 'wp-ideas' ) ?></label>
-
-		<input type="text" name="txtIdeaTitle" id="txtIdeaTitle" class="required" value="<?php if ( isset( $_POST[ 'txtIdeaTitle' ] ) ) echo $_POST[ 'txtIdeaTitle' ]; ?>" />
-
-		<label class="error" id="txtIdeaTitleError" style="display:none;"></label>
-
+	<div class="rtbiz-idea-row">
+		<label for="txtIdeaTitle"><?php _e( 'Title:', RTBIZ_IDEAS_TEXT_DOMAIN ) ?></label>
+		<input type="text" name="txtIdeaTitle" id="txtIdeaTitle" class="required" value="<?php
+		if ( isset( $_POST['txtIdeaTitle'] ) ) {
+			echo $_POST['txtIdeaTitle'];
+		} ?>" />
+		<span class="rtbiz-ideas-error rtbiz-ideas-hide" id="txtIdeaTitleError"></span>
 	</div>
 
-	<div>
-		<label for="txtIdeaContent"><?php _e( 'Detail:', 'wp-ideas' ) ?></label>
-
-		<?php if ( rtbiz_ideas_is_editor_enable() ) {
-				if ( isset( $_POST[ 'txtIdeaContent' ] ) ) {
-					if ( function_exists( 'stripslashes' ) ) {
-						$content = stripslashes( $_POST[ 'txtIdeaContent' ] );
-					} else {
-						$content = $_POST[ 'txtIdeaContent' ];
-					}
-				} else {
-					$content = '';
-				}
-				$editor_id = 'txtIdeaContent';
+	<div class="rtbiz-idea-row">
+		<label for="txtIdeaContent"><?php _e( 'Description:', RTBIZ_IDEAS_TEXT_DOMAIN ) ?></label><?php
+		$content = '';
+		if ( ! empty( $_POST['txtIdeaContent'] ) ) {
+			$content = ( function_exists( 'stripslashes' ) ) ? stripslashes( $_POST['txtIdeaContent'] ) : $_POST['txtIdeaContent'];
+		}
+		if ( rtbiz_ideas_is_editor_enable() ) {
+			$editor_id = 'txtIdeaContent';
 			$settings = array( 'media_buttons' => false, 'editor_class' => 'required', );
+			wp_editor( $content, $editor_id, $settings );
+		} else { ?>
+			<textarea name="txtIdeaContent" id="txtIdeaContent" class="required"><?php echo $content;?></textarea> <?php
+		}?>
+		<span class="rtbiz-ideas-error rtbiz-ideas-hide" id="txtIdeaContentError"></span>
+	</div><?php
 
-				wp_editor( $content, $editor_id, $settings );
-		} else {
-		?>
-		<textarea name="txtIdeaContent" id="txtIdeaContent" class="required"><?php
-			if ( isset( $_POST[ 'txtIdeaContent' ] ) ) {
-				if ( function_exists( 'stripslashes' ) ) {
-					echo stripslashes( $_POST[ 'txtIdeaContent' ] );
-				} else {
-					echo $_POST[ 'txtIdeaContent' ];
-				}
-			}
-			?></textarea>
-		<?php } ?>
-		<label class="error" id="txtIdeaContentError" style="display:none;"></label>
-	</div>
-	<?php
-	$terms = get_terms( Rt_Products::$product_slug );
-if (!empty($terms) && is_array($terms)){
-		?>
-		<div style="display: none">
-			<select class="required" id="product_id" name="product_id">
-				<option value=""> Select Product </option>
-                <?php
-				foreach ($terms as $term){
+	global $post;
+	$product_termid = '';
+	if ( ! empty( $post->post_type ) && in_array( $post->post_type , array( 'product' ) ) && is_single() && ! empty( $post->ID ) ) {
+		$product_termid = rtbiz_ideas_get_product_taxonomy_id( $post-> ID );
+	}
+	if ( ! empty( $product_termid ) ) { ?>
+		<input type="hidden" id="product_id" name="product_id" value="<?php echo $product_termid;?>" />
+		<input type="hidden" id="product_page" name="product_page" value="product_page" /><?php
+	} else {
+		$terms = get_terms( Rt_Products::$product_slug );
+		if ( ! empty( $terms ) ) {?>
+			<div class="rtbiz-idea-row">
+				<select class="required" id="tax_product_id" name="tax_product_id">
+					<option value=""><?php _e( 'Select Product', RTBIZ_IDEAS_TEXT_DOMAIN ) ?></option><?php
+					foreach ( $terms as $term ) {
 						echo '<option value="' . $term->term_id . '" >' . $term->name . '</option>';
-                }
-				?>
-			</select>
-			<label class="error" id="txtIdeaProductError" style="display:none;"></label>
-		</div>
+					}?>
+				</select>
+				<label class="rtbiz-ideas-error rtbiz-ideas-hide" id="txtIdeaProductError"></label>
+			</div><?php
+		}
+	}?>
 
-		<?php
-        }
-
-	?>
-
-	<div>
+	<div class="rtbiz-idea-row">
 		<input type="file" name="upload[]" id="file" multiple />
 	</div>
 
-	<div>
-		<?php if ( get_post_type() == 'product' && is_single() ) { ?>
-			<input type="hidden" id="product_id" name="product_id" value="<?php
-			global $post;
-			echo $post -> ID;
-			?>" /><input type="hidden" id="product_page" name="product_page" value="product_page" />
-			   <?php } ?>
+	<div class="rtbiz-idea-row rtbiz-idea-action">
 		<input type="hidden" name="submitted" id="submitted" value="true" />
 		<?php wp_nonce_field( 'idea_nonce', 'idea_nonce_field' ); ?>
 		<input type="button" id="btninsertIdeaFormSubmit" value="<?php _e( 'Submit My Idea', 'wp-ideas' ) ?>" />
 		<img src="<?php echo RTBIZ_IDEAS_URL . 'public/img/indicator.gif'; ?>" id="ideaLoading" style="display:none;height: 50px;" />
-		<a href="javascript:;" id="insertIdeaFormCancel">Cancel</a>
+		<a class="button" href="javascript:;" id="insertIdeaFormCancel">Cancel</a>
 	</div>
 </form>

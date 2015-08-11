@@ -217,9 +217,9 @@ if ( ! function_exists( 'rtbiz_ideas_get_taxonomy_link' ) ) {
 
 	/**
 	 * @param $taxonomy
-	 * @param string $s_ele
-	 * @param string $e_ele
 	 * @param string $separator
+	 *
+	 * @return string
 	 */
 	function rtbiz_ideas_get_taxonomy_link( $taxonomy, $separator = ' '  ) {
 		if ( 'category' == $taxonomy ) {
@@ -236,5 +236,16 @@ if ( ! function_exists( 'rtbiz_ideas_get_taxonomy_link' ) ) {
 			echo trim( $output, $separator );
 			return ob_get_clean();
 		}
+	}
+}
+
+if ( ! function_exists( 'rtbiz_ideas_get_product_taxonomy_id' ) ) {
+
+	/**
+	 * @param $product_id
+	 */
+	function rtbiz_ideas_get_product_taxonomy_id( $product_id  ) {
+		global $rtbiz_products;
+		return $rtbiz_products->check_postid_term_exist( $product_id );
 	}
 }

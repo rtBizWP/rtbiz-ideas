@@ -1,6 +1,21 @@
 .rtbiz-ideas-loop-common{
    article{
         min-height: 100px;
+
+       .highlight {
+           background-color: $color_gorse_approx;
+           -moz-border-radius: 5px;
+           -webkit-border-radius: 5px;
+           //Instead of the line below you could use @includeborder-radius($radius, $vertical-radius)
+           border-radius: 5px;
+           -moz-box-shadow: 0 1px 4px $black_70;
+           -webkit-box-shadow: 0 1px 4px $black_70;
+           //Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+           box-shadow: 0 1px 4px $black_70;
+           padding: 1px 4px;
+           margin: 0 -4px;
+       }
+
        .rtbiz-idea-vote-Badge {
            width: 80px;
            position: absolute;
@@ -33,23 +48,23 @@
           .rtbiz-idea-vote-action{
               .btnVote{
                   width: 80px;
-                  height: 30px;
                   background: $color_indigo_approx;
                   border: none;
                   color: $white;
                   //Instead of the line below you could use @includeborder-radius($radius, $vertical-radius)
                   border-radius: 3px;
-                  font-size: 12px;
+                  font-size: 11px;
+                  padding: 10px 5px;
               }
 
               .rtbiz-ideas-status{
                   border-radius: 3px;
                   font-size: 12px;
-                  width: 68px;
+                  width: 100%;
                   line-height: 10px;
                   border: 1px solid #D2D2D2;
                   display: inline-block;
-                  padding: 10px 5px;
+                  padding: 10px 0px;
                   font-weight: bold;
                   text-align: center;
 
@@ -110,6 +125,8 @@
                 line-height: 1.75rem;
                 text-rendering: optimizeLegibility;
                 .rtbiz-idea-attchement{
+                    margin: 0px;
+                    padding: 0px;
                     display: inline-block;
                     margin-right: 20px;
                     margin-bottom: 10px;
@@ -121,6 +138,11 @@
                         &:hover {
                             color: $color_tall_poppy_approx;
                         }
+                        .rtbiz-idea-attchement-info{
+                            margin: 0px;
+                            padding: 0px;
+                        }
+
                         .rtbiz-idea-attchement-thumbnail{
                             background-color: #FCFDFF;
                             background-position: 50% 50%;
