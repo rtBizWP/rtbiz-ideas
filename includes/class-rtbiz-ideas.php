@@ -153,6 +153,8 @@ if ( ! class_exists( 'Rtbiz_Ideas' ) ) {
 		 */
 		private function define_public_hooks() {
 
+			include_once RTBIZ_IDEAS_PATH . 'public/helper/rtbiz-ideas-functions-public.php';
+
 			$plugin_public = new Rtbiz_Ideas_Public( );
 
 			self::$loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );

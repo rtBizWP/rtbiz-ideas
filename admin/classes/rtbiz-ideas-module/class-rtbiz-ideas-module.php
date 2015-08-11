@@ -174,6 +174,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Module' ) ) {
 					'custom-fields'
 				),
 				'capability_type'      => self::$post_type,
+				'taxonomies'           => array( 'category' ),
 				'register_meta_box_cb' => array( $this, 'ideas_add_voters_metabox' ),
 			);
 

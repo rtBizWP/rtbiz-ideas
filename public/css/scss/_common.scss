@@ -1,0 +1,186 @@
+.rtbiz-ideas-loop-common{
+   article{
+        min-height: 100px;
+       .rtbiz-idea-vote-Badge {
+           width: 80px;
+           position: absolute;
+           .rtbiz-idea-vote-count {
+               background-color: #FCFDFF;
+               border: 1px solid #CFD7E6;
+               -moz-border-radius: 3px;
+               -webkit-border-radius: 3px;
+               //Instead of the line below you could use @includeborder-radius($radius, $vertical-radius)
+               border-radius: 3px;
+               -moz-box-shadow: $black_10 0 1px 1px;
+               -webkit-box-shadow: $black_10 0 1px 1px;
+               //Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+               box-shadow: $black_10 0 1px 1px;
+               color: #8F9BB3;
+               font-size: 12px;
+               line-height: 14px;
+               margin-bottom: 3px;
+               padding: 12px 0 9px;
+               text-align: center;
+               & strong {
+                  color: #292C33;
+                  display: block;
+                  font-size: 18px;
+                  font-weight: bold;
+                  margin-bottom: 5px;
+               }
+           }
+
+          .rtbiz-idea-vote-action{
+              .btnVote{
+                  width: 80px;
+                  height: 30px;
+                  background: $color_indigo_approx;
+                  border: none;
+                  color: $white;
+                  //Instead of the line below you could use @includeborder-radius($radius, $vertical-radius)
+                  border-radius: 3px;
+                  font-size: 12px;
+              }
+
+              .rtbiz-ideas-status{
+                  border-radius: 3px;
+                  font-size: 12px;
+                  width: 68px;
+                  line-height: 10px;
+                  border: 1px solid #D2D2D2;
+                  display: inline-block;
+                  padding: 10px 5px;
+                  font-weight: bold;
+                  text-align: center;
+
+                  &.idea-accepted{
+                      background-color: #FFD2A7;
+                      border-color: #FFE5B4;
+                  }
+
+                  &.idea-declined{
+                      background-color: #FFB4B4;
+                      border-color: #FFA0A0;
+                  }
+
+                  &.idea-completed{
+                      background-color: #C3FDB8;
+                      border-color: #B5EAAA;
+                  }
+              }
+          }
+       }
+
+       .rtbiz-idea-content{
+            margin-left: 90px;
+            header{
+              margin-bottom: 10px;
+              h1{
+                padding-top: 3px;
+                margin-bottom: 10px;
+              }
+              .rtbiz-ideas-meta{
+                & li{
+                  label{
+                    font-weight: bold;
+                    margin-bottom: 10px;
+                    margin-right: 5px;
+                  }
+                  & ul{
+                    list-style: none;
+                    & li{
+                      display: none;
+                    }
+                  }
+                }
+              }
+            }
+
+            .rtbiz-idea-description{
+              font-size: 12px;
+              margin-bottom: 10px;
+              line-height: 1.75rem;
+              text-rendering: optimizeLegibility;
+            }
+
+            .rtbiz-idea-attchements{
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                line-height: 1.75rem;
+                text-rendering: optimizeLegibility;
+                .rtbiz-idea-attchement{
+                    display: inline-block;
+                    margin-right: 20px;
+                    margin-bottom: 10px;
+                    width: 29%;
+                    .rtbiz-idea-attchement-link{
+                        float: left;
+                        width: 100%;
+                        color: $color_san_marino_approx;
+                        &:hover {
+                            color: $color_tall_poppy_approx;
+                        }
+                        .rtbiz-idea-attchement-thumbnail{
+                            background-color: #FCFDFF;
+                            background-position: 50% 50%;
+                            background-repeat: no-repeat;
+                            border: 2px solid $color_romance_approx;
+                            border-right-color: $seashell;
+                            border-left-color: $seashell;
+                            border-bottom-color: $color_bon_jour_approx;
+                            -moz-border-radius: 1px;
+                            -webkit-border-radius: 1px;
+                            //Instead of the line below you could use @includeborder-radius($radius, $vertical-radius)
+                            border-radius: 1px;
+                            -moz-box-shadow: $black_75 0 0 1px;
+                            -webkit-box-shadow: $black_75 0 0 1px;
+                            //Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+                            box-shadow: $black_75 0 0 1px;
+                            float: left;
+                            height: 28px;
+                            width: 28px;
+                            margin-right: 5px;
+                        }
+                        .rtbiz-idea-attchement-meta{
+                            width: 153px;
+                            max-width: 100%;
+                            .rtbiz-idea-attchement-caption{
+                                display: block;
+                                font-size: 12px;
+                                line-height: 16px;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                            }
+                        }
+                    }
+                }
+            }
+
+           .rtbiz-ideas-meta{
+                color: #666F80;
+                font-size: 11px;
+                margin-bottom: 30px;
+                line-style: none;
+                margin: 0px;
+                padding: 0px;
+                li{
+                    display: inline-block;
+                    margin-right: 5px;
+                    &:not(:last-child):after{
+                      content: '|';
+                      margin-left: 5px;
+                    }
+                    a {
+                        color: $color_san_marino_approx;
+                        &:hover {
+                          color: $color_tall_poppy_approx;
+                        }
+                    }
+                }
+           }
+
+       }
+   }
+}
