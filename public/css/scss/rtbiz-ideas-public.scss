@@ -18,10 +18,50 @@
     }
 }
 
+.rtbiz-ideas-error{
+    display: none;
+    background: #e58b88;
+    padding: 10px;
+    border: 1px solid #e07875;
+    border-radius: 0px 0px 5px 5px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    &.active{
+        display: block;
+    }
+}
+
 .rtbiz-idea-info-text{
     padding: 10px;
     font-weight: 600;
     border: 1px solid #cccccc;
     border-radius: 5px;
     margin-bottom: 10px;
+}
+
+.rtbiz-ideas-status{
+    border-radius: 3px;
+    font-size: 12px;
+    width: auto;
+    line-height: 10px;
+    border: 1px solid #D2D2D2;
+    display: inline-block;
+    padding: 10px 5px;
+    font-weight: bold;
+    text-align: center;
+
+    &.idea-accepted{
+        background-color: #FFD2A7;
+        border-color: #FFE5B4;
+    }
+
+    &.idea-declined{
+        background-color: #FFB4B4;
+        border-color: #FFA0A0;
+    }
+
+    &.idea-completed{
+        background-color: #C3FDB8;
+        border-color: #B5EAAA;
+    }
 }

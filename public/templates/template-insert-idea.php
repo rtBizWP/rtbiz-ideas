@@ -14,7 +14,7 @@
 		if ( isset( $_POST['txtIdeaTitle'] ) ) {
 			echo $_POST['txtIdeaTitle'];
 		} ?>" />
-		<span class="rtbiz-ideas-error rtbiz-ideas-hide" id="txtIdeaTitleError"></span>
+		<div class="rtbiz-ideas-error" id="txtIdeaTitleError">HI hello</div>
 	</div>
 
 	<div class="rtbiz-idea-row">
@@ -30,7 +30,7 @@
 		} else { ?>
 			<textarea name="txtIdeaContent" id="txtIdeaContent" class="required"><?php echo $content;?></textarea> <?php
 		}?>
-		<span class="rtbiz-ideas-error rtbiz-ideas-hide" id="txtIdeaContentError"></span>
+		<div class="rtbiz-ideas-error" id="txtIdeaContentError"></div>
 	</div><?php
 
 	global $post;
@@ -42,16 +42,18 @@
 		<input type="hidden" id="product_id" name="product_id" value="<?php echo $product_termid;?>" />
 		<input type="hidden" id="product_page" name="product_page" value="product_page" /><?php
 	} else {
-		$terms = get_terms( Rt_Products::$product_slug );
+		$terms = get_terms( Rt_Products::$product_slug, array(
+			'hide_empty' => 0,
+		) );
 		if ( ! empty( $terms ) ) {?>
 			<div class="rtbiz-idea-row">
-				<select class="required" id="tax_product_id" name="tax_product_id">
+				<select class="required" id="product_id" name="product_id">
 					<option value=""><?php _e( 'Select Product', RTBIZ_IDEAS_TEXT_DOMAIN ) ?></option><?php
 					foreach ( $terms as $term ) {
 						echo '<option value="' . $term->term_id . '" >' . $term->name . '</option>';
 					}?>
 				</select>
-				<label class="rtbiz-ideas-error rtbiz-ideas-hide" id="txtIdeaProductError"></label>
+				<div class="rtbiz-ideas-error" id="txtIdeaProductError"></div>
 			</div><?php
 		}
 	}?>

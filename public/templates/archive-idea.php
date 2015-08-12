@@ -40,7 +40,7 @@ get_header(); ?>
 					rtbiz_ideas_get_my_settings( );
 				}
 			} else { ?>
-				<div id="loop-common" class="rtbiz-ideas-loop-common"><?php
+				<div id="rtbiz-ideas-loop-common" class="rtbiz-ideas-loop-common"><?php
 				if ( have_posts() ) {
 					while ( have_posts() ) {
 						the_post();

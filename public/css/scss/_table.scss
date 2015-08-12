@@ -13,18 +13,14 @@
   -moz-box-shadow: 0 1px 2px $color_celeste_approx;
   -webkit-box-shadow: 0 1px 2px $color_celeste_approx;
   box-shadow: 0 1px 2px $color_celeste_approx;
-  .rtwpIdeaVoteBadge {
-      width: 80px;
-      position: relative;
-      .rtwpIdeaVoteButton .btnVote {
-          width: 80px;
-          height: 30px;
-          background: $color_indigo_approx;
-          border: none;
-          color: $white;
-          //Instead of the line below you could use @includeborder-radius($radius, $vertical-radius)
-          border-radius: 3px;
-          font-size: 11px;
+
+  .rtbiz-idea-action{
+      span{
+        margin-bottom: 10px;
+      }
+      a{
+        margin-bottom: 10px;
+        display: block;
       }
   }
   a {

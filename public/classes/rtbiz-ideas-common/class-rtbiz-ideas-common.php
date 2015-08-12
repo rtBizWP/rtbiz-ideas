@@ -415,50 +415,59 @@ if ( ! class_exists( 'Rtbiz_Ideas_Common' ) ) {
 
 			}
 			$posts       = new WP_Query( $args );
-			$posts_count = new WP_Query( $args_count ); ?>
-
-			<div id="loop-common" class="rtbiz-ideas-loop-common"><?php
-			if ( $posts->have_posts() ) {
-				while ( $posts->have_posts() ) {
-					$posts->the_post();
-					rtbiz_ideas_get_template( 'loop-common.php' );
-				}
-			}
-			if ( $posts_count->post_count > $posts_per_page ) { ?>
-				<div class="rtbiz-ideas-loadmore">
-					<a href="javascript:;" id="ideaLoadMore" data-nonce="<?php echo esc_attr( wp_create_nonce( 'load_ideas' ) ); ?>"
-					   class=""><?php _e( 'Load More', 'wp-ideas' ); ?>
-					</a>
-					<img src="<?php echo RTBIZ_IDEAS_URL . 'public/img/indicator.gif'; ?>" id="ideaLoading" class="aligncenter" style="display:none;height: 50px;"/>
-
-					<?php if ( ! empty( $product_termid ) ) { ?>
-						<input type="hidden" value="<?php echo esc_attr( $product_termid ); ?>" id="idea_product_id"/>
-					<?php } ?>
-
-					<input type="hidden" value="<?php echo esc_attr( $posts_per_page ); ?>" id="idea_post_per_page"/>
-					<input type="hidden" value="<?php echo esc_attr( $order ); ?>" id="idea_order"/>
-					<input type="hidden" value="<?php echo esc_attr( $orderby ); ?>" id="idea_order_by"/>
-				</div><?php
-				wp_reset_postdata();
-			} else {
-				if ( isset( $product_id ) && ! empty( $product_id ) ) {
-					?><p><?php _e( 'No ideas found for this product.', RTBIZ_IDEAS_TEXT_DOMAIN ) ?></p><?php
+			$posts_count = new WP_Query( $args_count );?>
+			<div class="rtbiz-ideas-archive"><?php
+				if ( is_user_logged_in() ) { ?>
+					<a id="btnNewThickbox" class="rtbiz-ideas-new-button" href="#Idea-new"><?php _e( 'Suggest Idea', RTBIZ_IDEAS_TEXT_DOMAIN ); ?></a>
+					<div class="rtbiz-ideas-success" id="lblIdeaSuccess"><?php
+						_e( 'Idea submitted', RTBIZ_IDEAS_TEXT_DOMAIN ); ?>
+					</div>
+					<div id="wpideas-insert-idea" style="display:none;"><?php
+						rtbiz_ideas_get_template( 'template-insert-idea.php' ) ?>
+					</div><?php
 				} else {
-					?><p><?php _e( 'No ideas found..', RTBIZ_IDEAS_TEXT_DOMAIN ) ?></p><?php
+					$href = wp_login_url( get_permalink( $product_id ) );
+					echo '<br/><a id="btnOpenThickbox" href="' . $href . '">Login to Suggest Idea</a>';
+				}?>
+
+				<div id="rtbiz-ideas-loop-common" class="rtbiz-ideas-loop-common"><?php
+				if ( $posts->have_posts() ) {
+					while ( $posts->have_posts() ) {
+						$posts->the_post();
+						rtbiz_ideas_get_template( 'loop-common.php' );
+					}
 				}
-			}?>
-			</div><?php
-			if ( is_user_logged_in() ) { ?>
-				<br/>
-				<div id="wpideas-insert-idea" style="display:none;">
-					<?php //		include RTBIZ_IDEAS_PATH . 'templates/template-insert-idea.php';
-					rtbiz_ideas_get_template( 'template-insert-idea.php' ) ?>
+
+				if ( $posts_count->post_count > $posts_per_page ) { ?>
+					<div class="rtbiz-ideas-loadmore">
+						<a href="javascript:;" id="ideaLoadMore" data-nonce="<?php echo esc_attr( wp_create_nonce( 'load_ideas' ) ); ?>"
+						   class=""><?php _e( 'Load More', 'wp-ideas' ); ?>
+						</a>
+						<img src="<?php echo RTBIZ_IDEAS_URL . 'public/img/indicator.gif'; ?>" id="ideaLoading" class="aligncenter" style="display:none;height: 50px;"/>
+
+						<?php if ( ! empty( $product_termid ) ) { ?>
+							<input type="hidden" value="<?php echo esc_attr( $product_termid ); ?>" id="idea_product_id"/>
+						<?php } ?>
+
+						<input type="hidden" value="<?php echo esc_attr( $posts_per_page ); ?>" id="idea_post_per_page"/>
+						<input type="hidden" value="<?php echo esc_attr( $order ); ?>" id="idea_order"/>
+						<input type="hidden" value="<?php echo esc_attr( $orderby ); ?>" id="idea_order_by"/>
+					</div><?php
+				} elseif ( empty( $posts_count->post_count )  ) {
+					if ( isset( $product_id ) && ! empty( $product_id ) ) { ?>
+						<div class="rtbiz-idea-info-text"><?php
+							_e( 'Looks like we do not have any idea for this product. please suggest idea.', RTBIZ_IDEAS_TEXT_DOMAIN ); ?>
+						</div><?php
+					} else { ?>
+						<div class="rtbiz-idea-info-text"><?php
+						_e( 'Looks like we do not have any idea. please suggest idea.', RTBIZ_IDEAS_TEXT_DOMAIN ); ?>
+						</div><?php
+					}
+				}
+				wp_reset_postdata( );?>
 				</div>
-				<a id="btnOpenThickbox" href="#Idea-new"> Suggest Idea </a> <?php
-			} else {
-				$href = wp_login_url( get_permalink( $product_id ) );
-				echo '<br/><a id="btnOpenThickbox" href="' . $href . '">Login to Suggest Idea</a>';
-			}
+			</div><?php
+
 		}
 
 		/**

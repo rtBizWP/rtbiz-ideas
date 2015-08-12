@@ -58,30 +58,8 @@
               }
 
               .rtbiz-ideas-status{
-                  border-radius: 3px;
-                  font-size: 12px;
                   width: 100%;
-                  line-height: 10px;
-                  border: 1px solid #D2D2D2;
-                  display: inline-block;
                   padding: 10px 0px;
-                  font-weight: bold;
-                  text-align: center;
-
-                  &.idea-accepted{
-                      background-color: #FFD2A7;
-                      border-color: #FFE5B4;
-                  }
-
-                  &.idea-declined{
-                      background-color: #FFB4B4;
-                      border-color: #FFA0A0;
-                  }
-
-                  &.idea-completed{
-                      background-color: #C3FDB8;
-                      border-color: #B5EAAA;
-                  }
               }
           }
        }
@@ -96,10 +74,12 @@
               }
               .rtbiz-ideas-meta{
                 & li{
+                  margin: 0px;
+                  padding: 0px;
                   label{
                     font-weight: bold;
                     margin-bottom: 10px;
-                    margin-right: 5px;
+                    margin-right: 3px;
                   }
                   & ul{
                     list-style: none;
@@ -125,11 +105,9 @@
                 line-height: 1.75rem;
                 text-rendering: optimizeLegibility;
                 .rtbiz-idea-attchement{
-                    margin: 0px;
+                    margin: 0px 20px 10px 0px;
                     padding: 0px;
                     display: inline-block;
-                    margin-right: 20px;
-                    margin-bottom: 10px;
                     width: 29%;
                     .rtbiz-idea-attchement-link{
                         float: left;
@@ -189,10 +167,11 @@
                 padding: 0px;
                 li{
                     display: inline-block;
-                    margin-right: 5px;
+                    margin: 0px;
+                    padding: 0px;
                     &:not(:last-child):after{
                       content: '|';
-                      margin-left: 5px;
+                      margin-left: 3px;
                     }
                     a {
                         color: $color_san_marino_approx;

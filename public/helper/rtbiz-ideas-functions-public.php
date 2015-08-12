@@ -57,13 +57,13 @@ if ( ! function_exists( 'rtbiz_ideas_get_my_ideas' ) ) {
 		$offset = ( $currentpage - 1 ) * $limit ;
 		$pageposts = $wpdb->get_results( $wpdb->prepare( "SELECT DISTINCT $wpdb->posts.* FROM $wpdb->posts LEFT JOIN {$wpdb->prefix}rt_wpideas_subscriber ON ( {$wpdb->posts}.ID = {$wpdb->prefix}rt_wpideas_subscriber.post_id ) where ( {$wpdb->prefix}rt_wpideas_subscriber.user_id = %d OR $wpdb->posts.post_author = %d ) AND $wpdb->posts.post_type= %s AND $wpdb->posts.post_status <> 'auto-draft'  ORDER BY {$wpdb->posts}.post_date DESC LIMIT %d, %d", $user_id, $user_id, Rtbiz_Ideas_Module::$post_type, $offset, $limit ) ); ?>
 
-		<div id="loop-common" class="rtbiz-ideas-loop-common"><?php
+		<div id="rtbiz-ideas-loop-common" class="rtbiz-ideas-loop-common"><?php
 		if ( $pageposts ) { ?>
 			<table class="rtbiz-ideas-table">
 				<thead>
 					<th><?php _e( 'Title', RTBIZ_IDEAS_TEXT_DOMAIN ) ?></th>
 					<th><?php _e( 'Author', RTBIZ_IDEAS_TEXT_DOMAIN ) ?></th>
-					<th><?php _e( 'Vote Counts', RTBIZ_IDEAS_TEXT_DOMAIN ) ?></th>
+					<th><?php _e( 'Votes', RTBIZ_IDEAS_TEXT_DOMAIN ) ?></th>
 					<th><?php _e( 'Action', RTBIZ_IDEAS_TEXT_DOMAIN ) ?></th>
 				</thead>
 				<tbody><?php
@@ -76,7 +76,7 @@ if ( ! function_exists( 'rtbiz_ideas_get_my_ideas' ) ) {
 				<tfoot>
 					<th><?php _e( 'Title', RTBIZ_IDEAS_TEXT_DOMAIN ) ?></th>
 					<th><?php _e( 'Author', RTBIZ_IDEAS_TEXT_DOMAIN ) ?></th>
-					<th><?php _e( 'Vote Counts', RTBIZ_IDEAS_TEXT_DOMAIN ) ?></th>
+					<th><?php _e( 'Votes', RTBIZ_IDEAS_TEXT_DOMAIN ) ?></th>
 					<th><?php _e( 'Action', RTBIZ_IDEAS_TEXT_DOMAIN ) ?></th>
 				</tfoot>
 			</table>
@@ -143,7 +143,7 @@ if ( ! function_exists( 'rtbiz_ideas_get_vote_action' ) ) {
 	 * get my setting for ideas notification
 	 * @return mixed
 	 */
-	function rtbiz_ideas_get_vote_action( ) {
+	function rtbiz_ideas_get_vote_action( $is_link = false ) {
 		$idea_id = get_the_ID();
 		$idea_status = get_post_status( $idea_id );
 		if ( 'idea-new' != $idea_status ) {
@@ -158,10 +158,13 @@ if ( ! function_exists( 'rtbiz_ideas_get_vote_action' ) ) {
 				} else if ( isset( $is_voted ) && ! $is_voted ) {
 					$value = __( 'Vote Up', RTBIZ_IDEAS_TEXT_DOMAIN );
 				}
-			} ?>
-			<input type="button" id="btnVote-<?php echo $idea_id; ?>" class="btnVote"
-			       value="<?php echo $value; ?>" data-id="<?php echo $idea_id; ?>" />
-			<?php
+			}
+			if ( $is_link ) { ?>
+				<a id="btnVote-<?php echo $idea_id; ?>" class="btnVote" data-id="<?php echo $idea_id; ?>" ><?php echo $value; ?></a><?php
+			} else { ?>
+				<input type="button" id="btnVote-<?php echo $idea_id; ?>" class="btnVote"
+				       value="<?php echo $value; ?>" data-id="<?php echo $idea_id; ?>" /><?php
+			}
 		}
 	}
 }
