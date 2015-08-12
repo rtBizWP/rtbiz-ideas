@@ -109,7 +109,7 @@ $plugins_dependency = array(
 
 $rtbiz_ideas_plugin_check = new Rtbiz_Ideas_Plugin_Check( $plugins_dependency );
 
-//add_action( 'init', array( $rtbiz_ideas_plugin_check, 'rtbiz_ideas_check_plugin_dependency' ) );
+add_action( 'init', array( $rtbiz_ideas_plugin_check, 'rtbiz_ideas_check_plugin_dependency' ) );
 
 /**
  * Begins execution of the plugin.

@@ -55,9 +55,9 @@ if ( ! class_exists( 'Rtbiz_Ideas' ) ) {
 
 			global $rtbiz_ideas_plugin_check;
 
-			/*if ( ! $rtbiz_ideas_plugin_check->rtbiz_hd_check_plugin_dependency() ) {
+			if ( ! $rtbiz_ideas_plugin_check->rtbiz_ideas_check_plugin_dependency() ) {
 				return false;
-			}*/
+			}
 
 			$this->load_dependencies();
 			$this->set_locale();
