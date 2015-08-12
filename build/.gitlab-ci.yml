@@ -18,7 +18,7 @@ env:
     - WP_VERSION=4.0 WP_MULTISITE=1
 
 before_script:
-    - export DEV_LIB_PATH=dev-lib
+    - export DEV_LIB_PATH=build
     - if [ ! -e "$DEV_LIB_PATH" ] && [ -L .gitlab-ci.yml ]; then export DEV_LIB_PATH=$( dirname $( readlink .gitlab-ci.yml ) ); fi
     - source $DEV_LIB_PATH/travis.before_script.sh
 
