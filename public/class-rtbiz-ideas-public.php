@@ -96,7 +96,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Public' ) ) {
 
 
 			wp_enqueue_script( 'jquery-form', array( 'jquery' ) );
-			wp_enqueue_script( RTBIZ_IDEAS_TEXT_DOMAIN, RTBIZ_IDEAS_URL . 'public/js/rtbiz-ideas-public.js', array( 'jquery' ), RTBIZ_IDEAS_VERSION, false );
+			wp_enqueue_script( RTBIZ_IDEAS_TEXT_DOMAIN, RTBIZ_IDEAS_URL . 'public/js/rtbiz-ideas-public-min.js', array( 'jquery' ), RTBIZ_IDEAS_VERSION, false );
 
 			$ajax_url = admin_url( 'admin-ajax.php' );
 			wp_localize_script( RTBIZ_IDEAS_TEXT_DOMAIN, 'ajaxurl', $ajax_url );
