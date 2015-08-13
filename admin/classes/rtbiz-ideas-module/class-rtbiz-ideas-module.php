@@ -171,10 +171,11 @@ if ( ! class_exists( 'Rtbiz_Ideas_Module' ) ) {
 					'revisions',
 					'excerpt',
 					'comments',
-					'custom-fields'
+					'custom-fields',
 				),
 				'capability_type'      => self::$post_type,
 				'taxonomies'           => array( 'category' ),
+				'map_meta_cap'         => true,
 				'register_meta_box_cb' => array( $this, 'ideas_add_voters_metabox' ),
 			);
 

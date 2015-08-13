@@ -4,8 +4,8 @@
 $GLOBALS['wp_tests_options'] = array(
 	'active_plugins' => array(
 		'posts-to-posts/posts-to-posts.php',
-		'rtbiz/index.php',
-		'rtbiz-helpdesk/rtbiz-helpdesk.php'
+		'rtbiz/rtbiz.php',
+		'rtbiz-ideas/rtbiz-ideas.php',
 	),
 );
 
