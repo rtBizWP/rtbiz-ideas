@@ -3,7 +3,6 @@
 // Activates this plugin in WordPress so it can be tested.
 $GLOBALS['wp_tests_options'] = array(
 	'active_plugins' => array(
-		'posts-to-posts/posts-to-posts.php',
 		'rtbiz/rtbiz.php',
 		'rtbiz-ideas/rtbiz-ideas.php',
 	),
@@ -22,8 +21,6 @@ function _manually_load_plugin() {
 	$_SERVER['PHP_SELF']    = 'http://localhost/wp-admin/';
 	define( 'AUTH_KEY', '1234567890' );
 	define( 'SECURE_AUTH_KEY', '1234567890' );
-
-	require_once dirname( __FILE__ ) . '/../../posts-to-posts/posts-to-posts.php';
 
 	require_once dirname( __FILE__ ) . '/../../rtbiz/rtbiz.php';
 	require_once dirname( __FILE__ ) . '/../rtbiz-ideas.php';
