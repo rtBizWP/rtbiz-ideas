@@ -130,7 +130,29 @@ function run_rtbiz_ideas() {
 
 	global $rtbiz_ideas;
 
-	$rtbiz_ideas = new Rtbiz_Ideas();
-
+	if ( _rtbiz_ideas_php_version_check() ) {
+		$rtbiz_ideas = new Rtbiz_Ideas();
+	}
 }
+
 add_action( 'rtbiz_init', 'run_rtbiz_ideas', 1 );
+
+function _rtbiz_ideas_php_version_check(){
+	$php_version = phpversion();
+	if ( version_compare( $php_version ,'5.3', '<' ) ) {
+		add_action( 'admin_notices','_rtbiz_ideas_running_older_php_version' );
+		add_action( 'admin_init', '_rtbiz_ideas_deactive_self' );
+		return false;
+	}
+	return true;
+}
+
+function _rtbiz_ideas_running_older_php_version(){ ?>
+	<div class="error rtbiz-idea-php-older-version">
+		<p><?php _e( 'You are running an older PHP version. Please upgrade to PHP <strong>5.3 or above</strong> to run rtBiz Ideas plugin.', RTBIZ_IDEAS_TEXT_DOMAIN ) ?></p>
+	</div> <?php
+}
+
+function _rtbiz_ideas_deactive_self(){
+	deactivate_plugins( plugin_basename( __FILE__ ) );
+}
