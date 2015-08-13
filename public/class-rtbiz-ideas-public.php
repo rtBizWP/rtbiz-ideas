@@ -33,7 +33,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Public' ) ) {
 			global $rtbiz_ideas_common;
 
 			Rtbiz_Ideas::$loader->add_filter( 'template_include', $this, 'ideas_template' );
-
+			Rtbiz_Ideas::$loader->add_filter( 'init', $this, 'flush_rewrite_rules', 15 );
 			$rtbiz_ideas_common = new Rtbiz_Ideas_Common();
 		}
 
@@ -52,6 +52,13 @@ if ( ! class_exists( 'Rtbiz_Ideas_Public' ) ) {
 			}
 
 			return $template;
+		}
+
+		function flush_rewrite_rules() {
+			if ( is_admin() && true == get_option( 'rtbiz_ideas_flush_rewrite_rules' ) ) {
+				flush_rewrite_rules();
+				delete_option( 'rtbiz_ideas_flush_rewrite_rules' );
+			}
 		}
 
 		/**
