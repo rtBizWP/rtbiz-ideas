@@ -57,7 +57,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Votes' ) ) {
 						update_post_meta( $postid, '_rt_wpideas_meta_votes', $votes );
 						$response['btnLabel'] = 'Vote Down';
 					}
-					$response['vote'] = rtbiz_ideas_get_votes_by_post( $postid );
+					$response['vote'] = rtbiz_ideas_get_votes_by_idea( $postid );
 				} else {
 					$response['err'] = 'You can not vote on ' . get_post_status( $postid ) . ' idea.';
 				}
@@ -144,17 +144,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Votes' ) ) {
 		 */
 		public function get_votes_by_idea( $idea_id ) {
 			global $rtbiz_ideas_votes_model;
-			return $rtbiz_ideas_votes_model -> get_votes_by_idea( $idea_id );
-		}
-
-		/**
-		 * @param $post_id
-		 *
-		 * @return int
-		 */
-		public function get_votes_by_post( $post_id ) {
-			global $rtbiz_ideas_votes_model;
-			$vote_count = $rtbiz_ideas_votes_model -> get_votes_by_post( $post_id );
+			$vote_count = $rtbiz_ideas_votes_model -> get_votes_by_idea( $idea_id );
 			if ( null == $vote_count ) {
 				return 0;
 			}

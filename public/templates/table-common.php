@@ -15,7 +15,7 @@
 		   title="Author of <?php the_title(); ?>"><?php the_author(); ?> </a></td>
 	<?php } ?>
 	<td>
-		<strong id="rtwpIdeaVoteCount-<?php the_ID(); ?>"><?php echo sanitize_text_field( rtbiz_ideas_get_votes_by_post( get_the_ID() ) ); ?></strong>
+		<strong id="rtwpIdeaVoteCount-<?php the_ID(); ?>"><?php echo sanitize_text_field( rtbiz_ideas_get_votes_by_idea( get_the_ID() ) ); ?></strong>
 	</td>
 	<td>
 		<div class="rtbiz-idea-action"><?php

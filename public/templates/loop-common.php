@@ -11,7 +11,7 @@
 		<div class="rtbiz-idea-vote-count">
 			<span>
 				<strong id="rtwpIdeaVoteCount-<?php the_ID(); ?>"><?php
-				echo sanitize_text_field( rtbiz_ideas_get_votes_by_post( get_the_ID() ) ); ?>
+				echo sanitize_text_field( rtbiz_ideas_get_votes_by_idea( get_the_ID() ) ); ?>
 				</strong><?php
 				_e( 'votes', RTBIZ_IDEAS_TEXT_DOMAIN ); ?>
 			</span>

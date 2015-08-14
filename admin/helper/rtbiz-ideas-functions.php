@@ -113,7 +113,7 @@ if ( ! function_exists( 'rtbiz_ideas_is_editor_enable' ) ) {
 	 */
 	function rtbiz_ideas_is_editor_enable() {
 		$settings     = rtbiz_ideas_get_redux_settings();
-		if ( isset( $settings['wpideas_editorenabled'] ) && $settings['wpideas_editorenabled'] == 1 ) {
+		if ( isset( $settings['wpideas_editorenabled'] ) && 1 == $settings['wpideas_editorenabled'] ) {
 			return true;
 		}
 		return false;
@@ -326,20 +326,6 @@ if ( ! function_exists( 'rtbiz_ideas_get_votes_by_idea' ) ) {
 	function rtbiz_ideas_get_votes_by_idea( $idea_id ) {
 		global $rtbiz_ideas_votes;
 		return $rtbiz_ideas_votes->get_votes_by_idea( $idea_id );
-	}
-}
-
-
-if ( ! function_exists( 'rtbiz_ideas_get_votes_by_post' ) ) {
-
-	/**
-	 * @param $post_id
-	 *
-	 * @return mixed
-	 */
-	function rtbiz_ideas_get_votes_by_post( $post_id ) {
-		global $rtbiz_ideas_votes;
-		return $rtbiz_ideas_votes->get_votes_by_post( $post_id );
 	}
 }
 
