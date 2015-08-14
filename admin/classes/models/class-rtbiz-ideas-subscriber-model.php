@@ -49,14 +49,14 @@ if ( ! class_exists( 'Rtbiz_Ideas_Subscriber_Model' ) ) {
 			if ( ! $this->check_subscriber_exist( $post_id, $user_id ) ) {
 				$comment_notification = get_user_meta( $user_id, 'comment_notification', true );
 				$status_change        = get_user_meta( $user_id, 'status_change_notification', true );
-				$status_change        = isset( $status_change ) && $status_change != 'NO' ? 'YES' : 'NO';
-				$comment_notification = isset( $comment_notification ) && $comment_notification != 'NO' ? 'YES' : 'NO';
+				$status_change        = isset( $status_change ) && 'NO' != $status_change ? 'YES' : 'NO';
+				$comment_notification = isset( $comment_notification ) && 'NO' != $comment_notification ? 'YES' : 'NO';
 
 				return $this->add_subscribers( array(
 					'post_id'       => $post_id,
 					'user_id'       => $user_id,
 					'status_change' => $status_change,
-					'comment_post'  => $comment_notification
+					'comment_post'  => $comment_notification,
 				) );
 			}
 

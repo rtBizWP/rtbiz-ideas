@@ -188,7 +188,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Module' ) ) {
 		public function ideas_add_voters_metabox() {
 			add_meta_box( 'Voters', __( 'Voters' ), array(
 				$this,
-				'get_voters_of_idea'
+				'get_voters_of_idea',
 			), self::$post_type, 'side', 'default' );
 		}
 
@@ -240,7 +240,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Module' ) ) {
 		 */
 		public function append_post_status_list() {
 			global $pagenow;
-			if ( get_post_type() == self::$post_type && ( $pagenow == 'edit.php' || $pagenow == 'post-new.php' || ( isset( $_GET['action'] ) && $_GET['action'] ) == 'edit' ) ) {
+			if ( get_post_type() == self::$post_type && ( 'edit.php' == $pagenow || 'post-new.php' == $pagenow || ( isset( $_GET['action'] ) && 'edit' == $_GET['action'] ) ) ) {
 				global $post;
 				if ( ! isset( $post ) ) {
 					return;
@@ -249,16 +249,14 @@ if ( ! class_exists( 'Rtbiz_Ideas_Module' ) ) {
 
 				<script>
 					jQuery(document).ready(function ($) { <?php
-                foreach ( $this->statuses as $status ) {
-                    $completeCompleted = ( $post -> post_status == $status['slug'] ) ? "selected='selected'" : '' ; ?>
+					foreach ( $this->statuses as $status ) {
+						$completeCompleted = ( $post -> post_status == $status['slug'] ) ? "selected='selected'" : '' ; ?>
 						$("select#post_status").append("<option value='<?php echo $status['slug'] ?>' <?php echo $completeCompleted; ?>><?php echo $status['name'] ?></option>");
-						$(".inline-edit-status select").append("<option value='<?php echo $status['slug'] ?>' <?php echo $completeCompleted; ?>><?php echo $status['name'] ?></option>");
-						<?php
-										   if (! empty( $completeCompleted ) ) { ?>
-						$("#post-status-display").html("<?php echo $status['name'] ?>");
-						<?php
-											}
-										} ?>
+						$(".inline-edit-status select").append("<option value='<?php echo $status['slug'] ?>' <?php echo $completeCompleted; ?>><?php echo $status['name'] ?></option>"); <?php
+						if ( ! empty( $completeCompleted ) ) { ?>
+							$("#post-status-display").html("<?php echo $status['name'] ?>");<?php
+						}
+					} ?>
 						$("#publishing-action").html("<span class='spinner'></span><input name='original_publish' type='hidden' id='original_publish' value='Update' /><input type='submit' id='save-publish' class='button button-primary button-large' value='Update' />");
 						$(".save-post-status").click(function () {
 							$("#publish").hide();
@@ -295,7 +293,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Module' ) ) {
 		 * @param type $idea_id
 		 */
 		public function ideas_custom_column_body( $column_name, $idea_id ) {
-			if ( $column_name == 'wpideas_votes' ) {
+			if ( 'wpideas_votes' == $column_name ) {
 				$votes = get_post_meta( $idea_id, '_rt_wpideas_meta_votes', true );
 				echo $votes;
 			}
@@ -315,7 +313,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Module' ) ) {
 
 		public function save_idea_post( $post_id ) {
 
-			if ( wp_is_post_revision( $post_id ) || self::$post_type != get_post_type( $post_id ) ) {
+			if ( wp_is_post_revision( $post_id ) || get_post_type( $post_id ) != self::$post_type ) {
 				return;
 			}
 			$has_voted = rtbiz_ideas_check_user_voted( $post_id );

@@ -6,7 +6,7 @@
  * Date: 13/8/15
  * Time: 5:00 PM
  */
-class Test_Rtbiz_Ideas_Admin extends RT_WP_TestCase {
+class Rtbiz_Ideas_AdminTest extends RT_WP_TestCase {
 	var $rtideasAdmin;
 
 	/**
@@ -36,7 +36,7 @@ class Test_Rtbiz_Ideas_Admin extends RT_WP_TestCase {
 	function test_database_update(){
 		$this->assertTrue( class_exists( 'RT_DB_Update' ), 'Class RT_DB_Update does not exist' );
 		$updateDB = new RT_DB_Update( trailingslashit( RTBIZ_IDEAS_PATH ) . 'rtbiz-ideas.php', trailingslashit( RTBIZ_IDEAS_PATH . 'admin/schema/' ) );
-		$this->assertTrue( method_exists( $updateDB, 'do_upgrade' ), 'set_locale does not exist' );
+		$this->assertTrue( method_exists( $updateDB, 'do_upgrade' ), 'do_upgrade does not exist' );
 	}
 
 	function test_module_register(){
