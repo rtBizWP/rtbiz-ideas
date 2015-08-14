@@ -35,7 +35,7 @@
 
 	global $post;
 	$product_termid = '';
-	if ( ! empty( $post->post_type ) && in_array( $post->post_type , array( 'product' ) ) && is_single() && ! empty( $post->ID ) ) {
+	if ( ! empty( $post->post_type ) && in_array( $post->post_type , array( 'product', 'download' ) ) && is_single() && ! empty( $post->ID ) ) {
 		$product_termid = rtbiz_ideas_get_product_taxonomy_id( $post-> ID );
 	}
 	if ( ! empty( $product_termid ) ) { ?>

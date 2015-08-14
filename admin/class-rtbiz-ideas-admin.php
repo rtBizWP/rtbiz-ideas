@@ -25,7 +25,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Admin' ) ) {
 
 		public function init_admin() {
 			global $rtbiz_ideas_subscriber_model, $rtbiz_ideas_votes_model,
-			       $rtbiz_ideas_module, $rtbiz_ideas_notification, $rtbiz_ideas_votes, $rtbiz_ideas_woo, $rtbiz_ideas_attributes, $rtbiz_ideas_settings;
+			       $rtbiz_ideas_module, $rtbiz_ideas_notification, $rtbiz_ideas_votes, $rtbiz_ideas_woo_edd, $rtbiz_ideas_attributes, $rtbiz_ideas_settings;
 
 			$rtbiz_ideas_subscriber_model = new Rtbiz_Ideas_Subscriber_Model();
 			$rtbiz_ideas_votes_model = new Rtbiz_Ideas_Votes_Model();
@@ -34,7 +34,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Admin' ) ) {
 			$rtbiz_ideas_notification = new Rtbiz_Ideas_Notification();
 
 			$rtbiz_ideas_votes = new Rtbiz_Ideas_Votes();
-			$rtbiz_ideas_woo = new Rtbiz_Ideas_Woo();
+			$rtbiz_ideas_woo_edd = new Rtbiz_Ideas_Woo_Edd();
 
 			$rtbiz_ideas_attributes = new Rtbiz_Ideas_Attributes();
 			$rtbiz_ideas_settings = new Rtbiz_Ideas_Settings();

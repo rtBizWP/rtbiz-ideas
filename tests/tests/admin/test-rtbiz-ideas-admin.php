@@ -26,7 +26,7 @@ class Rtbiz_Ideas_AdminTest extends RT_WP_TestCase {
 		$this->assertTrue( class_exists( 'Rtbiz_Ideas_Notification' ), 'Class Rtbiz_Ideas_Notification does not exist' );
 
 		$this->assertTrue( class_exists( 'Rtbiz_Ideas_Votes' ), 'Class Rtbiz_Ideas_Votes does not exist' );
-		$this->assertTrue( class_exists( 'Rtbiz_Ideas_Woo' ), 'Class Rtbiz_Ideas_Woo does not exist' );
+		$this->assertTrue( class_exists( 'Rtbiz_Ideas_Woo_Edd' ), 'Class Rtbiz_Ideas_Woo_Edd does not exist' );
 
 		$this->assertTrue( class_exists( 'Rtbiz_Ideas_Attributes' ), 'Class Rtbiz_Ideas_Attributes does not exist' );
 		$this->assertTrue( class_exists( 'Rtbiz_Ideas_Settings' ), 'Class Rtbiz_Ideas_Settings does not exist' );

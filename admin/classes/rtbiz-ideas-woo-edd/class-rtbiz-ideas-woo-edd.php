@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'Rtbiz_Ideas_Woo' ) ) {
+if ( ! class_exists( 'Rtbiz_Ideas_Woo_Edd' ) ) {
 	/**
 	 * Class Rtbiz_Ideas_Woo
 	 *
@@ -15,7 +15,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Woo' ) ) {
 	 *
 	 * @author dipesh
 	 */
-	class Rtbiz_Ideas_Woo {
+	class Rtbiz_Ideas_Woo_Edd {
 
 		/**
 		 * initiate class local Variables
@@ -24,6 +24,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Woo' ) ) {
 		 */
 		public function __construct() {
 			Rtbiz_Ideas::$loader->add_filter( 'woocommerce_product_tabs', $this, 'woo_ideas_tab', 999 );
+			Rtbiz_Ideas::$loader->add_action( 'edd_after_download_content', $this, 'woo_edd_ideas_content' );
 		}
 
 		/**
@@ -37,7 +38,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Woo' ) ) {
 			$tabs['ideas_tab'] = array(
 				'title'    => __( 'Ideas', RTBIZ_IDEAS_TEXT_DOMAIN ),
 				'priority' => 50,
-				'callback' => array( $this, 'woo_ideas_tab_content' ),
+				'callback' => array( $this, 'woo_edd_ideas_content' ),
 			);
 
 			return $tabs;
@@ -46,7 +47,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Woo' ) ) {
 		/**
 		 *
 		 */
-		public function woo_ideas_tab_content() {
+		public function woo_edd_ideas_content() {
 			global $post;
 			if ( isset( $post ) ) {
 				echo sanitize_html_class( do_shortcode( '[rtbiz_ideas product_id = ' . $post->ID . ' ]' ) );

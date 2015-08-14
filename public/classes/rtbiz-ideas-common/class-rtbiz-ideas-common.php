@@ -73,7 +73,6 @@ if ( ! class_exists( 'Rtbiz_Ideas_Common' ) ) {
 
 					$idea_id = wp_insert_post( $idea_information );
 
-
 					if ( isset( $_POST['product_id'] ) && '' != $_POST['product_id'] ) {
 						$product_slug = Rt_Products::$product_slug;
 						wp_set_post_terms( $idea_id, $_POST['product_id'], $product_slug );
@@ -361,24 +360,40 @@ if ( ! class_exists( 'Rtbiz_Ideas_Common' ) ) {
 		/**
 		 * @param $atts
 		 *
+		 *  product_id = current post id
+		 *  download_id = current post id
+		 *  posts_per_page = 3
+		 *  order_by = date/vote
+		 *  order = ASC/DESC
+		 *
 		 * @return string
 		 */
 		public function list_post_ideas( $atts ) {
 
 			$default = array(
-				'type'           => 'post',
 				'posts_per_page' => 3,
 				'order'          => 'DESC',
 				'orderby'        => 'date',
-				'post_type'      => Rtbiz_Ideas_Module::$post_type,
 				'product_id'     => '',
+				'download_id'     => '',
 			);
 			$r = shortcode_atts( $default, $atts );
 			extract( $r );
 
-			$post_type_ob = get_post_type_object( $post_type );
+			$post_type_ob = get_post_type_object( Rtbiz_Ideas_Module::$post_type );
 			if ( ! $post_type_ob ) {
-				return '<div class="warning"><p>No such post type <em>' . $post_type . '</em> found.</p></div>';
+				return '<div class="warning"><p>No such post type <em>' . Rtbiz_Ideas_Module::$post_type . '</em> found.</p></div>';
+			}
+
+			$meta_key = '';
+			if ( 'vote' == $orderby ) {
+				$orderby = 'meta_value_num';
+				$meta_key = '_rt_wpideas_meta_votes';
+			}
+
+			// For EDD product id is download id
+			if ( empty( $product_id ) ) {
+				$product_id = $download_id;
 			}
 
 			if ( isset( $product_id ) && ! empty( $product_id ) ) {
@@ -388,36 +403,40 @@ if ( ! class_exists( 'Rtbiz_Ideas_Common' ) ) {
 					return 'Invalid Product. Please check sync settings.';
 				}
 				$args       = array(
-					'post_type'      => $post_type,
-					'posts_per_page' => $posts_per_page,
-					'order'          => $order,
-					'orderby'        => $orderby,
 					'tax_query'      => array( array( 'taxonomy' => $text_slug, 'terms' => $product_termid ) )
 				);
 				$args_count = array(
-					'post_type' => $post_type,
-					'order'          => $order,
-					'orderby'        => $orderby,
 					'tax_query' => array( array( 'taxonomy' => $text_slug, 'terms' => $product_termid ) )
 				);
-			} else {
-				$args       = array(
-					'post_type'      => $post_type,
-					'posts_per_page' => $posts_per_page,
-					'order'          => $order,
-					'orderby'        => $orderby,
-				);
-				$args_count = array(
-					'post_type'   => $post_type,
-					'order'       => $order,
-					'orderby'     => $orderby,
-				);
-
 			}
+
+			$args = array_merge( array(
+				'post_type'      => Rtbiz_Ideas_Module::$post_type,
+				'posts_per_page' => $posts_per_page,
+				'order'          => $order,
+				'orderby'        => $orderby,
+			) ,$args );
+
+			$args_count = array_merge( array(
+				'post_type'      => Rtbiz_Ideas_Module::$post_type,
+				'order'          => $order,
+				'orderby'        => $orderby,
+			) ,$args );
+
+			if ( ! empty( $meta_key ) ) {
+				$args = array_merge( $args, array(
+					'meta_key' => $meta_key,
+				) );
+
+				$args_count = array_merge( $args_count, array(
+					'meta_key' => $meta_key,
+				) );
+			}
+
 			$posts       = new WP_Query( $args );
 			$posts_count = new WP_Query( $args_count );?>
 			<div class="rtbiz-ideas-archive"><?php
-				if ( is_user_logged_in() ) { ?>
+			if ( is_user_logged_in() ) { ?>
 					<a id="btnNewThickbox" class="rtbiz-ideas-new-button" href="#Idea-new"><?php _e( 'Suggest Idea', RTBIZ_IDEAS_TEXT_DOMAIN ); ?></a>
 					<div class="rtbiz-ideas-success" id="lblIdeaSuccess"><?php
 						_e( 'Idea submitted', RTBIZ_IDEAS_TEXT_DOMAIN ); ?>
@@ -425,10 +444,10 @@ if ( ! class_exists( 'Rtbiz_Ideas_Common' ) ) {
 					<div id="wpideas-insert-idea" style="display:none;"><?php
 						rtbiz_ideas_get_template( 'template-insert-idea.php' ) ?>
 					</div><?php
-				} else {
+			} else {
 					$href = wp_login_url( get_permalink( $product_id ) );
 					echo '<br/><a id="btnOpenThickbox" href="' . $href . '">Login to Suggest Idea</a>';
-				}?>
+			}?>
 
 				<div id="rtbiz-ideas-loop-common" class="rtbiz-ideas-loop-common"><?php
 				if ( $posts->have_posts() ) {
