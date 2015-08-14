@@ -6,7 +6,7 @@
  * Date: 14/8/15
  * Time: 4:15 PM
  */
-class Rtbiz_Ideas_VotesTest extends RT_WP_TestCase {
+class Rtbiz_Ideas_VotesTest extends WP_Ajax_UnitTestCase {
 	var $rtideasVote;
 
 	/**
@@ -19,6 +19,49 @@ class Rtbiz_Ideas_VotesTest extends RT_WP_TestCase {
 		$rtideasAdmin = new Rtbiz_Ideas_Admin();
 		$rtideasAdmin->database_update();
 		wp_set_current_user( 1 );
+	}
+
+	/**
+	 * @group ajax
+	 */
+	function test_idea_vote_callback(){
+
+		$this->_setRole( 'administrator' );
+
+		$post_id = $this->factory->post->create( array( 'post_author' => 1, 'post_status' => 'idea-new', 'post_type' => 'idea' ) );
+
+		$user_id = $this->factory->user->create();
+		wp_set_current_user( $user_id );
+
+		$_POST['postid'] = $post_id;
+		try {
+			$this->_handleAjax( 'rtbiz_ideas_vote' );
+		} catch ( WPAjaxDieContinueException $e ) {
+		}
+		$this->assertTrue( isset( $e ) );
+		$this->assertEquals( '1', $e->getMessage() );
+
+		$response = json_decode( $this->_last_response );
+		$this->assertObjectHasAttribute( 'btnLabel', $response );
+		$this->assertEquals( 'Vote Down', $response->btnLabel );
+		$this->assertObjectHasAttribute( 'vote', $response );
+		$this->assertEquals( '2', $response->vote );
+
+		/*$_POST['postid'] = $post_id;
+		try {
+			$this->_handleAjax( 'rtbiz_ideas_vote' );
+		} catch ( WPAjaxDieContinueException $e ) {
+		}
+		$this->assertTrue( isset( $e ) );
+		$this->assertEquals( '1', $e->getMessage() );
+
+		$response = json_decode( $this->_last_response );
+
+		$this->assertObjectHasAttribute( 'btnLabel', $response );
+		$this->assertEquals( 'Vote Up', $response->btnLabel );
+		$this->assertObjectHasAttribute( 'vote', $response );
+		$this->assertEquals( '1', $response->vote );*/
+
 	}
 
 	function test_check_user_voted(){

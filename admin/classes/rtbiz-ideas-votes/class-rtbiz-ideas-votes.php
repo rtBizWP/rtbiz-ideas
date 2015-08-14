@@ -32,9 +32,11 @@ if ( ! class_exists( 'Rtbiz_Ideas_Votes' ) ) {
 		 */
 		public function idea_vote_callback() {
 			$response = array();
+
 			if ( ! is_user_logged_in() ) {
 				$response['err'] = 'Please login to vote.';
 			} else {
+
 				$postid = intval( $_POST['postid'] );
 				if ( get_post_status( $postid ) == 'idea-new' ) {
 					$is_voted = $this->check_user_voted( $postid );
@@ -62,9 +64,8 @@ if ( ! class_exists( 'Rtbiz_Ideas_Votes' ) ) {
 					$response['err'] = 'You can not vote on ' . get_post_status( $postid ) . ' idea.';
 				}
 			}
-
 			echo json_encode( $response );
-			die(); // this is required to return a proper result
+			wp_die( '1' ); // this is required to return a proper result
 		}
 
 		/**
