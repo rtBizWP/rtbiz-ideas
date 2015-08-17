@@ -24,7 +24,7 @@ class Rtbiz_Ideas_VotesTest extends WP_Ajax_UnitTestCase {
 	/**
 	 * @group ajax
 	 */
-	function test_idea_vote_callback(){
+	function test_idea_vote_up_callback(){
 
 		$this->_setRole( 'administrator' );
 
@@ -46,8 +46,18 @@ class Rtbiz_Ideas_VotesTest extends WP_Ajax_UnitTestCase {
 		$this->assertEquals( 'Vote Down', $response->btnLabel );
 		$this->assertObjectHasAttribute( 'vote', $response );
 		$this->assertEquals( '2', $response->vote );
+	}
 
-		/*$_POST['postid'] = $post_id;
+	/**
+	 * @group ajax
+	 */
+	function test_idea_vote_down_callback(){
+
+		$this->_setRole( 'administrator' );
+
+		$post_id = $this->factory->post->create( array( 'post_author' => 1, 'post_status' => 'idea-new', 'post_type' => 'idea' ) );
+
+		$_POST['postid'] = $post_id;
 		try {
 			$this->_handleAjax( 'rtbiz_ideas_vote' );
 		} catch ( WPAjaxDieContinueException $e ) {
@@ -56,12 +66,10 @@ class Rtbiz_Ideas_VotesTest extends WP_Ajax_UnitTestCase {
 		$this->assertEquals( '1', $e->getMessage() );
 
 		$response = json_decode( $this->_last_response );
-
 		$this->assertObjectHasAttribute( 'btnLabel', $response );
 		$this->assertEquals( 'Vote Up', $response->btnLabel );
 		$this->assertObjectHasAttribute( 'vote', $response );
-		$this->assertEquals( '1', $response->vote );*/
-
+		$this->assertEquals( '1', $response->vote );
 	}
 
 	function test_check_user_voted(){
