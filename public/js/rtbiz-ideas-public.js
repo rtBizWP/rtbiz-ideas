@@ -112,7 +112,7 @@ jQuery(document).ready( function ( $) {
 
 				var requestArray = {};
 				requestArray.action = 'rtbiz_ideas_load_more';
-				requestArray.offset = $('#wpidea-content article').length;
+				requestArray.offset = $('#rtbiz-ideas-loop-common article').length;
 				requestArray.nonce = jQuery('#ideaLoadMore').attr('data-nonce');
 				requestArray.post_type = rtbiz_ideas_posttype;
 				requestArray.product_id = $('#idea_product_id').val();
@@ -129,7 +129,7 @@ jQuery(document).ready( function ( $) {
 					success: function ( data ) {
 						if ( data.have_posts ) {
 							var $newElems = $( data.html.replace(/(\r\n|\n|\r)/gm, '') );
-							$('#rtbiz-ideas-loop-common').append( $newElems );
+							$('.rtbiz-ideas-loadmore').before( $newElems );
 							jQuery('#ideaLoadMore').show();
 						} else {
 							$('#ideaLoadMore').hide();

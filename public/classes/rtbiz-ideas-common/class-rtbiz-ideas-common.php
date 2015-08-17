@@ -423,7 +423,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Common' ) ) {
 				'post_type'      => Rtbiz_Ideas_Module::$post_type,
 				'order'          => $order,
 				'orderby'        => $orderby,
-			) ,$args );
+			) ,$args_count );
 
 			if ( ! empty( $meta_key ) ) {
 				$args = array_merge( $args, array(
