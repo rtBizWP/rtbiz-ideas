@@ -47,6 +47,27 @@ class Rtbiz_Ideas_CommonTest extends WP_Ajax_UnitTestCase {
 	/**
 	 * @group ajax
 	 */
+	function test_insert_new_idea_empty_product(){
+
+		$this->_setRole( 'administrator' );
+
+		$term_id = $this->factory->term->create( array( 'taxonomy' => 'rt-product' ) );
+
+		$_POST['txtIdeaTitle'] = 'Demo Idea';
+		$_POST['txtIdeaContent'] = 'Demo Idea content';
+		try {
+			$this->_handleAjax( 'rtbiz_ideas_insert_new_idea' );
+		} catch ( WPAjaxDieContinueException $e ) {
+		}
+		$this->assertTrue( isset( $e ) );
+		$this->assertEquals( '1', $e->getMessage() );
+
+		$this->assertEquals( 'new-idea', $this->_last_response );
+	}
+
+	/**
+	 * @group ajax
+	 */
 	function test_insert_new_idea_title_error(){
 
 		$this->_setRole( 'administrator' );

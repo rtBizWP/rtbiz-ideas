@@ -77,6 +77,8 @@ if ( ! class_exists( 'Rtbiz_Ideas_Common' ) ) {
 						$product_slug = Rt_Products::$product_slug;
 						wp_set_post_terms( $idea_id, $_POST['product_id'], $product_slug );
 						echo 'product';
+					} else {
+						echo 'new-idea';
 					}
 
 					if ( $_FILES ) {
