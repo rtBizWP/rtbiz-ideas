@@ -51,8 +51,6 @@ class Rtbiz_Ideas_CommonTest extends WP_Ajax_UnitTestCase {
 
 		$this->_setRole( 'administrator' );
 
-		$term_id = $this->factory->term->create( array( 'taxonomy' => 'rt-product' ) );
-
 		$_POST['txtIdeaTitle'] = 'Demo Idea';
 		$_POST['txtIdeaContent'] = 'Demo Idea content';
 		try {
