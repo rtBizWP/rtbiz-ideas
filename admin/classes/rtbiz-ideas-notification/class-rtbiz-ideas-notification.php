@@ -30,8 +30,6 @@ if ( ! class_exists( 'Rtbiz_Ideas_Notification' ) ) {
 			if ( rtbiz_ideas_is_comment_posted_notification_enable() ) {
 				Rtbiz_Ideas::$loader->add_action( 'wp_insert_comment', $this, 'idea_comment_posted_notification', 99, 2 );
 			}
-
-
 		}
 
 		/**
@@ -82,7 +80,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Notification' ) ) {
 				}
 				$message .= '<label><b>Votes:</b> ' . $votes_count . '</label>';
 
-				$this->sendNotifications( $recipients, $subject, $message, $headers );
+				$this->send_notifications( $recipients, $subject, $message, $headers );
 			}
 		}
 
@@ -118,22 +116,22 @@ if ( ! class_exists( 'Rtbiz_Ideas_Notification' ) ) {
 					}
 				}
 
-				$comment_content = apply_filters( "the_content", $comment_content );
-				$message         = '';
+				$comment_content = apply_filters( 'the_content', $comment_content );
+				$message  = '';
 				$message .= '<h2> New Comment on <a href="' . $idea_link . '">' . $idea->post_title . '</h2>';
 				$message .= '<label><b>Commenter:</b> ' . $comment_author_url . '</label><br/>';
 				$message .= '<label><b>Content:</b> ' . stripslashes( $comment_content ) . '</label><br/>';
 				$message .= '<label><b>Link:</b> <a href="' . get_comment_link( $comment_object ) . '">Go to comment</a></label>';
 
-				$this->sendNotifications( $recipients, $subject, $message, $headers );
+				$this->send_notifications( $recipients, $subject, $message, $headers );
 			}
 		}
 
 		/**
 		 * Send email notifications when comment is posted on idea if email notification is set to true
 		 *
-		 * @param $comment_id
-		 * @param $comment_object
+		 * @param $idea_id
+		 * @param $idea_object
 		 *
 		 * @since 0.1
 		 */
@@ -150,7 +148,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Notification' ) ) {
 				$message .= '<h3>' . $currentuser->display_name . ' posted a new idea</h3>';
 				$message .= '<h2>' . stripslashes( $idea_object->post_title ) . '</h2>';
 				$message .= '<p>' . stripslashes( $post_content ) . '</p>';
-				$this->sendNotifications( $recipients, $subject, $message, $headers );
+				$this->send_notifications( $recipients, $subject, $message, $headers );
 			}
 		}
 
@@ -162,7 +160,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Notification' ) ) {
 		 * @param $message
 		 * @param $headers
 		 */
-		public function sendNotifications( $recipients, $subject, $message, $headers ) {
+		public function send_notifications( $recipients, $subject, $message, $headers ) {
 			$message .= rtbiz_ideas_get_signature();
 			add_filter( 'wp_mail_content_type', array( $this, 'set_html_content_type' ) );
 			wp_mail( $recipients, $subject, $message, $headers );

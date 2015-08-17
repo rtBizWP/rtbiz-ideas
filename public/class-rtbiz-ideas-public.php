@@ -101,7 +101,6 @@ if ( ! class_exists( 'Rtbiz_Ideas_Public' ) ) {
 			 * class.
 			 */
 
-
 			wp_enqueue_script( 'jquery-form', array( 'jquery' ) );
 			wp_enqueue_script( RTBIZ_IDEAS_TEXT_DOMAIN, RTBIZ_IDEAS_URL . 'public/js/rtbiz-ideas-public-min.js', array( 'jquery' ), RTBIZ_IDEAS_VERSION, false );
 
