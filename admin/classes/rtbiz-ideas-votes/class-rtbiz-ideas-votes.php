@@ -65,7 +65,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Votes' ) ) {
 				}
 			}
 			echo json_encode( $response );
-			wp_die( '1' ); // this is required to return a proper result
+			wp_die( ); // this is required to return a proper result
 		}
 
 		/**

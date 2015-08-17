@@ -39,7 +39,7 @@ class Rtbiz_Ideas_VotesTest extends WP_Ajax_UnitTestCase {
 		} catch ( WPAjaxDieContinueException $e ) {
 		}
 		$this->assertTrue( isset( $e ) );
-		$this->assertEquals( '1', $e->getMessage() );
+		$this->assertEquals( '', $e->getMessage() );
 
 		$response = json_decode( $this->_last_response );
 		$this->assertObjectHasAttribute( 'btnLabel', $response );
@@ -63,7 +63,7 @@ class Rtbiz_Ideas_VotesTest extends WP_Ajax_UnitTestCase {
 		} catch ( WPAjaxDieContinueException $e ) {
 		}
 		$this->assertTrue( isset( $e ) );
-		$this->assertEquals( '1', $e->getMessage() );
+		$this->assertEquals( '', $e->getMessage() );
 
 		$response = json_decode( $this->_last_response );
 		$this->assertObjectHasAttribute( 'btnLabel', $response );

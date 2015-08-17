@@ -39,7 +39,7 @@ class Rtbiz_Ideas_CommonTest extends WP_Ajax_UnitTestCase {
 		} catch ( WPAjaxDieContinueException $e ) {
 		}
 		$this->assertTrue( isset( $e ) );
-		$this->assertEquals( '1', $e->getMessage() );
+		$this->assertEquals( '', $e->getMessage() );
 
 		$this->assertEquals( 'product', $this->_last_response );
 	}
@@ -58,7 +58,7 @@ class Rtbiz_Ideas_CommonTest extends WP_Ajax_UnitTestCase {
 		} catch ( WPAjaxDieContinueException $e ) {
 		}
 		$this->assertTrue( isset( $e ) );
-		$this->assertEquals( '1', $e->getMessage() );
+		$this->assertEquals( '', $e->getMessage() );
 
 		$this->assertEquals( 'new-idea', $this->_last_response );
 	}
@@ -81,7 +81,7 @@ class Rtbiz_Ideas_CommonTest extends WP_Ajax_UnitTestCase {
 		} catch ( WPAjaxDieContinueException $e ) {
 		}
 		$this->assertTrue( isset( $e ) );
-		$this->assertEquals( '1', $e->getMessage() );
+		$this->assertEquals( '', $e->getMessage() );
 
 		$response = json_decode( $this->_last_response );
 		$this->assertObjectHasAttribute( 'title', $response );
@@ -106,7 +106,7 @@ class Rtbiz_Ideas_CommonTest extends WP_Ajax_UnitTestCase {
 		} catch ( WPAjaxDieContinueException $e ) {
 		}
 		$this->assertTrue( isset( $e ) );
-		$this->assertEquals( '1', $e->getMessage() );
+		$this->assertEquals( '', $e->getMessage() );
 
 		$response = json_decode( $this->_last_response );
 		$this->assertObjectHasAttribute( 'content', $response );
@@ -128,7 +128,7 @@ class Rtbiz_Ideas_CommonTest extends WP_Ajax_UnitTestCase {
 		} catch ( WPAjaxDieContinueException $e ) {
 		}
 		$this->assertTrue( isset( $e ) );
-		$this->assertEquals( '1', $e->getMessage() );
+		$this->assertEquals( '', $e->getMessage() );
 
 		$this->assertContains( $_POST['searchtext'], $this->_last_response );
 
@@ -149,7 +149,7 @@ class Rtbiz_Ideas_CommonTest extends WP_Ajax_UnitTestCase {
 		} catch ( WPAjaxDieContinueException $e ) {
 		}
 		$this->assertTrue( isset( $e ) );
-		$this->assertEquals( '1', $e->getMessage() );
+		$this->assertEquals( '', $e->getMessage() );
 
 		$this->assertEquals( 'Looks like we do not have your idea. <br /><br /> Have you got better one? &nbsp; <a id="btnOpenThickbox" href="#Idea-new" > click here</a> &nbsp;  to suggest.', $this->_last_response );
 
@@ -169,7 +169,7 @@ class Rtbiz_Ideas_CommonTest extends WP_Ajax_UnitTestCase {
 		} catch ( WPAjaxDieContinueException $e ) {
 		}
 		$this->assertTrue( isset( $e ) );
-		$this->assertEquals( '1', $e->getMessage() );
+		$this->assertEquals( '', $e->getMessage() );
 
 		$response = json_decode( $this->_last_response );
 		$this->assertObjectHasAttribute( 'status', $response );
@@ -193,7 +193,7 @@ class Rtbiz_Ideas_CommonTest extends WP_Ajax_UnitTestCase {
 		} catch ( WPAjaxDieContinueException $e ) {
 		}
 		$this->assertTrue( isset( $e ) );
-		$this->assertEquals( '1', $e->getMessage() );
+		$this->assertEquals( '', $e->getMessage() );
 
 		$response = json_decode( $this->_last_response );
 		$this->assertObjectHasAttribute( 'status', $response );

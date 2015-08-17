@@ -115,7 +115,7 @@
           border-left: 0;
       }
   }
-  .btnVote:hover {
-     background: $color_san_marino_approx;
+  .btnVote {
+     cursor: pointer;
   }
 }

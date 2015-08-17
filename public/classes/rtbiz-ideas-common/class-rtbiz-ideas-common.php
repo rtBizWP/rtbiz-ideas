@@ -108,7 +108,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Common' ) ) {
 					echo json_encode( $ideaResponse );
 				}
 
-				wp_die( '1' );
+				wp_die( );
 			}
 		}
 
@@ -165,7 +165,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Common' ) ) {
 					echo '<br/><a id="btnOpenThickbox" href="/wp-login.php">Login to Suggest Idea</a>';
 				}
 			}
-			wp_die( '1' ); // this is required to return a proper result
+			wp_die( ); // this is required to return a proper result
 		}
 
 		/**
@@ -333,7 +333,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Common' ) ) {
 				$response['status'] = true;
 			}
 			echo json_encode( $response );
-			wp_die( '1' );
+			wp_die( );
 		}
 
 		/**
@@ -356,7 +356,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Common' ) ) {
 				$response['status'] = true;
 			}
 			echo json_encode( $response );
-			wp_die( '1' );
+			wp_die( );
 		}
 
 		/**
