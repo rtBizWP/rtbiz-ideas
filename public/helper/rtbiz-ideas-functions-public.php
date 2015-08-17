@@ -179,7 +179,7 @@ if ( ! function_exists( 'rtbiz_ideas_get_subscribe_action' ) ) {
 		global $rtbiz_ideas_subscriber_model;
 		$subscribeflag = $rtbiz_ideas_subscriber_model->check_subscriber_exist( get_the_ID(), get_current_user_id() );
 		$subscribevalue = $subscribeflag ? 'Unsubscribe' : 'Subscribe';?>
-		<a id="subscriber-<?php the_ID(); ?>" class="subscribe_email_notification_button button-<?php echo strtolower( $subscribevalue ); ?>"
+		<a href="#" id="subscriber-<?php the_ID(); ?>" class="subscribe_email_notification_button button-<?php echo strtolower( $subscribevalue ); ?>"
 		   data-id="<?php the_ID(); ?>" > <?php
 			echo $subscribevalue; ?>
 		</a><?php

@@ -143,12 +143,11 @@ jQuery(document).ready( function ( $) {
 		},
 		subscribeIdeas: function(){
 			$(document).on('click', '.subscribe_email_notification_button', function (e) {
-
+				e.preventDefault();
 				var ele_id = jQuery(this ).attr('id');
 				var requestArray = {};
 				requestArray.action = 'rtbiz_ideas_subscribe_button';
 				requestArray.post_id = $(this ).data( 'id' );
-
 				$.ajax({
 					url: ajaxurl,
 					type: 'POST',
