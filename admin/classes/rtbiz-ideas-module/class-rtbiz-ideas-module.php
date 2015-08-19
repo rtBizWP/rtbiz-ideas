@@ -71,7 +71,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Module' ) ) {
 			$this->labels = array(
 				'name'               => __( 'Ideas', RTBIZ_IDEAS_TEXT_DOMAIN ),
 				'singular_name'      => __( 'Idea', RTBIZ_IDEAS_TEXT_DOMAIN ),
-				'menu_name'          => __( 'Idea', RTBIZ_IDEAS_TEXT_DOMAIN ),
+				'menu_name'          => __( 'Ideas', RTBIZ_IDEAS_TEXT_DOMAIN ),
 				'all_items'          => __( 'Ideas', RTBIZ_IDEAS_TEXT_DOMAIN ),
 				'add_new'            => __( 'Add New Idea', RTBIZ_IDEAS_TEXT_DOMAIN ),
 				'add_new_item'       => __( 'Add New Idea', RTBIZ_IDEAS_TEXT_DOMAIN ),
@@ -100,12 +100,22 @@ if ( ! class_exists( 'Rtbiz_Ideas_Module' ) ) {
 				array(
 					'slug'        => 'idea-new',
 					'name'        => __( 'New', RTBIZ_IDEAS_TEXT_DOMAIN ),
-					'description' => __( 'New Idea', RTBIZ_IDEAS_TEXT_DOMAIN ),
+					'description' => __( 'New idea', RTBIZ_IDEAS_TEXT_DOMAIN ),
 				),
 				array(
-					'slug'        => 'idea-accepted',
-					'name'        => __( 'Accepted', RTBIZ_IDEAS_TEXT_DOMAIN ),
-					'description' => __( 'Idea Accepted', RTBIZ_IDEAS_TEXT_DOMAIN ),
+					'slug'        => 'idea-started',
+					'name'        => __( 'Started', RTBIZ_IDEAS_TEXT_DOMAIN ),
+					'description' => __( 'Idea started', RTBIZ_IDEAS_TEXT_DOMAIN ),
+				),
+				array(
+					'slug'        => 'idea-under-review',
+					'name'        => __( 'Under Review', RTBIZ_IDEAS_TEXT_DOMAIN ),
+					'description' => __( 'Idea under review', RTBIZ_IDEAS_TEXT_DOMAIN ),
+				),
+				array(
+					'slug'        => 'idea-planned',
+					'name'        => __( 'Planned ', RTBIZ_IDEAS_TEXT_DOMAIN ),
+					'description' => __( 'Idea planned ', RTBIZ_IDEAS_TEXT_DOMAIN ),
 				),
 				array(
 					'slug'        => 'idea-declined',
@@ -245,18 +255,25 @@ if ( ! class_exists( 'Rtbiz_Ideas_Module' ) ) {
 				if ( ! isset( $post ) ) {
 					return;
 				}
-				ob_start(); ?>
+				ob_start();
+				$status_changed = false;?>
 
 				<script>
-					jQuery(document).ready(function ($) { <?php
-					foreach ( $this->statuses as $status ) {
-						$completeCompleted = ( $post -> post_status == $status['slug'] ) ? "selected='selected'" : '' ; ?>
-						$("select#post_status").append("<option value='<?php echo $status['slug'] ?>' <?php echo $completeCompleted; ?>><?php echo $status['name'] ?></option>");
-						$(".inline-edit-status select").append("<option value='<?php echo $status['slug'] ?>' <?php echo $completeCompleted; ?>><?php echo $status['name'] ?></option>"); <?php
-						if ( ! empty( $completeCompleted ) ) { ?>
-							$("#post-status-display").html("<?php echo $status['name'] ?>");<?php
+					jQuery(document).ready(function ($) {
+						$("select#post_status").html('');
+						$(".inline-edit-status select").html('');<?php
+						foreach ( $this->statuses as $status ) {
+							$completeCompleted = ( $post -> post_status == $status['slug'] ) ? "selected='selected'" : '' ; ?>
+							$("select#post_status").append("<option value='<?php echo $status['slug'] ?>' <?php echo $completeCompleted; ?>><?php echo $status['name'] ?></option>");
+							$(".inline-edit-status select").append("<option value='<?php echo $status['slug'] ?>' <?php echo $completeCompleted; ?>><?php echo $status['name'] ?></option>"); <?php
+							if ( ! empty( $completeCompleted ) ) {
+							    $status_changed = true;?>
+								$("#post-status-display").html("<?php echo $status['name'] ?>");<?php
+							}
 						}
-					} ?>
+						if ( ! $status_changed ) { ?>
+							$("#post-status-display").html("<?php echo $this->statuses[0]['name'] ?>");<?php
+						} ?>
 						$("#publishing-action").html("<span class='spinner'></span><input name='original_publish' type='hidden' id='original_publish' value='Update' /><input type='submit' id='save-publish' class='button button-primary button-large' value='Update' />");
 						$(".save-post-status").click(function () {
 							$("#publish").hide();

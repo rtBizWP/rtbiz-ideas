@@ -48,7 +48,7 @@ class Rtbiz_Ideas_ModuleTest extends RT_WP_TestCase {
 	function test_get_custom_statuses(){
 		$this->assertTrue( is_array( $this->rtideasModule->statuses ) );
 		$this->assertEquals( $this->rtideasModule->get_custom_statuses(), $this->rtideasModule->statuses );
-		$this->assertEquals( count( $this->rtideasModule->get_custom_statuses() ), 4 );
+		$this->assertEquals( count( $this->rtideasModule->get_custom_statuses() ), 6 );
 	}
 
 	function test_init_ideas(){
