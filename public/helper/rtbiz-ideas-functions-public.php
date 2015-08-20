@@ -147,7 +147,8 @@ if ( ! function_exists( 'rtbiz_ideas_get_vote_action' ) ) {
 		$idea_id = get_the_ID();
 		$idea_status = get_post_status( $idea_id );
 		if ( 'idea-new' != $idea_status ) {
-			$value = ucfirst( preg_replace( '/^idea-/', '', $idea_status ) );?>
+			$value = ucfirst( preg_replace( '/^idea-/', '', $idea_status ) );
+			$value = ucfirst( preg_replace( '/-/', ' ', $value ) );?>
 			<span class="rtbiz-ideas-status <?php echo $idea_status; ?>" ><?php echo $value; ?></span><?php
 		} else {
 			$value = __( 'Vote', RTBIZ_IDEAS_TEXT_DOMAIN );

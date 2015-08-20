@@ -45,7 +45,7 @@
     width: auto;
     line-height: 10px;
     border: 1px solid #D2D2D2;
-    display: inline-block;
+    display: block;
     padding: 10px 5px;
     font-weight: bold;
     text-align: center;
@@ -63,5 +63,20 @@
     &.idea-completed{
         background-color: #C3FDB8;
         border-color: #B5EAAA;
+    }
+
+    &.idea-started{
+        background-color: #ffe8b6;
+        border-color: #ffe5ab;
+    }
+
+    &.idea-under-review{
+        background-color: #e5e4e5;
+        border-color: #dddcdd;
+    }
+
+    &.idea-planned{
+        background-color: #eccdd2;
+        border-color: #e3b4bc;
     }
 }
