@@ -4,12 +4,25 @@
  */
 
 
-get_header(); ?>
+get_header();
+$class = apply_filters( 'rtbiz_idea_post_class', '' );
+$content_class = '';
+if ( (string)wp_get_theme() == 'Twenty Twelve' ) {
+	$content_class='site-content';
+}
+$content_id = 'primary';
+if ( (string)wp_get_theme() == 'Twenty Ten' ) {
+	$content_id='container';
+}
+$content_class = apply_filters( 'rtbiz_idea_content_class', $content_class );
+$content_id = apply_filters( 'rtbiz_idea_content_id', $content_id );
+?>
 
-	<div id="primary" class="<?php echo apply_filters( 'rtbiz_idea_content_class', 'site-content' ); ?>"> <!-- comment-meta -->
-		<div id="content" class="rtbiz-ideas-archive" role="main">
+	<div id="<?php echo $content_id; ?>" class="<?php echo $content_class; ?>"> <!-- comment-meta -->
+			<article <?php post_class( $class ); ?>>
+			<div id="content" class="rtbiz-ideas-archive">
 
-			<header class="rtbiz-ideas-header">
+			<header class="rtbiz-ideas-header entry-header">
 
 				<h1 class="rtbiz-ideas-title" >
 					<a href="<?php echo home_url( Rtbiz_Ideas_Module::$post_type ); ?>"><?php _e( 'Ideas', RTBIZ_IDEAS_TEXT_DOMAIN ); ?></a>
@@ -19,7 +32,7 @@ get_header(); ?>
 				rtbiz_ideas_search_form(); ?>
 
 			</header>
-
+			<div class="entry-content">
 			<div class="rtbiz-ideas-success" id="lblIdeaSuccess"><?php
 				_e( 'Idea submitted', RTBIZ_IDEAS_TEXT_DOMAIN ); ?>
 			</div>
@@ -60,7 +73,9 @@ get_header(); ?>
 				} ?>
 				</div><?php
 			}?>
-		</div><!-- content -->
+			</div>
+			</div><!-- content -->
+			</article>
 	</div><!-- primary -->
 
 <?php get_sidebar();
