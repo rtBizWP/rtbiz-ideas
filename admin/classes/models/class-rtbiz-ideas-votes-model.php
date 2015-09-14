@@ -50,8 +50,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Votes_Model' ) ) {
 		 */
 		public function get_votes_by_idea( $idea ) {
 			global $wpdb;
-			$meta_key = $idea;
-			return $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM '.$wpdb->prefix.'rt_wpideas_vote WHERE post_id = %s', $meta_key ) );
+			return $wpdb->get_var( $wpdb->prepare( 'SELECT sum(vote_count) FROM '.$wpdb->prefix.'rt_wpideas_vote WHERE post_id = %s', $idea ) );
 		}
 
 		/**
