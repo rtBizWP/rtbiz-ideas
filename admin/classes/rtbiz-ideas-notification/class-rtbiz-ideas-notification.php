@@ -42,7 +42,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Notification' ) ) {
 		 * @since 0.1
 		 */
 		public function idea_status_changed_notification( $new_status, $old_status, $post ) {
-			if ( $new_status != $old_status && get_post_type() == self::$post_type ) {
+			if ( $new_status != $old_status && get_post_type() == Rtbiz_Ideas_Module::$post_type ) {
 
 				update_post_meta( $post->post_ID, '_rt_wpideas_status_changer', get_current_user_id() );
 
