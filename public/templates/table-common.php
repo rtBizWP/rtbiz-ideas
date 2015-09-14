@@ -19,7 +19,7 @@
 	</td>
 	<td>
 		<div class="rtbiz-idea-action"><?php
-//			rtbiz_ideas_get_vote_action( true );
+			rtbiz_ideas_get_vote_action( true );
 			rtbiz_ideas_get_subscribe_action();?>
 		</div>
 	</td>
