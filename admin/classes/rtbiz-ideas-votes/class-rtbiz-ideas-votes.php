@@ -90,10 +90,9 @@ if ( ! class_exists( 'Rtbiz_Ideas_Votes' ) ) {
 		/**
 		 * Add data to the wpideas_vote table\
 		 *
-		 * @param $post
+		 * @param $post_id
 		 * @param int $vote_count
-		 *
-		 * @return mixed
+		 * @return int
 		 */
 		public function add_vote( $post_id, $vote_count = 1 ) {
 			global $rtbiz_ideas_subscriber_model, $rtbiz_ideas_votes_model;
@@ -107,10 +106,9 @@ if ( ! class_exists( 'Rtbiz_Ideas_Votes' ) ) {
 		/**
 		 * Update vote for the post
 		 *
-		 * @param $post
+		 * @param $post_id
 		 * @param $vote_count
-		 *
-		 * @return mixed
+		 * @return int
 		 */
 		public function update_vote( $post_id, $vote_count ) {
 			global $rtbiz_ideas_subscriber_model, $rtbiz_ideas_votes_model;

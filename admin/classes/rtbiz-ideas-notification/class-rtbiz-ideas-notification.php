@@ -94,10 +94,10 @@ if ( ! class_exists( 'Rtbiz_Ideas_Notification' ) ) {
 		 */
 		public function idea_comment_posted_notification( $comment_id, $comment_object ) {
 
-			if ( $comment_object->comment_approved > 0 && get_post_type() == self::$post_type ) {
-				global $rtWpIdeasSubscriber;
+			if ( $comment_object->comment_approved > 0 && get_post_type() == Rtbiz_Ideas_Module::$post_type ) {
+				global $rtbiz_ideas_subscriber_model;
 				$headers[] = 'From: WP Ideas <wpideas@rtcamp.net>';
-				$rtWpIdeasSubscriber->add_subscriber( $comment_object->comment_post_ID, $comment_object->user_id );
+				$rtbiz_ideas_subscriber_model->add_subscriber( $comment_object->comment_post_ID, $comment_object->user_id );
 
 				$comment_content    = $comment_object->comment_content;
 				$comment_author_url = get_comment_author_link( $comment_object->comment_ID );
@@ -105,15 +105,13 @@ if ( ! class_exists( 'Rtbiz_Ideas_Notification' ) ) {
 				$idea               = get_post( $idea_id );
 				$idea_link          = get_permalink( $idea_id );
 
-				$subject = create_new_idea_title( 'idea_comment_add_email_title', $idea_id );
+				$subject = rtbiz_ideas_create_new_idea_title( 'idea_comment_add_email_title', $idea_id );
 
-				global $rtWpIdeasSubscriber;
-				$recipients = $rtWpIdeasSubscriber->get_subscriber_email( $idea_id, 'comment_post', 'YES' );
+				$recipients = $rtbiz_ideas_subscriber_model->get_subscriber_email( $idea_id, 'comment_post', 'YES' );
 				if ( rtbiz_ideas_is_comment_posted_notification_enable() ) {
-					$temp = rtbiz_ideas_get_notification_emails();
-					for ( $i = 0; $i < count( $temp ); $i ++ ) {
-						array_push( $recipients, $temp[ $i ] );
-					}
+					$notification_emails = rtbiz_ideas_get_notification_emails();
+					foreach( $notification_emails  as $n_email )
+						array_push( $recipients, $n_email );
 				}
 
 				$comment_content = apply_filters( 'the_content', $comment_content );
