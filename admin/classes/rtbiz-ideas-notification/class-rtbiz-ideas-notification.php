@@ -161,7 +161,8 @@ if ( ! class_exists( 'Rtbiz_Ideas_Notification' ) ) {
 		public function send_notifications( $recipients, $subject, $message, $headers ) {
 			$message .= rtbiz_ideas_get_signature();
 			add_filter( 'wp_mail_content_type', array( $this, 'set_html_content_type' ) );
-			wp_mail( $recipients, $subject, $message, $headers );
+			foreach($recipients as $emails)
+				wp_mail( $emails, $subject, $message, $headers );
 			// Reset content-type to avoid conflicts -- http://core.trac.wordpress.org/ticket/23578
 			remove_filter( 'wp_mail_content_type', 'set_html_content_type' );
 		}
