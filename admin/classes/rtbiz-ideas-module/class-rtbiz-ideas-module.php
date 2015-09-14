@@ -57,6 +57,8 @@ if ( ! class_exists( 'Rtbiz_Ideas_Module' ) ) {
 			Rtbiz_Ideas::$loader->add_action( 'manage_' . self::$post_type . '_posts_custom_column', $this, 'ideas_custom_column_body', 10, 2 );
 
 			Rtbiz_Ideas::$loader->add_action( 'save_post', $this, 'save_idea_post', 13, 2 );
+			Rtbiz_Ideas::$loader->add_action( 'post_updated_messages', $this, 'idea_updated_messages', 10, 2 );
+
 
 		}
 
@@ -85,6 +87,23 @@ if ( ! class_exists( 'Rtbiz_Ideas_Module' ) ) {
 			);
 
 			return $this->labels;
+		}
+
+		public function idea_updated_messages( $messages ) {
+			$messages[ self::$post_type ] = array(
+				0  => '', // Unused. Messages start at index 1.
+				1  => __( 'Idea updated.', RTBIZ_IDEAS_TEXT_DOMAIN ),
+				2  => __( 'Custom field updated.', RTBIZ_IDEAS_TEXT_DOMAIN ),
+				3  => __( 'Custom field deleted.', RTBIZ_IDEAS_TEXT_DOMAIN ),
+				4  => __( 'Idea updated.', RTBIZ_IDEAS_TEXT_DOMAIN ),
+				/* translators: %s: date and time of the revision */
+				5  => isset( $_GET['revision'] ) ? sprintf( __( 'Idea restored to revision from %s', RTBIZ_IDEAS_TEXT_DOMAIN ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+				6  => __( 'Idea published.', RTBIZ_IDEAS_TEXT_DOMAIN ),
+				7  => __( 'Idea saved.', RTBIZ_IDEAS_TEXT_DOMAIN ),
+				8  => __( 'Idea submitted.', RTBIZ_IDEAS_TEXT_DOMAIN ),
+				10 => __( 'Idea draft updated.', RTBIZ_IDEAS_TEXT_DOMAIN ),
+			);
+			return $messages;
 		}
 
 
