@@ -1,26 +1,86 @@
 .rtbiz-ideas-table {
+  border-spacing: 0;
   width: 100%;
-  margin-bottom: 10px;
-  font-family: Arial, Helvetica, sans-serif;
-  color: $color_storm_dust_approx;
-  font-size: 12px;
-  text-shadow: 1px 1px 0 $white;
-  background: $color_cararra_approx;
-  border: $color_celeste_approx 1px solid;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
-  -moz-box-shadow: 0 1px 2px $color_celeste_approx;
-  -webkit-box-shadow: 0 1px 2px $color_celeste_approx;
-  box-shadow: 0 1px 2px $color_celeste_approx;
+  clear: both;
+  margin: 0;
 
+  * {
+    word-wrap: break-word;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  td,
+  th {
+    padding: 8px 10px;
+  }
+
+  thead th,
+  thead td {
+    border-bottom: 1px solid #e1e1e1;
+  }
+
+  tfoot th,
+  tfoot td {
+    border-top: 1px solid #e1e1e1;
+    border-bottom: none;
+  }
+
+  .no-items td {
+    border-bottom-width: 0;
+  }
+
+  td {
+    vertical-align: top;
+  }
+
+  td,
+  td p,
+  td ol,
+  td ul {
+    font-size: 13px;
+    line-height: 1.5em;
+  }
+
+  th,
+  thead td,
+  tfoot td {
+    //text-align: right;
+    line-height: 1.3em;
+    font-size: 14px;
+  }
+  tbody td{
+    padding : 8px 10px;
+  }
+
+  th input,
+  thead td input,
+  tfoot td input {
+    margin: 0 8px 0 0;
+    padding: 0;
+    vertical-align: text-top;
+  }
+
+  .update-php div.updated,
+  .update-php div.error {
+    margin-right: 0;
+  }
+
+  .num,
+  .column-links,
+  .column-posts {
+    text-align: center;
+  }
+
+  th#comments {
+    vertical-align: middle;
+  }
   .rtbiz-idea-action{
-      span{
-        margin-bottom: 10px;
-      }
       a{
-        margin-bottom: 10px;
-        display: block;
+        padding: 0 5px 10px 0;
+        display: inline-block;
       }
   }
   a {
@@ -41,78 +101,6 @@
       &:hover {
           color: $color_tuscany_approx;
           text-decoration: underline;
-      }
-  }
-  th {
-      text-align: center;
-      font-weight: 600;
-      padding: 10px;
-      border-top: 1px solid $alabaster;
-      border-bottom: 1px solid $color_bon_jour_approx;
-      background: $color_gallery_approx;
-      background: -webkit-gradient(linear, left top, left bottom, from($color_gallery_approx), to($color_cararra_approx));
-      background: -moz-linear-gradient(top, $color_gallery_approx, $color_cararra_approx);
-      &:first-child {
-          text-align: left;
-          padding-left: 20px;
-      }
-  }
-  tr {
-      text-align: center;
-      padding-left: 20px;
-      &:first-child th {
-          &:first-child {
-              -moz-border-radius-topleft: 3px;
-              -webkit-border-top-left-radius: 3px;
-              //Instead of the line below you could use @includeborder-top-left-radius($radius)
-              border-top-left-radius: 3px;
-          }
-          &:last-child {
-              -moz-border-radius-topright: 3px;
-              -webkit-border-top-right-radius: 3px;
-              //Instead of the line below you could use @includeborder-top-right-radius($radius)
-              border-top-right-radius: 3px;
-          }
-      }
-      &:nth-child(even) td {
-        background: $color_black_haze_approx;
-        background: -webkit-gradient(linear, left top, left bottom, from($color_black_haze_approx), to($color_alabaster_approx));
-        background: -moz-linear-gradient(top, $color_black_haze_approx, $color_alabaster_approx);
-      }
-      &:hover td {
-          background: $concrete;
-          background: -webkit-gradient(linear, left top, left bottom, from($concrete), to($color_gallery_approx));
-          background: -moz-linear-gradient(top, $concrete, $color_gallery_approx);
-      }
-      &:last-child td {
-          border-bottom: 0;
-          &:first-child {
-              -moz-border-radius-bottomleft: 3px;
-              -webkit-border-bottom-left-radius: 3px;
-              //Instead of the line below you could use @includeborder-bottom-left-radius($radius)
-              border-bottom-left-radius: 3px;
-          }
-          &:last-child {
-              -moz-border-radius-bottomright: 3px;
-              -webkit-border-bottom-right-radius: 3px;
-              //Instead of the line below you could use @includeborder-bottom-right-radius($radius)
-              border-bottom-right-radius: 3px;
-          }
-      }
-  }
-  td {
-      padding:10px;
-      border-top: 1px solid #ffffff;
-      border-bottom:1px solid #e0e0e0;
-      border-left: 1px solid #e0e0e0;
-
-      background: #fafafa;
-      background: -webkit-gradient(linear, left top, left bottom, from(#fbfbfb), to(#fafafa));
-      background: -moz-linear-gradient(top,  #fbfbfb,  #fafafa);
-      &:first-child {
-          text-align: left;
-          padding-left: 20px;
-          border-left: 0;
       }
   }
   .btnVote {
