@@ -58,6 +58,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Module' ) ) {
 
 			Rtbiz_Ideas::$loader->add_action( 'save_post', $this, 'save_idea_post', 13, 2 );
 			Rtbiz_Ideas::$loader->add_action( 'post_updated_messages', $this, 'idea_updated_messages', 10, 2 );
+			Rtbiz_Ideas::$loader->add_action( 'bulk_post_updated_messages', $this, 'bulk_idea_update_messages', 10, 2 );
 
 
 		}
@@ -89,6 +90,28 @@ if ( ! class_exists( 'Rtbiz_Ideas_Module' ) ) {
 			return $this->labels;
 		}
 
+		/**
+		 * filter for bulk_post_updated_messages hook
+		 * @param $bulk_messages
+		 * @param $bulk_counts
+		 * @return mixed
+         */
+		public function bulk_idea_update_messages( $bulk_messages, $bulk_counts ) {
+			$bulk_messages[ self::$post_type ] = array(
+				'updated'   => _n( '%s idea updated.', '%s ideas updated.', $bulk_counts['updated'] ),
+				'locked'    => _n( '%s idea not updated, somebody is editing it.', '%s ideas not updated, somebody is editing them.', $bulk_counts['locked'] ),
+				'deleted'   => _n( '%s idea permanently deleted.', '%s ideas permanently deleted.', $bulk_counts['deleted'] ),
+				'trashed'   => _n( '%s idea moved to the Trash.', '%s ideas moved to the Trash.', $bulk_counts['trashed'] ),
+				'untrashed' => _n( '%s idea restored from the Trash.', '%s ideas restored from the Trash.', $bulk_counts['untrashed'] ),
+			);
+			return $bulk_messages;
+		}
+
+		/**
+		 * filter for post_updated_messages hook
+		 * @param $messages
+		 * @return mixed
+         */
 		public function idea_updated_messages( $messages ) {
 			$messages[ self::$post_type ] = array(
 				0  => '', // Unused. Messages start at index 1.
