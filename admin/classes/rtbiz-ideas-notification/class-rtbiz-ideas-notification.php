@@ -60,8 +60,8 @@ if ( ! class_exists( 'Rtbiz_Ideas_Notification' ) ) {
 
 				$author_info = get_userdata( $author );
 
-				global $rtWpIdeasSubscriber;
-				$recipients = $rtWpIdeasSubscriber->get_subscriber_email( $post->ID, 'status_change', 'YES' );
+				global $rtbiz_ideas_subscriber_model;
+				$recipients = $rtbiz_ideas_subscriber_model->get_subscriber_email( $post->ID, 'status_change', 'YES' );
 				if ( rtbiz_ideas_is_status_change_notification_enable() ) {
 					$temp = rtbiz_ideas_get_notification_emails();
 					for ( $i = 0; $i < count( $temp ); $i ++ ) {
