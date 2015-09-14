@@ -78,6 +78,11 @@
     vertical-align: middle;
   }
   .rtbiz-idea-action{
+      span{
+        display: inline-block;
+        margin-bottom: 10px;
+        padding-left: 10px;
+      }
       a{
         padding: 0 5px 10px 0;
         display: inline-block;
