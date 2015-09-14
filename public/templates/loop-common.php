@@ -14,7 +14,7 @@
 				$vote_count  = rtbiz_ideas_get_votes_by_idea( get_the_ID() );
 				echo sanitize_text_field( $vote_count ); ?>
 				</strong><?php
-				sprintf( _n( 'vote', 'votes',$vote_count, RTBIZ_IDEAS_TEXT_DOMAIN ) ); ?>
+				echo _n( 'vote', 'votes',$vote_count, RTBIZ_IDEAS_TEXT_DOMAIN ); ?>
 			</span>
 		</div>
 		<div class="rtbiz-idea-vote-action"><?php
