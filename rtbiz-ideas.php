@@ -1,12 +1,10 @@
 <?php
 
 /**
- * The plugin bootstrap file
  *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
+ * rtBiz Idea plugin that let you post idea and vote on ideas,
+ * User submitted ideas/feature-request tracking for General Purpose.
+ * Also WooCommerce and EDD Support.
  *
  * @link              https://rtcamp.com/
  * @since             1.1

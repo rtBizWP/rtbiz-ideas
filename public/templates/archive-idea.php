@@ -6,7 +6,7 @@
 
 get_header();
 $class = apply_filters( 'rtbiz_idea_post_class', '' );
-$content_class = '';
+$content_class = 'site-main';
 if ( (string)wp_get_theme() == 'Twenty Twelve' ) {
 	$content_class='site-content';
 }
