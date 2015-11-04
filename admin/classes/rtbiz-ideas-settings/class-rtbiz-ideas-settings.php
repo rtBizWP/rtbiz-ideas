@@ -183,7 +183,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Settings' ) ) {
 						'desc'     => __( 'These events will be notified to the Notification Emails whenever they occur.' ),
 						'type'     => 'checkbox',
 						'options'  => array(
-							'wpideas_idea_posted'    => __( 'New idea is posted' ),
+							'wpideas_idea_posted'    => __( 'New idea posted' ),
 							'wpideas_comment_posted' => __( 'New comment Added' ),
 							'wpideas_status_change'  => __( 'Idea status changed' ),
 						),
