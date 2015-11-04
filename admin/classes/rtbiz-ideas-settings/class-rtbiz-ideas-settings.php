@@ -147,7 +147,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Settings' ) ) {
 						'type'     => 'switch',
 						'title'    => __( 'Notifications Emails' ),
 						'subtitle' => __( 'Turn on/off notification emails' ),
-						'desc'     => __( 'If you turn on this feature it will send notification emails on below selected notification events.' ),
+						'desc'     => __( 'It will send notification emails for all notification events selected below.' ),
 						'default'  => false,
 						'on'       => __( 'Enable' ),
 						'off'      => __( 'Disable' ),
