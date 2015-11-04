@@ -202,7 +202,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Settings' ) ) {
 						'title'    => __( 'Title when idea status changed' ),
 						'subtitle' => __( 'This is title when idea status changed' ),
 						'desc'     => __( 'You can use {idea_id} and {idea_title}' ),
-						'default'  => '[Idea Status Change] idea #{idea_id} : {idea_title}',
+						'default'  => '[Idea Status Changed] idea #{idea_id} : {idea_title}',
 					),
 					array(
 						'id'       => 'idea_comment_add_email_title',
