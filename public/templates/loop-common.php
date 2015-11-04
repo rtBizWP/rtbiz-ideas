@@ -90,6 +90,7 @@
 		} ?>
 		<ul class="rtbiz-ideas-meta"><?php
 		if ( is_user_logged_in() ) { ?>
+			<li><span class="entry-date"><?php echo get_the_date(); ?></span></li>
 			<li><?php edit_post_link( 'Manage Idea', '<span>', ' </span>' ); ?></li>
 			<li><?php
 				rtbiz_ideas_get_subscribe_action(); ?>
