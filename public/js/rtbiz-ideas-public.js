@@ -41,7 +41,7 @@ jQuery(document).ready( function ( $) {
 			rtbizIdeasPublic.addNewIdeas();
 		},
 		toggleIdeasForm: function(){
-			$('a[href="#Idea-new"]' ).click(function (e){
+			$(document ).on('click','a[href="#Idea-new"]',function (e){
 				e.preventDefault();
 				jQuery('#wpideas-insert-idea' ).slideToggle('slow');
 			});
