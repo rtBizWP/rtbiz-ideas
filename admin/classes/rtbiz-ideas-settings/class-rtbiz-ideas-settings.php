@@ -121,6 +121,12 @@ if ( ! class_exists( 'Rtbiz_Ideas_Settings' ) ) {
 		}
 
 		public function set_sections() {
+
+			$author_cap = rtbiz_get_access_role_cap( RTBIZ_IDEAS_TEXT_DOMAIN, 'author' );
+			$editor_cap = rtbiz_get_access_role_cap( RTBIZ_IDEAS_TEXT_DOMAIN, 'editor' );
+			$admin_cap  = rtbiz_get_access_role_cap( RTBIZ_IDEAS_TEXT_DOMAIN, 'admin' );
+
+
 			$general_fields   = array(
 				array(
 					'id'       => 'wpideas_editorenabled',
@@ -140,26 +146,35 @@ if ( ! class_exists( 'Rtbiz_Ideas_Settings' ) ) {
 			);
 			$this->sections[] = array(
 				'icon'   => 'el-icon-envelope',
-				'title'  => __( 'Notification Emails ' ),
+				'title'  => __( 'Notification Emails' ),
+				'permissions' => $admin_cap,
 				'fields' => array(
 					array(
-						'id'       => 'wpideas_emailenabled',
-						'type'     => 'switch',
-						'title'    => __( 'Notifications Emails' ),
-						'subtitle' => __( 'Turn on/off notification emails' ),
-						'desc'     => __( 'It will send notification emails for all notification events selected below.' ),
-						'default'  => false,
-						'on'       => __( 'Enable' ),
-						'off'      => __( 'Disable' ),
-					),
-					array(
 						'id'       => 'wpideas_adminemails',
-						'title'    => __( 'Notification Emails' ),
+						'title'    => __( 'Email Addresses' ),
 						'subtitle' => __( 'Email addresses to be notified on events' ),
 						'desc'     => __( 'These email addresses will be notified of the events that occurs in Idea systems. This is a global list. All the subscribers on idea will be notified along with this list.' ),
 						'type'     => 'multi_text',
 						'validate' => 'email',
 						'multi'    => true,
+						'show_empty' => false,
+						'add_text'   => 'Add Emails',
+					),
+					array(
+						'id'       => 'wpideas_emailenabled',
+						'type'     => 'switch',
+						'title'    => __( 'Notifications Emails' ),
+						'subtitle' => __( 'To enable/disable Notification' ),
+						'desc'     => __( 'If you turn on this feature it will send notification emails on below selected notification events.' ),
+						'default'  => false,
+						'on'       => __( 'Enable' ),
+						'off'      => __( 'Disable' ),
+					),
+					array(
+						'id'       => 'section-notification_acl-start',
+						'type'     => 'section',
+						'indent'   => true, // Indent all options below until the next 'section' option is set.
+						'required' => array( 'wpideas_emailenabled', '=', 1 ),
 					),
 					array(
 						'id'       => 'rt_idea_notification_events',
@@ -214,6 +229,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Settings' ) ) {
 						'desc'         => esc_attr( 'You can add email signature here that will be send with every email send with the Idea plugin, Allowed tags are <a> <br> <em> <strong>.' ),
 						'validate'     => 'html_custom',
 						'default'      => esc_attr( '<br />Sent via rtCamp Idea Plugin<br />' ),
+						'required' => array( 'idea_signature_enable', '=', 1 ),
 						'allowed_html' => array(
 							'a'      => array(
 								'href'  => array(),
@@ -223,6 +239,11 @@ if ( ! class_exists( 'Rtbiz_Ideas_Settings' ) ) {
 							'em'     => array(),
 							'strong' => array()
 						),
+					),
+					array(
+						'id'     => 'section-notification_acl-start',
+						'type'   => 'section',
+						'indent' => false, // Indent all options below until the next 'section' option is set.
 					),
 				)
 			);
