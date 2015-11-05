@@ -37,9 +37,23 @@ if ( ! class_exists( 'Rtbiz_Ideas_Admin' ) ) {
 			$rtbiz_ideas_woo_edd = new Rtbiz_Ideas_Woo_Edd();
 
 			$rtbiz_ideas_attributes = new Rtbiz_Ideas_Attributes();
-			$rtbiz_ideas_settings = new Rtbiz_Ideas_Settings();
+			// $rtbiz_ideas_settings = new Rtbiz_Ideas_Settings();
+
+			add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
 
 		}
+
+		public function settings_menu() {
+			$settings_page = add_submenu_page( 'edit.php?post_type=idea',__( 'Idea Settings', 'rtbiz_idea' ),  __( 'Settings', 'rtbiz_idea' ), 'manage_options', 'rtbiz-idea-settings', array( $this, 'settings_page' ) );
+		}
+
+		/**
+		 * Init the settings page.
+		 */
+		public function settings_page() {
+			rtBiz_Admin_Settings::output();
+		}
+
 
 		public function database_update() {
 			$updateDB = new RT_DB_Update( trailingslashit( RTBIZ_IDEAS_PATH ) . 'rtbiz-ideas.php', trailingslashit( RTBIZ_IDEAS_PATH . 'admin/schema/' ) );
@@ -65,19 +79,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Admin' ) ) {
 		 * @since 1.1
 		 */
 		public function enqueue_styles() {
-
-			/**
-			 * This function is provided for demonstration purposes only.
-			 *
-			 * An instance of this class should be passed to the run() function
-			 * defined in Plugin_Name_Loader as all of the hooks are defined
-			 * in that particular class.
-			 *
-			 * The Plugin_Name_Loader will then create the relationship
-			 * between the defined hooks and the functions defined in this
-			 * class.
-			 */
-
+			wp_enqueue_style( 'rtbiz_settings', RTBIZ_IDEAS_URL . 'admin/assets/css/idea.css', array(), RTBIZ_IDEAS_VERSION );
 		}
 
 		/**
@@ -87,17 +89,6 @@ if ( ! class_exists( 'Rtbiz_Ideas_Admin' ) ) {
 		 */
 		public function enqueue_scripts() {
 
-			/**
-			 * This function is provided for demonstration purposes only.
-			 *
-			 * An instance of this class should be passed to the run() function
-			 * defined in Plugin_Name_Loader as all of the hooks are defined
-			 * in that particular class.
-			 *
-			 * The Plugin_Name_Loader will then create the relationship
-			 * between the defined hooks and the functions defined in this
-			 * class.
-			 */
 		}
 
 	}
