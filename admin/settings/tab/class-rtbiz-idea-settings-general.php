@@ -58,7 +58,7 @@ class rtBiz_Idea_Settings_General extends rtBiz_Settings_Page{
 			),
 
 			array(
-				'desc'          => __( 'Easy Digital Download (EDD)', RTBIZ_IDEAS_TEXT_DOMAIN ),
+				'desc'          => __( 'Easy Digital Downloads (EDD)', RTBIZ_IDEAS_TEXT_DOMAIN ),
 				'id'            => 'rt_idea_edd_integration',
 				'default'       => 'no',
 				'type'          => 'checkbox',

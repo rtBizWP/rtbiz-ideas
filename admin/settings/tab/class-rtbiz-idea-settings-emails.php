@@ -51,7 +51,7 @@ class rtBiz_Idea_Settings_Emails extends rtBiz_Settings_Page{
 
 			array(
 				'title'    => __( 'Emails to notify', RTBIZ_IDEAS_TEXT_DOMAIN ),
-				'desc'     => '',
+				'desc'     => 'To add multiple emails use comma',
 				'id'       => 'wpideas_adminemails',
 				'default'  => '',
 				'type'     => 'email',
