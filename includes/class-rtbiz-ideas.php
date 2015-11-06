@@ -100,7 +100,6 @@ if ( ! class_exists( 'Rtbiz_Ideas' ) ) {
 			new RT_WP_Autoload( RTBIZ_IDEAS_PATH . 'admin/helper/' );
 			new RT_WP_Autoload( RTBIZ_IDEAS_PATH . 'public/' );
 			new RT_WP_Autoload( RTBIZ_IDEAS_PATH . 'public/classes' );
-			new RT_WP_Autoload( RTBIZ_IDEAS_PATH . 'admin/settings' );
 
 			self::$loader = new Rtbiz_Ideas_Loader();
 		}
