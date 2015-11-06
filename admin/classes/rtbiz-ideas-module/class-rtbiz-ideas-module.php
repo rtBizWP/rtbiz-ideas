@@ -145,9 +145,9 @@ if ( ! class_exists( 'Rtbiz_Ideas_Module' ) ) {
 					'description' => __( 'New idea', RTBIZ_IDEAS_TEXT_DOMAIN ),
 				),
 				array(
-					'slug'        => 'idea-started',
-					'name'        => __( 'Started', RTBIZ_IDEAS_TEXT_DOMAIN ),
-					'description' => __( 'Idea started', RTBIZ_IDEAS_TEXT_DOMAIN ),
+					'slug'        => 'idea-Working',
+					'name'        => __( 'Working on it', RTBIZ_IDEAS_TEXT_DOMAIN ),
+					'description' => __( 'Idea work starting', RTBIZ_IDEAS_TEXT_DOMAIN ),
 				),
 				array(
 					'slug'        => 'idea-under-review',
