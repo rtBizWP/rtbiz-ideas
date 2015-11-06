@@ -112,10 +112,11 @@ if ( ! function_exists( 'rtbiz_ideas_is_editor_enable' ) ) {
 	 * @return mixed
 	 */
 	function rtbiz_ideas_is_editor_enable() {
-		$setting = get_option('wpideas_editorenabled');
+		$setting = get_option( 'wpideas_editorenabled' );
 		if ( ! empty( $setting ) && 'on' == $setting ) {
 			return true;
 		}
+
 		return false;
 	}
 }
@@ -133,10 +134,11 @@ if ( ! function_exists( 'rtbiz_ideas_create_new_idea_title' ) ) {
 	 * @return null|string
 	 */
 	function rtbiz_ideas_create_new_idea_title( $key, $post_id ) {
-		$value = get_option($key);
+		$value = get_option( $key );
 		if ( ! empty( $value ) ) {
 			return html_entity_decode( rtbiz_ideas_generate_email_title( $post_id, $value ) );
 		}
+
 		return null;
 	}
 }
@@ -170,11 +172,13 @@ if ( ! function_exists( 'rtbiz_ideas_get_notification_emails' ) ) {
 	 * @return null
 	 */
 	function rtbiz_ideas_get_notification_emails() {
-		$emails = get_option('wpideas_adminemails');
+		$emails = get_option( 'wpideas_adminemails' );
 		if ( ! empty( $emails ) ) {
-			$emails = explode(',',$emails);
+			$emails = explode( ',', $emails );
+
 			return array_map( 'trim', $emails );
 		}
+
 		return null;
 	}
 }
@@ -187,12 +191,13 @@ if ( ! function_exists( 'rtbiz_ideas_get_signature' ) ) {
 	 */
 	function rtbiz_ideas_get_signature() {
 		$enable_signature = get_option( 'idea_signature_enable' );
-		if ( !empty( $enable_signature ) && 'on' == $enable_signature ) {
+		if ( ! empty( $enable_signature ) && 'on' == $enable_signature ) {
 			$signature = get_option( 'idea_signature_text' );
-			if ( !empty( $signature  ) ) {
+			if ( ! empty( $signature ) ) {
 				return $signature;
 			}
 		}
+
 		return '';
 	}
 }
@@ -204,8 +209,8 @@ if ( ! function_exists( 'rtbiz_ideas_is_email_notification_enable' ) ) {
 	 * @return bool
 	 */
 	function rtbiz_ideas_is_email_notification_enable() {
-		$settings = get_option('wpideas_emailenabled');
-		if ( !empty( $settings ) && 'on' == $settings ) {
+		$settings = get_option( 'wpideas_emailenabled' );
+		if ( ! empty( $settings ) && 'on' == $settings ) {
 			return true;
 		}
 
@@ -220,10 +225,11 @@ if ( ! function_exists( 'rtbiz_ideas_is_status_change_notification_enable' ) ) {
 	 * @return bool
 	 */
 	function rtbiz_ideas_is_status_change_notification_enable() {
-		$idea_posted = get_option('rt_idea_notification_events_idea_posted');
+		$idea_posted = get_option( 'rt_idea_notification_events_idea_posted' );
 		if ( rtbiz_ideas_is_email_notification_enable() && ! empty( $idea_posted ) && 'yes' == $idea_posted ) {
 			return true;
 		}
+
 		return false;
 	}
 }
@@ -235,8 +241,8 @@ if ( ! function_exists( 'rtbiz_ideas_is_comment_posted_notification_enable' ) ) 
 	 * @return bool
 	 */
 	function rtbiz_ideas_is_comment_posted_notification_enable() {
-		$comment_posted = get_option('rt_idea_notification_events_comment_posted');
-		if ( rtbiz_ideas_is_email_notification_enable() && !empty( $comment_posted ) && 'yes' == $comment_posted ) {
+		$comment_posted = get_option( 'rt_idea_notification_events_comment_posted' );
+		if ( rtbiz_ideas_is_email_notification_enable() && ! empty( $comment_posted ) && 'yes' == $comment_posted ) {
 			return true;
 		}
 
@@ -251,10 +257,34 @@ if ( ! function_exists( 'rtbiz_ideas_is_new_idea_posted_notification_enable' ) )
 	 * @return bool
 	 */
 	function rtbiz_ideas_is_new_idea_posted_notification_enable() {
-		$idea_posted = get_option('rt_idea_notification_events_status_change');
-		if ( rtbiz_ideas_is_email_notification_enable() && ! empty(  $idea_posted ) && 'yes' == $idea_posted ) {
+		$idea_posted = get_option( 'rt_idea_notification_events_status_change' );
+		if ( rtbiz_ideas_is_email_notification_enable() && ! empty( $idea_posted ) && 'yes' == $idea_posted ) {
 			return true;
 		}
+
+		return false;
+	}
+}
+
+
+if ( ! function_exists( 'rtbiz_idea_is_edd_integration_on' ) ) {
+	function rtbiz_idea_is_edd_integration_on() {
+		$option = get_option( 'rt_idea_edd_integration' );
+		if ( ! empty( $option ) && 'yes' == $option ) {
+			return true;
+		}
+
+		return false;
+	}
+}
+
+if ( ! function_exists( 'rtbiz_idea_is_woo_integration_on' ) ) {
+	function rtbiz_idea_is_woo_integration_on() {
+		$option = get_option( 'rt_idea_woo_integration' );
+		if ( ! empty( $option ) && 'yes' == $option ) {
+			return true;
+		}
+
 		return false;
 	}
 }
@@ -270,6 +300,7 @@ if ( ! function_exists( 'rtbiz_ideas_check_user_voted' ) ) {
 	 */
 	function rtbiz_ideas_check_user_voted( $post_id ) {
 		global $rtbiz_ideas_votes;
+
 		return $rtbiz_ideas_votes->check_user_voted( $post_id );
 	}
 }
@@ -283,6 +314,7 @@ if ( ! function_exists( 'rtbiz_ideas_add_vote' ) ) {
 	 */
 	function rtbiz_ideas_add_vote( $post_id ) {
 		global $rtbiz_ideas_votes;
+
 		return $rtbiz_ideas_votes->add_vote( $post_id );
 	}
 }
@@ -297,6 +329,7 @@ if ( ! function_exists( 'rtbiz_ideas_update_vote' ) ) {
 	 */
 	function rtbiz_ideas_update_vote( $post_id, $vote_count ) {
 		global $rtbiz_ideas_votes;
+
 		return $rtbiz_ideas_votes->update_vote( $post_id, $vote_count );
 	}
 }
@@ -310,6 +343,7 @@ if ( ! function_exists( 'rtbiz_ideas_delete_vote' ) ) {
 	 */
 	function rtbiz_ideas_delete_vote( $post_id ) {
 		global $rtbiz_ideas_votes;
+
 		return $rtbiz_ideas_votes->delete_vote( $post_id );
 	}
 }
@@ -323,6 +357,7 @@ if ( ! function_exists( 'rtbiz_ideas_get_votes_by_idea' ) ) {
 	 */
 	function rtbiz_ideas_get_votes_by_idea( $idea_id ) {
 		global $rtbiz_ideas_votes;
+
 		return $rtbiz_ideas_votes->get_votes_by_idea( $idea_id );
 	}
 }
@@ -332,8 +367,9 @@ if ( ! function_exists( 'rtbiz_ideas_get_all_ideas' ) ) {
 	/**
 	 * @return mixed
 	 */
-	function rtbiz_ideas_get_all_ideas( ) {
+	function rtbiz_ideas_get_all_ideas() {
 		global $rtbiz_ideas_votes;
-		return $rtbiz_ideas_votes->get_all_ideas( );
+
+		return $rtbiz_ideas_votes->get_all_ideas();
 	}
 }

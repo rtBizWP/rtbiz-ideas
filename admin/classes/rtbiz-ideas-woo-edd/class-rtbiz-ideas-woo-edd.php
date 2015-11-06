@@ -23,8 +23,12 @@ if ( ! class_exists( 'Rtbiz_Ideas_Woo_Edd' ) ) {
 		 * @since 0.1
 		 */
 		public function __construct() {
-			Rtbiz_Ideas::$loader->add_filter( 'woocommerce_product_tabs', $this, 'woo_ideas_tab', 999 );
-			Rtbiz_Ideas::$loader->add_action( 'edd_after_download_content', $this, 'woo_edd_ideas_content' );
+			if ( rtbiz_idea_is_woo_integration_on() ) {
+				Rtbiz_Ideas::$loader->add_filter( 'woocommerce_product_tabs', $this, 'woo_ideas_tab', 999 );
+			}
+			if ( rtbiz_idea_is_edd_integration_on() ) {
+				Rtbiz_Ideas::$loader->add_action( 'edd_after_download_content', $this, 'woo_edd_ideas_content' );
+			}
 		}
 
 		/**

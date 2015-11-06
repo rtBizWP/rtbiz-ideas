@@ -45,6 +45,27 @@ class rtBiz_Idea_Settings_General extends rtBiz_Settings_Page{
 				'autoload' => false
 			),
 
+			array(
+				'title'         => __( 'Integration', RTBIZ_IDEAS_TEXT_DOMAIN),
+				'desc'          => __( 'WooCommerce', RTBIZ_IDEAS_TEXT_DOMAIN ),
+				'id'            => 'rt_idea_woo_integration',
+				'default'       => 'no',
+				'type'          => 'checkbox',
+				'checkboxgroup' => 'start',
+				'desc_tip'      =>  __( 'Ideas will not be shown on frontend of Woo product', RTBIZ_IDEAS_TEXT_DOMAIN ),
+				'autoload'      => true
+			),
+
+			array(
+				'desc'          => __( 'Easy Digital Download (EDD)', RTBIZ_IDEAS_TEXT_DOMAIN ),
+				'id'            => 'rt_idea_edd_integration',
+				'default'       => 'no',
+				'type'          => 'checkbox',
+				'checkboxgroup' => 'end',
+				'desc_tip'      =>  __( 'Ideas will not be shown on frontend of EDD download page', RTBIZ_IDEAS_TEXT_DOMAIN ),
+				'autoload'      => true
+			),
+
 			array( 'type' => 'sectionend', 'id' => 'general_options'),
 
 		) );
