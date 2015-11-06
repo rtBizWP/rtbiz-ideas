@@ -26,6 +26,12 @@ module.exports = function ( grunt ) {
 					sassDir: 'public/css/scss',
 					cssDir: 'public/css/'
 				}
+			},
+			backend: {
+				options: {              // Target options
+					sassDir: 'admin/assets/css/scss',
+					cssDir: 'admin/assets/css'
+				}
 			}
 		},
 		jshint: {

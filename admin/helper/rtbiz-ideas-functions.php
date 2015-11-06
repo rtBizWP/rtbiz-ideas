@@ -112,8 +112,8 @@ if ( ! function_exists( 'rtbiz_ideas_is_editor_enable' ) ) {
 	 * @return mixed
 	 */
 	function rtbiz_ideas_is_editor_enable() {
-		$settings     = rtbiz_ideas_get_redux_settings();
-		if ( isset( $settings['wpideas_editorenabled'] ) && 1 == $settings['wpideas_editorenabled'] ) {
+		$setting = get_option('wpideas_editorenabled');
+		if ( ! empty( $setting ) && 'on' == $setting ) {
 			return true;
 		}
 		return false;
@@ -133,11 +133,10 @@ if ( ! function_exists( 'rtbiz_ideas_create_new_idea_title' ) ) {
 	 * @return null|string
 	 */
 	function rtbiz_ideas_create_new_idea_title( $key, $post_id ) {
-		$redux = rtbiz_ideas_get_redux_settings();
-		if ( isset( $redux[ $key ] ) ) {
-			return html_entity_decode( rtbiz_ideas_generate_email_title( $post_id, $redux[ $key ] ) );
+		$value = get_option($key);
+		if ( ! empty( $value ) ) {
+			return html_entity_decode( rtbiz_ideas_generate_email_title( $post_id, $value ) );
 		}
-
 		return null;
 	}
 }
@@ -171,11 +170,11 @@ if ( ! function_exists( 'rtbiz_ideas_get_notification_emails' ) ) {
 	 * @return null
 	 */
 	function rtbiz_ideas_get_notification_emails() {
-		$settings = rtbiz_ideas_get_redux_settings();
-		if ( isset( $settings['wpideas_adminemails'] ) && is_array( $settings['wpideas_adminemails'] ) ) {
-			return $settings['wpideas_adminemails'];
+		$emails = get_option('wpideas_adminemails');
+		if ( ! empty( $emails ) ) {
+			$emails = explode(',',$emails);
+			return array_map( 'trim', $emails );
 		}
-
 		return null;
 	}
 }
@@ -187,13 +186,13 @@ if ( ! function_exists( 'rtbiz_ideas_get_signature' ) ) {
 	 * @return string
 	 */
 	function rtbiz_ideas_get_signature() {
-		$settings = rtbiz_ideas_get_redux_settings();
-		if ( isset( $settings['idea_signature_enable'] ) && 1 == $settings['idea_signature_enable'] ) {
-			if ( isset( $settings['idea_signature_text'] ) ) {
-				return $settings['idea_signature_text'];
+		$enable_signature = get_option( 'idea_signature_enable' );
+		if ( !empty( $enable_signature ) && 'on' == $enable_signature ) {
+			$signature = get_option( 'idea_signature_text' );
+			if ( !empty( $signature  ) ) {
+				return $signature;
 			}
 		}
-
 		return '';
 	}
 }
@@ -205,8 +204,8 @@ if ( ! function_exists( 'rtbiz_ideas_is_email_notification_enable' ) ) {
 	 * @return bool
 	 */
 	function rtbiz_ideas_is_email_notification_enable() {
-		$settings = rtbiz_ideas_get_redux_settings();
-		if ( isset( $settings['wpideas_emailenabled'] ) && 1 == $settings['wpideas_emailenabled'] ) {
+		$settings = get_option('wpideas_emailenabled');
+		if ( !empty( $settings ) && 'on' == $settings ) {
 			return true;
 		}
 
@@ -221,11 +220,10 @@ if ( ! function_exists( 'rtbiz_ideas_is_status_change_notification_enable' ) ) {
 	 * @return bool
 	 */
 	function rtbiz_ideas_is_status_change_notification_enable() {
-		$settings = rtbiz_ideas_get_redux_settings();
-		if ( rtbiz_ideas_is_email_notification_enable() && isset( $settings['rt_idea_notification_events']['wpideas_status_change'] ) && 1 == $settings['rt_idea_notification_events']['wpideas_status_change'] ) {
+		$idea_posted = get_option('rt_idea_notification_events_idea_posted');
+		if ( rtbiz_ideas_is_email_notification_enable() && ! empty( $idea_posted ) && 'yes' == $idea_posted ) {
 			return true;
 		}
-
 		return false;
 	}
 }
@@ -237,8 +235,8 @@ if ( ! function_exists( 'rtbiz_ideas_is_comment_posted_notification_enable' ) ) 
 	 * @return bool
 	 */
 	function rtbiz_ideas_is_comment_posted_notification_enable() {
-		$settings = rtbiz_ideas_get_redux_settings();
-		if ( rtbiz_ideas_is_email_notification_enable() && isset( $settings['rt_idea_notification_events']['wpideas_comment_posted'] ) && 1 == $settings['rt_idea_notification_events']['wpideas_comment_posted'] ) {
+		$comment_posted = get_option('rt_idea_notification_events_comment_posted');
+		if ( rtbiz_ideas_is_email_notification_enable() && !empty( $comment_posted ) && 'yes' == $comment_posted ) {
 			return true;
 		}
 
@@ -253,8 +251,8 @@ if ( ! function_exists( 'rtbiz_ideas_is_new_idea_posted_notification_enable' ) )
 	 * @return bool
 	 */
 	function rtbiz_ideas_is_new_idea_posted_notification_enable() {
-		$settings = rtbiz_ideas_get_redux_settings();
-		if ( rtbiz_ideas_is_email_notification_enable() && isset( $settings['rt_idea_notification_events']['wpideas_idea_posted'] ) && 1 == $settings['rt_idea_notification_events']['wpideas_idea_posted'] ) {
+		$idea_posted = get_option('rt_idea_notification_events_status_change');
+		if ( rtbiz_ideas_is_email_notification_enable() && ! empty(  $idea_posted ) && 'yes' == $idea_posted ) {
 			return true;
 		}
 		return false;
