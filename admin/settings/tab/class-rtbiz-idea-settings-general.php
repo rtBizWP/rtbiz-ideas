@@ -6,6 +6,7 @@
  * Date: 5/11/15
  * Time: 10:52 AM
  */
+if ( !class_exists('rtBiz_Idea_Settings_General ')) :
 class rtBiz_Idea_Settings_General extends rtBiz_Settings_Page{
 
 	/**
@@ -75,5 +76,6 @@ class rtBiz_Idea_Settings_General extends rtBiz_Settings_Page{
 
 
 }
+endif;
 
 return new rtBiz_Idea_Settings_General();

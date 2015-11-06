@@ -23,16 +23,16 @@ class rtBiz_Admin_Settings {
 	/**
 	 * Include the settings page classes.
 	 */
-	public static function get_settings_pages() {
+	public static function get_settings_pages($slug) {
 		if ( empty( self::$settings ) ) {
 			$settings = array();
 
 			include_once( 'class-rtbiz-settings-page.php' );
 
-			$settings[] = include( 'class-rtbiz-idea-settings-general.php' );
-			$settings[] = include( 'class-rtbiz-idea-settings-emails.php' );
+			//			$settings[] = include( 'class-rtbiz-idea-settings-general.php' );
+			//			$settings[] = include( 'class-rtbiz-idea-settings-emails.php' );
 
-			self::$settings = apply_filters( 'rtbiz_get_settings_pages', $settings );
+			self::$settings = apply_filters( 'rtbiz_get_settings_pages_'.$slug, $settings );
 		}
 
 		return self::$settings;
@@ -57,7 +57,6 @@ class rtBiz_Admin_Settings {
 		delete_transient( 'rtbiz_cache_excluded_uris' );
 
 		self::add_message( __( 'Your settings have been saved.', 'rtbiz' ) );
-		self::check_download_folder_protection();
 
 		do_action( 'rtbiz_settings_saved' );
 	}
@@ -101,22 +100,22 @@ class rtBiz_Admin_Settings {
 	 *
 	 * Handles the display of the main rtbiz settings page in admin.
 	 */
-	public static function output() {
+	public static function output( $slug ) {
 		global $current_section, $current_tab;
 
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-		do_action( 'rtbiz_settings_start' );
+		do_action( 'rtbiz_settings_start', $slug );
 
 		wp_localize_script( 'rtbiz_settings', 'rtbiz_settings_params', array(
 			'i18n_nav_warning' => __( 'The changes you made will be lost if you navigate away from this page.', 'rtbiz' )
 		) );
 
 		// Include settings pages
-		self::get_settings_pages();
+		self::get_settings_pages($slug);
 
 		// Get current tab/section
-		$current_tab     = empty( $_GET['tab'] ) ? 'rtbiz_idea_general' : sanitize_title( $_GET['tab'] );
+		$current_tab     = empty( $_GET['tab'] ) ? 'rtbiz_'.$slug.'_general' : sanitize_title( $_GET['tab'] );
 		$current_section = empty( $_REQUEST['section'] ) ? '' : sanitize_title( $_REQUEST['section'] );
 
 		// Save settings if data has been posted
@@ -748,34 +747,6 @@ class rtBiz_Admin_Settings {
 		return true;
 	}
 
-	/**
-	 * Checks which method we're using to serve downloads.
-	 *
-	 * If using force or x-sendfile, this ensures the .htaccess is in place.
-	 */
-	public static function check_download_folder_protection() {
-		$upload_dir      = wp_upload_dir();
-		$downloads_url   = $upload_dir['basedir'] . '/rtbiz_uploads';
-		$download_method = get_option( 'rtbiz_file_download_method' );
-
-		if ( 'redirect' == $download_method ) {
-
-			// Redirect method - don't protect
-			if ( file_exists( $downloads_url . '/.htaccess' ) ) {
-				unlink( $downloads_url . '/.htaccess' );
-			}
-
-		} else {
-
-			// Force method - protect, add rules to the htaccess file
-			if ( ! file_exists( $downloads_url . '/.htaccess' ) ) {
-				if ( $file_handle = @fopen( $downloads_url . '/.htaccess', 'w' ) ) {
-					fwrite( $file_handle, 'deny from all' );
-					fclose( $file_handle );
-				}
-			}
-		}
-	}
 }
 
 

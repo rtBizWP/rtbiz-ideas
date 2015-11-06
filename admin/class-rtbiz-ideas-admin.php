@@ -40,7 +40,14 @@ if ( ! class_exists( 'Rtbiz_Ideas_Admin' ) ) {
 			// $rtbiz_ideas_settings = new Rtbiz_Ideas_Settings();
 
 			add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
+			add_action( 'rtbiz_get_settings_pages_idea', array( $this, 'setting_tabs' ) );
 
+		}
+
+		public function setting_tabs( $tabs ) {
+			$tabs[] = include( RTBIZ_IDEAS_PATH. 'admin/settings/tab/class-rtbiz-idea-settings-general.php' );
+			$tabs[] = include( RTBIZ_IDEAS_PATH. 'admin/settings/tab/class-rtbiz-idea-settings-emails.php' );
+			return $tabs;
 		}
 
 		public function settings_menu() {
@@ -51,7 +58,9 @@ if ( ! class_exists( 'Rtbiz_Ideas_Admin' ) ) {
 		 * Init the settings page.
 		 */
 		public function settings_page() {
-			rtBiz_Admin_Settings::output();
+
+			$slug = 'idea';
+			rtBiz_Admin_Settings::output($slug);
 		}
 
 
