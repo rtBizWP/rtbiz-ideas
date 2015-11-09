@@ -73,6 +73,10 @@ if ( ! class_exists( 'Rtbiz_Ideas_Common' ) ) {
 
 					$idea_id = wp_insert_post( $idea_information );
 
+					if ( isset( $_POST['category_id'] ) && '' != $_POST['category_id'] ) {
+						wp_set_post_categories( $idea_id, $_POST['category_id'] );
+					}
+
 					if ( isset( $_POST['product_id'] ) && '' != $_POST['product_id'] ) {
 						$product_slug = Rt_Products::$product_slug;
 						wp_set_post_terms( $idea_id, $_POST['product_id'], $product_slug );

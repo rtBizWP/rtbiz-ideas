@@ -59,6 +59,17 @@
 	}?>
 
 	<div class="rtbiz-idea-row">
+		<?php
+		$args = array(
+			'show_option_none'   => 'Select Category',
+			'orderby'            => 'name',
+			'name'               => 'category_id',
+			'hide_empty'         => 0,
+		);
+		wp_dropdown_categories( $args ); ?>
+	</div>
+
+	<div class="rtbiz-idea-row">
 		<input type="file" name="upload[]" id="file" multiple />
 	</div>
 

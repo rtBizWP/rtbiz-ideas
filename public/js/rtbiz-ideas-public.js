@@ -235,6 +235,11 @@ jQuery(document).ready( function ( $) {
 					requestArray.append( "product_id", product_id );
 				}
 
+				var category_id = $('#category_id').val();
+				if ( category_id && category_id != -1 ){
+					requestArray.append( "category_id", category_id );
+				}
+
 				requestArray.append( "product", $('#product_page').val() );
 
 				var files = document.getElementById('file').files;
@@ -302,6 +307,9 @@ jQuery(document).ready( function ( $) {
 								$('#txtIdeaContent').val("");
 							}
 							$('#file').val("");
+
+							$('#product_id option:first-child').attr("selected", "selected");
+							$('#category_id option:first-child').attr("selected", "selected");
 
 							$('#lblIdeaSuccess').show();
 							$('#lblIdeaSuccess').fadeOut(5000);
