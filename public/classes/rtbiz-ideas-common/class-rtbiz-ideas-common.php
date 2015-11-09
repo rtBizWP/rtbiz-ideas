@@ -44,6 +44,8 @@ if ( ! class_exists( 'Rtbiz_Ideas_Common' ) ) {
 
 			add_shortcode( 'rtbiz_ideas', array( $this, 'list_post_ideas' ) );
 
+			Rtbiz_Ideas::$loader->add_filter( 'get_avatar_comment_types', $this, 'add_avatar_comment_type', 10 );
+
 		}
 
 		/**
@@ -516,6 +518,13 @@ if ( ! class_exists( 'Rtbiz_Ideas_Common' ) ) {
 			$the_excerpt = '<p>' . $the_excerpt . '</p>';
 
 			return $the_excerpt;
+		}
+
+		function add_avatar_comment_type( $types){
+			if ( ! in_array( 'idea_staff_comment', $types ) ) {
+				$types[] = Rtbiz_Ideas_Module::$staff_comment_type;
+			}
+			return $types;
 		}
 	}
 }

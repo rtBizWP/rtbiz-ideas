@@ -29,6 +29,8 @@ if ( ! class_exists( 'Rtbiz_Ideas_Module' ) ) {
 		 * @since 0.1
 		 */
 		static $name = 'Idea';
+
+		static $staff_comment_type = 'idea_staff_comment';
 		/**
 		 * @var array Labels for rtbiz-Ideas CPT [ Idea ]
 		 *
@@ -392,7 +394,7 @@ if ( ! class_exists( 'Rtbiz_Ideas_Module' ) ) {
 				if ( in_array( 'administrator', $user_role ) ) {
 					$commentarr = array();
 					$commentarr['comment_ID'] = $comment_id;
-					$commentarr['comment_type'] = 'idea_staff_comment';
+					$commentarr['comment_type'] = Rtbiz_Ideas_Module::$staff_comment_type;
 					wp_update_comment( $commentarr );
 				}
 			}
