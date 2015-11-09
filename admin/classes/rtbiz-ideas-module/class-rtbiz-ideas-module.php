@@ -60,6 +60,8 @@ if ( ! class_exists( 'Rtbiz_Ideas_Module' ) ) {
 			Rtbiz_Ideas::$loader->add_action( 'post_updated_messages', $this, 'idea_updated_messages', 10, 2 );
 			Rtbiz_Ideas::$loader->add_action( 'bulk_post_updated_messages', $this, 'bulk_idea_update_messages', 10, 2 );
 
+			Rtbiz_Ideas::$loader->add_action( 'wp_insert_comment', $this, 'comment_type_changed', 10, 2 );
+			Rtbiz_Ideas::$loader->add_action( 'pre_get_comments', $this, 'comment_query_update', 10 );
 
 		}
 
@@ -380,6 +382,30 @@ if ( ! class_exists( 'Rtbiz_Ideas_Module' ) ) {
 				rtbiz_ideas_add_vote( $post_id );
 				update_post_meta( $post_id, '_rt_wpideas_meta_votes', 1 );
 			}
+		}
+
+		function comment_type_changed($comment_id, $comment_object) {
+			$posttype = get_post_type( $comment_object->comment_post_ID );
+			if ( $comment_object->comment_post_ID > 0 && self::$post_type == $posttype ) {
+				$user = get_userdata( $comment_object->user_id );
+				$user_role = empty( $user ) ? array() : $user->roles;
+				if ( in_array( 'administrator', $user_role ) ) {
+					$commentarr = array();
+					$commentarr['comment_ID'] = $comment_id;
+					$commentarr['comment_type'] = 'idea_staff_comment';
+					wp_update_comment( $commentarr );
+				}
+			}
+		}
+
+		function comment_query_update( $query ){
+			$query_var = $query->query_vars;
+			$posttype = get_post_type( $query_var['post_id'] );
+			if ( self::$post_type == $posttype ) {
+				$query->query_vars['orderby'] =  'comment_type comment_date';
+				$query->query_vars['order'] = 'desc';
+			}
+			return $query;
 		}
 
 	}
