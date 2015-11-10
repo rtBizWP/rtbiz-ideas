@@ -15,7 +15,7 @@ class rtBiz_Idea_Settings_Emails extends rtBiz_Settings_Page{
 	 */
 	public function __construct() {
 		$this->id    = 'rtbiz_idea_email';
-		$this->label = __( 'Emails', 'rtbiz_idea' );
+		$this->label = __( 'Emails', RTBIZ_IDEAS_TEXT_DOMAIN );
 		add_filter( 'rtbiz_settings_tabs_array', array( $this, 'add_settings_page' ) );
 		add_action( 'rtbiz_settings_' . $this->id, array( $this, 'output' ) );
 		add_action( 'rtbiz_settings_save_' . $this->id, array( $this, 'save' ) );
