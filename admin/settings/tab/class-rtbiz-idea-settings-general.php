@@ -39,8 +39,8 @@ class rtBiz_Idea_Settings_General extends rtBiz_Settings_Page{
 				'default'  => 'off',
 				'type'     => 'radio',
 				'options'  => array(
-					'on'       => __( 'On', 'woocommerce' ),
-					'off' => __( 'Off', 'woocommerce' ),
+					'on'       => __( 'On', RTBIZ_IDEAS_TEXT_DOMAIN ),
+					'off' => __( 'Off', RTBIZ_IDEAS_TEXT_DOMAIN ),
 				),
 				'desc_tip' =>  true,
 				'autoload' => false
