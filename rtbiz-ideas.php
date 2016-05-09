@@ -16,7 +16,7 @@
  * Plugin Name:       rtBiz Ideas
  * Plugin URI:        https://rtcamp.com/
  * Description:       A WordPress based ideas/feature-request tracking for General Purpose, Also WooCommerce/EDD Support added.
- * Version:           1.1
+ * Version:           1.1.1
  * Author:            rtCamp
  * Author URI:        https://rtcamp.com/
  * License:           GPL-2.0+
@@ -31,7 +31,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'RTBIZ_IDEAS_VERSION' ) ) {
-	define( 'RTBIZ_IDEAS_VERSION', '1.1' );
+	define( 'RTBIZ_IDEAS_VERSION', '1.1.1' );
 }
 
 if ( ! defined( 'RTBIZ_IDEAS_TEXT_DOMAIN' ) ) {
