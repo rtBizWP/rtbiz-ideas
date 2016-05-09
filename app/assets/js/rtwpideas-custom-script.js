@@ -11,7 +11,7 @@ jQuery(document).ready(function ($) {
 	jQuery('a[href="#Idea-new"]' ).click(function (){
 		jQuery('#wpideas-insert-idea' ).slideToggle('slow');
 	});
-	jQuery('.btnVote').live('click', function () {
+	jQuery('.btnVote').on('click', function () {
         $(this).attr('disabled', 'disabled');
         var data = {
             action: 'vote',
@@ -56,7 +56,7 @@ jQuery(document).ready(function ($) {
 
     });
 
-    jQuery('#ideaLoadMore').live('click', function (e) {
+    jQuery('#ideaLoadMore').on('click', function (e) {
         jQuery('#ideaLoadMore').hide();
         jQuery('#ideaLoading').show();
         var post_type = 'idea'; // this is optional and can be set from anywhere, stored in mockup etc...
